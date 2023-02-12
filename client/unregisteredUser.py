@@ -6,9 +6,9 @@ from tkinter import ttk
 
 root = tk.Tk()
 
-root.title('Sign up')
+root.title('User Sign up')
 root.geometry('800x1000')
-title = ttk.Label(root, text='Sign Up', font=('Arial', 18), border=10, borderwidth=1, relief=SOLID)
+title = ttk.Label(root, text='User Sign Up', font=('Arial', 18), border=10, borderwidth=1, relief=SOLID)
 title.pack(padx=0, pady=14)
 
 # May have to use int(phone_number_entry.get()) to retrieve numeric values
