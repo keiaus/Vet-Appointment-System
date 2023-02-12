@@ -1,5 +1,5 @@
 import tkinter as tk
-from ..client.clientServer import cnxn
+from ..client.clientServer import connection
 import pyodbc
 from tkinter import *
 from tkinter import ttk
