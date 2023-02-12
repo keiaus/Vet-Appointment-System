@@ -1,2 +1,2 @@
-# Ignores all files named clientServer
-clientServer/
+# Ignores all files named clientServer.py
+clientServer.py

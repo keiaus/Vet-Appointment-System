@@ -80,6 +80,25 @@ password2_entry = ttk.Entry(root, textvariable=password2_var, font=('calibre', 1
 password2_label.pack(padx=5, pady=5, side=tk.TOP, anchor=N)
 password2_entry.pack(padx=5, pady=5, side=tk.TOP, anchor=N, ipadx=30)
 
+def submit_action():
+    first_name = first_name_entry.get(first_name_var)
+    last_name = last_name_entry.get(last_name_var)
+    user = user_name_entry.get(user_name_var)
+    email = email_entry.get(email_var)
+    phone_number = phone_number_entry.get(phone_number_var)
+    street_address = 
+    # first_name = first_name_var.get()
+    # last_name = last_name_var.get()
+    # user = user_name_var.get()
+    # email = email_var.get()
+    # phone_number = phone_number_var.get()
+    # street_address = street_address_var.get()
+    # city = city_var.get()
+    # zip = zip_var.get()
+    # password1 = password1_var.get()
+    # password2 = password2_var.get()
+
+
 btn = Button(root, text="Sign Up", bd=7, command=root.destroy, font='Helevetica')
 btn.pack(pady=40)
 

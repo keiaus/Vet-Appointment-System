@@ -1,9 +1,11 @@
 import pyodbc
 
-server = 'database-1.ci7iawyx7c5x.us-east-1.rds.amazonaws.com,1433'
-database = 'VetAppointmentSystem'
-username = ''
-password = ''
 
-cnxn = pyodbc.connect('DRIVER={ODBC Driver 18 for SQL Server};SERVER='+server+';DATABASE='+database+';ENCRYPT=yes;UID='+username+';PWD='+ password)
-cursor = cnxn.cursor()
+connection = pyodbc.connect('DRIVER={SQL Server};PORT=1433;SERVER=database-1.ci7iawyx7c5x.us-east-1.rds.amazonaws.com;DATABASE=VetAppointmentSystem;UID=;PWD=;')
+cursor = connection.cursor()
+
+cursor.execute("SELECT * FROM TEST")
+row = cursor.fetchall()
+while row:
+    print(row[0])
+    row = cursor.fetchall()

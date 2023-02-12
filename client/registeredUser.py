@@ -1,5 +1,6 @@
 import tkinter as tk
-# import clientServer
+from ..client.clientServer import cnxn
+import pyodbc
 from tkinter import *
 from tkinter import ttk
 
@@ -25,17 +26,17 @@ password_entry = ttk.Entry(root, textvariable=password_var, font=('calibre', 10,
 password_label.pack(padx=5, pady=5, side=tk.TOP, anchor=N)
 password_entry.pack(padx=5, pady=5, side=tk.TOP, anchor=N, ipadx=30)
 
-# def submit_action():
-#     user = user_name_var.get()
-#     password = password_var.get()
+def submit_action():
+    user = user_name_var.get()
+    password = password_var.get()
 
-#     log_into_db(user, password)
+    log_into_db(user, password)
 
-# def log_into_db(user, password):
-#     if password:
-#         db = pydoc.connect()
+def log_into_db(user, password):
+    if password:
+        database = pyodbc.connect()
 
-# def log_in_button():
+def log_in_button():
 
 
 btn = Button(root, text="Log In", bd=7, command=root.destroy, font='Helevetica')
