@@ -198,7 +198,7 @@ def update_account_menu():
     
 #Logout 
  
-def logout():
+# def logout():
     
     #needs to be done
     
