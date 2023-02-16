@@ -110,7 +110,7 @@ def login_verify():
 
 def after_login_menu():
     global after_login_screen
-    after_login_screen = Toplevel(login_screen())
+    after_login_screen = Toplevel(login_screen)
     after_login_screen.geometry("300x250")
     after_login_screen.title("User Update Menu")
     Label(text="Select Your Choice", bg="blue", width="300", height="2", font=("Calibri", 13)).pack()
