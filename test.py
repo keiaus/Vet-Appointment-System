@@ -284,6 +284,8 @@
  
 # main_account_screen()
 
+# Page after login
+
 from tkinter import *
 import tkinter as tk
 import pyodbc
@@ -294,8 +296,16 @@ cursor = connection.cursor()
 def show_frame(frame):
     frame.tkraise()
 
+def user_fill_in():
+    return update_account_menu()
+
+def update_button_clicked():
+    window.title("Update Account")
+    show_frame(update_account_page)
+
 window = tk.Tk()
 window.state('zoomed')
+window.title("Home")
 
 window.rowconfigure(0, weight=1)
 window.columnconfigure(0, weight=1)
@@ -303,15 +313,25 @@ window.columnconfigure(0, weight=1)
 account_page = tk.Frame(window)
 update_account_page = tk.Frame(window)
 
+
 for frame in (account_page, update_account_page):
     frame.grid(row=0, column=0, sticky='nsew')
 
+# ***TRYING TO GET UPDATE BUTTON WORKING WITH DB***
+
 # Account page
+account_page_header = tk.Label(account_page, text='Welcome', font='times 50', anchor=N, pady=50)
+account_page_header.pack(fill='both', expand=True)
 
-account_page_title = tk.Label(account_page, text='Welcome', font='times 40')
-account_page_title.pack(fill='BOTH', expand=True)
+update_button = tk.Button(account_page, text='Update Account', font='times 15', command=lambda:update_button_clicked())
+update_button.pack(pady=15, side=TOP)
 
-update_button = tk.Button(account_page, text='Update Account', command=)
+# Update account page
+update_page = tk.Label(update_account_page)
+update_page.pack(fill='both', expand=True)
+
+submit_button = tk.Button(update_page, text='Submit', font='50', command=lambda:show_frame(update_account_page))
+submit_button.pack(pady=40, anchor=S, side=BOTTOM)
 
 def update_account_menu():
     
@@ -376,14 +396,16 @@ def update_account_menu():
     zip_entry = Entry(update_account_page, textvariable=zip_var, font=('calibre', 10, 'normal'))
     zip_label.pack()
     zip_entry.pack()
-    
-    username1 = username_verify.get()
-    password1 = password_verify.get()
-    
-    cursor.execute("SELECT UserLoginID FROM UserLoginInfo WHERE UserUserName = ? AND UserPassword = ?", username1, password1)
-    user_login_ID = cursor.fetchone() 
-    cursor.execute("SELECT UserID FROM UserAccountINFO INNER JOIN UserLoginInfo ON UserAccountInfo.UserLoginID = UserLoginInfo.UserLoginID WHERE UserLoginID = ?", user_login_ID)
-    user_id = cursor.fetchone()
-    cursor.execute("UPDATE UserAccountInfo SET UserFirstName = ?, UserLastName = ?, UserPhoneNumber = ?, UserEmailAddress = ?, UserStreetAddress = ?, UserCity = ?, UserState = ?, UserZip = ? WHERE UserID = ?", first_name_var, last_name_var, phone_number_var, email_var, street_address_var, city_var, state_var, zip_var)
-    cursor.commit()
+
+show_frame(account_page)
+user_fill_in()
+
+window.mainloop()
+
+# cursor.execute("SELECT UserLoginID FROM UserLoginInfo WHERE UserUserName = ? AND UserPassword = ?", username1, password1)
+# user_login_ID = cursor.fetchone() 
+# cursor.execute("SELECT UserID FROM UserAccountINFO INNER JOIN UserLoginInfo ON UserAccountInfo.UserLoginID = UserLoginInfo.UserLoginID WHERE UserLoginID = ?", user_login_ID)
+# user_id = cursor.fetchone()
+# cursor.execute("UPDATE UserAccountInfo SET UserFirstName = ?, UserLastName = ?, UserPhoneNumber = ?, UserEmailAddress = ?, UserStreetAddress = ?, UserCity = ?, UserState = ?, UserZip = ? WHERE UserID = ?", first_name_var, last_name_var, phone_number_var, email_var, street_address_var, city_var, state_var, zip_var)
+# cursor.commit()
     #needs testing and a final ok confirmation that it was updated and then closes out
