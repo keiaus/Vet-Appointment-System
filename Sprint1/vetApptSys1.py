@@ -90,19 +90,19 @@ for frame in (account_page, account_create, user_log_in, user_menu, user_update_
 
 # **Don't touch**
 # Main window on program start
-account_page_header = Label(account_page, text='Vet Appointment System', font='times 50', anchor=N, pady=50)
+account_page_header = Label(account_page, text='Vet Appointment System', font='times 50 bold', bg='SpringGreen4', anchor=N, pady=50)
 account_page_header.pack(fill='both')
 
-create_button = Button(account_page, text='Create Account', font='times 15', command=lambda:account_creation_clicked())
+create_button = Button(account_page, text='Create Account', font='times 30', command=lambda:account_creation_clicked())
 create_button.pack(pady=15, side=TOP)
 
-user_log_button = Button(account_page, text='User Log In', font='times 15', command=lambda:user_log_in_clicked())
+user_log_button = Button(account_page, text='User Log In', font='times 30', command=lambda:user_log_in_clicked())
 user_log_button.pack(pady=15, side=TOP)
 
-vet_log_button = Button(account_page, text='Vet Log In', font='times 15', command=lambda:vet_log_in_clicked())
+vet_log_button = Button(account_page, text='Vet Log In', font='times 30', command=lambda:vet_log_in_clicked())
 vet_log_button.pack(pady=15, side=TOP)
 
-close_button = Button(account_page, text='Close System', font='times 15', command=lambda:close_clicked())
+close_button = Button(account_page, text='Close System', font='times 30', command=lambda:close_clicked())
 close_button.pack(pady=15, side=TOP)
 
 # User registration menu
@@ -114,18 +114,18 @@ def user_register():
     username = StringVar()
     password = StringVar()
  
-    Label(account_create, text="Please enter details below", bg="blue").pack()
+    Label(account_create, text="Please enter details below", font='times 50 bold', bg="SpringGreen4", anchor=N, pady=50).pack(fill=BOTH)
     Label(account_create, text="").pack()
-    username_lable = Label(account_create, text="Username * ")
+    username_lable = Label(account_create, font='times 30', text="Username")
     username_lable.pack()
-    username_entry = Entry(account_create, textvariable=username)
+    username_entry = Entry(account_create, font='times 30', textvariable=username)
     username_entry.pack()
-    password_lable = Label(account_create, text="Password * ")
+    password_lable = Label(account_create, font='times 30', text="Password")
     password_lable.pack()
-    password_entry = Entry(account_create, textvariable=password, show='*')
+    password_entry = Entry(account_create, font='times 30', textvariable=password, show='*')
     password_entry.pack()
     Label(account_create, text="").pack()
-    Button(account_create, text="Register", width=10, height=1, bg="blue", command = register_user).pack()
+    Button(account_create, text="Register", width=10, height=1, font='times 20', bd=20, bg='SpringGreen4', command = register_user).pack()
 
 # Registered user login menu
 def register_user():
