@@ -95,16 +95,16 @@ account_page_header.pack(fill='both')
 
 Label(account_page, text="", pady=60).pack()
 
-create_button = Button(account_page, text='Create Account', bd=20, width=20, font='times 30', command=lambda:account_creation_clicked())
+create_button = Button(account_page, text='Create Account', bd=20, bg="SpringGreen4", width=20, font='times 30', command=lambda:account_creation_clicked())
 create_button.pack(pady=15, side=TOP)
 
-user_log_button = Button(account_page, text='User Log In', bd=20, width=20, font='times 30', command=lambda:user_log_in_clicked())
+user_log_button = Button(account_page, text='User Log In', bd=20, bg="SpringGreen4", width=20, font='times 30', command=lambda:user_log_in_clicked())
 user_log_button.pack(pady=15, side=TOP)
 
-vet_log_button = Button(account_page, text='Vet Log In', bd=20, width=20, font='times 30', command=lambda:vet_log_in_clicked())
+vet_log_button = Button(account_page, text='Vet Log In', bd=20, bg="SpringGreen4", width=20, font='times 30', command=lambda:vet_log_in_clicked())
 vet_log_button.pack(pady=15, side=TOP)
 
-close_button = Button(account_page, text='Close System', bd=20, width=20, font='times 30', command=lambda:close_clicked())
+close_button = Button(account_page, text='Close System', bd=20, bg="SpringGreen4", width=20, font='times 30', command=lambda:close_clicked())
 close_button.pack(pady=15, side=TOP)
 
 # User registration menu
@@ -117,7 +117,7 @@ def user_register():
     password = StringVar()
  
     Label(account_create, text="Please enter details below", font='times 50 bold', bg="SpringGreen4", anchor=N, pady=50).pack(fill=BOTH)
-    Label(account_create, text="").pack()
+    Label(account_create, text="", pady=60).pack()
     username_lable = Label(account_create, font='times 30', text="Username")
     username_lable.pack()
     username_entry = Entry(account_create, font='times 30', textvariable=username)
@@ -193,8 +193,8 @@ def delete_empty_login_info():
 
 # Registered user login (prompts the user to enter their login info, passes info to user_login_verify for verification)
 def user_login():
-    Label(user_log_in, text="Please enter details below to login").pack()
-    Label(user_log_in, text="").pack()
+    Label(user_log_in, text="Please enter details below to login", font="times 50 bold", bg="SpringGreen4", anchor=N, pady=50).pack(fill=BOTH)
+    Label(user_log_in, text="", pady=60).pack()
  
     global username_verify
     global password_verify
@@ -205,15 +205,15 @@ def user_login():
     global username_login_entry
     global password_login_entry
  
-    Label(user_log_in, text="Username * ").pack()
-    username_login_entry = Entry(user_log_in, textvariable=username_verify)
+    Label(user_log_in, font="times 30", text="Username").pack()
+    username_login_entry = Entry(user_log_in, font="times 30", textvariable=username_verify)
     username_login_entry.pack()
     Label(user_log_in, text="").pack()
-    Label(user_log_in, text="Password * ").pack()
-    password_login_entry = Entry(user_log_in, textvariable=password_verify, show= '*')
+    Label(user_log_in, font="times 30", text="Password").pack()
+    password_login_entry = Entry(user_log_in, font="times 30", textvariable=password_verify, show= '*')
     password_login_entry.pack()
-    Label(user_log_in, text="").pack()
-    Button(user_log_in, text="Login", width=10, height=1, command = user_login_verify).pack()
+    Label(user_log_in, text="", pady=60).pack()
+    Button(user_log_in, text="Login", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = user_login_verify).pack()
 
 # User login verification (checks that the entered user information matches a record in the UserLoginInfo table)
 def user_login_verify():
@@ -262,8 +262,8 @@ def delete_user_invalid_login():
 
 # Veterinarian login (prompts user to enter their login info, passes info to vet_login_verify for verification)
 def vet_login():
-    Label(vet_log_in, text="Please enter details below to login").pack()
-    Label(vet_log_in, text="").pack()
+    Label(vet_log_in, text="Please enter details below to login", font="times 50 bold", bg="SpringGreen4", anchor=N, pady=50).pack(fill=BOTH)
+    Label(vet_log_in, text="", pady=60).pack()
  
     global vet_username_verify
     global vet_password_verify
@@ -274,15 +274,15 @@ def vet_login():
     global vet_username_login_entry
     global vet_password_login_entry
  
-    Label(vet_log_in, text="Username * ").pack()
-    vet_username_login_entry = Entry(vet_log_in, textvariable=vet_username_verify)
+    Label(vet_log_in, font="times 30", text="Username").pack()
+    vet_username_login_entry = Entry(vet_log_in, font="times 30", textvariable=vet_username_verify)
     vet_username_login_entry.pack()
     Label(vet_log_in, text="").pack()
-    Label(vet_log_in, text="Password * ").pack()
-    vet_password_login_entry = Entry(vet_log_in, textvariable=vet_password_verify, show= '*')
+    Label(vet_log_in, font="times 30", text="Password").pack()
+    vet_password_login_entry = Entry(vet_log_in, font="times 30", textvariable=vet_password_verify, show= '*')
     vet_password_login_entry.pack()
     Label(vet_log_in, text="").pack()
-    Button(vet_log_in, text="Login", width=10, height=1, command = vet_login_verify).pack()
+    Button(vet_log_in, text="Login", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = vet_login_verify).pack()
 
 # Vet login verification (checks that the entered vet information matches a record in VetLoginInfo table)
 def vet_login_verify():
@@ -332,23 +332,23 @@ def delete_vet_invalid_login():
 # Menu that appears after successful user login
 # Provides the options to update account info or log out
 def user_after_login_menu():
-    Label(user_menu, text="Select Your Choice", bg="blue", width="300", height="2", font=("Calibri", 13)).pack()
+    Label(user_menu, text="Select Your Choice", font='times 50 bold', bg='SpringGreen4', anchor=N, pady=50).pack(fill=BOTH)
+    Label(user_menu, text="", pady=60).pack()
+    Button(user_menu, text="Update Account Info", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command =lambda:user_update_button_clicked()).pack()
     Label(user_menu, text="").pack()
-    Button(user_menu, text="Update Account Info", height="2", width="50", command =lambda:user_update_button_clicked()).pack()
-    Label(user_menu, text="").pack()
-    Button(user_menu, text="Log Out", height="2", width="30", command = return_to_main).pack()
+    Button(user_menu, text="Log Out", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = return_to_main).pack()
 ######################################################################################################################################
 
 # Menu that appears after successful vet login
 # Provides the options to update vet account info, update schedule info, or log out
 def vet_after_login_menu():
-    Label(vet_menu, text="Select Your Choice", bg="blue", width="300", height="2", font=("Calibri", 13)).pack()
+    Label(vet_menu, text="Select Your Choice", font='times 50 bold', bg='SpringGreen4', anchor=N, pady=50).pack(fill=BOTH)
+    Label(vet_menu,text="", pady=60).pack()
+    Button(vet_menu,text="Update Account Info", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command =lambda:vet_update_button_clicked()).pack()
     Label(vet_menu,text="").pack()
-    Button(vet_menu,text="Update Account Info", height="2", width="50", command =lambda:vet_update_button_clicked()).pack()
+    Button(vet_menu,text="Update Schedule Info", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = lambda:vet_update_schedule_clicked()).pack()
     Label(vet_menu,text="").pack()
-    Button(vet_menu,text="Update Schedule Info", height="2", width="50", command = lambda:vet_update_schedule_clicked()).pack()
-    Label(vet_menu,text="").pack()
-    Button(vet_menu,text="Log Out", height="2", width="30", command = return_to_main).pack()
+    Button(vet_menu,text="Log Out", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = return_to_main).pack()
 ######################################################################################################################################
 
 # Menu that appears when the registered user clicks the update account info button
@@ -380,48 +380,52 @@ def user_update_account_menu():
     global city_entry
     global state_entry
     global zip_entry
+
+    Label(user_update_info, text="", pady=60).pack()
     
-    first_name_label = Label(user_update_info, text='First Name', font=('calibre', 12, 'bold'))
-    first_name_entry = Entry(user_update_info, textvariable=first_name_var, font=('calibre', 10, 'normal'))
+    first_name_label = Label(user_update_info, text='First Name', font="times 15")
+    first_name_entry = Entry(user_update_info, font="times 20", width=20, textvariable=first_name_var)
     first_name_label.pack()
     first_name_entry.pack()
 
-    last_name_label = Label(user_update_info, text='Last Name', font=('calibre', 12, 'bold'))
-    last_name_entry = Entry(user_update_info, textvariable=last_name_var, font=('calibre', 10, 'normal'))
+    last_name_label = Label(user_update_info, text='Last Name', font="times 15")
+    last_name_entry = Entry(user_update_info, textvariable=last_name_var, font="times 20", width=20)
     last_name_label.pack()
     last_name_entry.pack()
 
-    email_label = Label(user_update_info, text='Email', font=('calibre', 12, 'bold'))
-    email_entry = Entry(user_update_info, textvariable=email_var, font=('calibre', 10, 'normal'))
+    email_label = Label(user_update_info, text='Email', font="times 15")
+    email_entry = Entry(user_update_info, textvariable=email_var, font="times 20")
     email_label.pack()
     email_entry.pack()
 
-    phone_number_label = Label(user_update_info, text='Phone Number', font=('calibre', 12, 'bold'))
-    phone_number_entry = Entry(user_update_info, textvariable=phone_number_var, font=('calibre', 10, 'normal'))
+    phone_number_label = Label(user_update_info, text='Phone Number', font="times 15")
+    phone_number_entry = Entry(user_update_info, textvariable=phone_number_var, font="times 20")
     phone_number_label.pack()
     phone_number_entry.pack()
 
-    street_address_label = Label(user_update_info, text='Street Address', font=('calibre', 12, 'bold'))
-    street_address_entry = Entry(user_update_info, textvariable=street_address_var, font=('calibre', 10, 'normal'))
+    street_address_label = Label(user_update_info, text='Street Address', font="times 15")
+    street_address_entry = Entry(user_update_info, textvariable=street_address_var, font="times 20")
     street_address_label.pack()
     street_address_entry.pack()
 
-    city_label = Label(user_update_info, text='City', font=('calibre', 12, 'bold'))
-    city_entry = Entry(user_update_info, textvariable=city_var, font=('calibre', 10, 'normal'))
+    city_label = Label(user_update_info, text='City', font="times 15")
+    city_entry = Entry(user_update_info, textvariable=city_var, font="times 20")
     city_label.pack()
     city_entry.pack()
 
-    state_label = Label(user_update_info, text='State', font=('calibre', 12, 'bold'))
-    state_entry = Entry(user_update_info, textvariable=state_var, font=('calibre', 10, 'normal'))
+    state_label = Label(user_update_info, text='State', font="times 15")
+    state_entry = Entry(user_update_info, textvariable=state_var, font="times 20")
     state_label.pack(side =TOP)
     state_entry.pack()
 
-    zip_label = Label(user_update_info, text='Zip Code', font=('calibre', 12, 'bold'))
-    zip_entry = Entry(user_update_info, textvariable=zip_var, font=('calibre', 10, 'normal'))
+    zip_label = Label(user_update_info, text='Zip Code', font="times 15")
+    zip_entry = Entry(user_update_info, textvariable=zip_var, font="times 20")
     zip_label.pack()
     zip_entry.pack()
+
+    Label(user_update_info, text="", pady=30).pack()
     
-    Button(user_update_info, text='Submit', font='50', command = user_update_account).pack()
+    Button(user_update_info, text='Submit', width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = user_update_account).pack()
 
 # Takes inputs from user_update_account_menu() and finds user's LoginID from the UserLoginInfo table
 # to update the correct records in the UserAccountInfo table
