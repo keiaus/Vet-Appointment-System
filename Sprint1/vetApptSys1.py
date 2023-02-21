@@ -7,6 +7,18 @@ connection = pyodbc.connect('DRIVER={SQL Server};PORT=1433;SERVER=database-1.ci7
 cursor = connection.cursor()
 
 # Used to show each frame as the menu is interacted with
+def vetapp():
+    vet_update_schedule_menu()
+    vet_update_account_menu()
+    user_update_account_menu()
+    user_register()
+    user_login()
+    user_after_login_menu()
+    vet_login()
+    vet_after_login_menu()
+    show_frame(account_page)
+
+# Used to show each frame as the menu is interacted with
 def show_frame(frame):
     frame.tkraise()
 
@@ -14,55 +26,47 @@ def show_frame(frame):
 def vet_update_schedule_clicked():
     window.title("Update Schedule")
     show_frame(vet_update_schedule)
-    return vet_update_schedule_menu()
 
 # Opens the update account menu on click (for vets)
 def vet_update_button_clicked():
     window.title("Update Account")
     show_frame(vet_update_info)
-    return vet_update_account_menu()
 
 # Opens the update account menu on click (for users)
 def user_update_button_clicked():
     window.title("Update Account")
     show_frame(user_update_info)
-    return user_update_account_menu()
 
 # Opens the account creation menu on click (on base menu frame)
 def account_creation_clicked():
     window.title("Create Your Account")
     show_frame(account_create)
-    return user_register()  
 
 # Opens the login menu on click (on base menu frame)
 def user_log_in_clicked():
     window.title("User Log In")
     show_frame(user_log_in)
-    return user_login()
 
 # Opens the user menu after successful login (users)
 def user_menu_launch():
     window.title("User Menu")
     show_frame(user_menu)
-    return user_after_login_menu()
 
 # Opens the vet login menu on click (vets)
 def vet_log_in_clicked():
     window.title("Vet Log In")
     show_frame(vet_log_in)
-    return vet_login()
 
 # Opens the vet menu after login (vets)
 def vet_menu_launch():
     window.title("Vet Menu")
     show_frame(vet_menu)
-    return vet_after_login_menu()
 
 # Returns to the base account page on click
 def return_to_main():
     window.title("Home")
     show_frame(account_page)
-
+    
 # Closes the menu
 def close_clicked():
     window.destroy()
@@ -109,6 +113,7 @@ close_button.pack(pady=15, side=TOP)
 
 # User registration menu
 def user_register():
+
     global username
     global password
     global username_entry
@@ -131,7 +136,6 @@ def user_register():
     Label(account_create, text="").pack()
     Button(account_create, text="Return to Main Menu", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = return_to_main).pack()
 
-        
 # Registered user login menu
 def register_user():
  
@@ -651,6 +655,5 @@ def vet_update_schedule_info():
 ###########################################################################################################################################################################
 
 # Main window on program start (loops until closed)
-show_frame(account_page)
+vetapp()
 window.mainloop()
-
