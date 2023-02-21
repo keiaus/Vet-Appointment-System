@@ -1,3 +1,2 @@
-# Veterinarian-Appointment-System
-This system is used to manage appointments and keep track of animal
-history.
+# Vet-Appointment-System
+This system can be used to book appointments for your pet.
