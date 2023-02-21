@@ -125,8 +125,13 @@ def user_register():
     password_entry = Entry(account_create, font='times 30', textvariable=password, show='*')
     password_entry.pack()
     Label(account_create, text="").pack()
-    Button(account_create, text="Register", width=10, height=1, font='times 20', bd=20, bg='SpringGreen4', command = register_user).pack()
+    Button(account_create, text="Register", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = register_user).pack()
+    Button(account_create, text="Return to Main Menu", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = return_to_main).pack()
 
+    counter = 0
+
+    if counter == 0:
+        
 # Registered user login menu
 def register_user():
  
