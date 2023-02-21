@@ -1,10 +1,73 @@
-from tkinter import *
-import tkinter as tk
-import pyodbc
+from tkinter import * #gui import
+import tkinter as tk # gui import
+import pyodbc # necessary for aws rds sql server connection
 
+#Connection to AWS RDS SQL Server (required to run properly)
 connection = pyodbc.connect('DRIVER={SQL Server};PORT=1433;SERVER=database-1.ci7iawyx7c5x.us-east-1.rds.amazonaws.com;DATABASE=VetAppointmentSystem;UID=Arthur;PWD=123;')
 cursor = connection.cursor()
 
+# Used to show each frame as the menu is interacted with
+def show_frame(frame):
+    frame.tkraise()
+
+# Opens the update schedule menu on click (for vets)
+def vet_update_schedule_clicked():
+    window.title("Update Schedule")
+    show_frame(vet_update_schedule)
+    return vet_update_schedule_menu()
+
+# Opens the update account menu on click (for vets)
+def vet_update_button_clicked():
+    window.title("Update Account")
+    show_frame(vet_update_info)
+    return vet_update_account_menu()
+
+# Opens the update account menu on click (for users)
+def user_update_button_clicked():
+    window.title("Update Account")
+    show_frame(user_update_info)
+    return user_update_account_menu()
+
+# Opens the account creation menu on click (on base menu frame)
+def account_creation_clicked():
+    window.title("Create Your Account")
+    show_frame(account_create)
+    return user_register()  
+
+# Opens the login menu on click (on base menu frame)
+def user_log_in_clicked():
+    window.title("User Log In")
+    show_frame(user_log_in)
+    return user_login()
+
+# Opens the user menu after successful login (users)
+def user_menu_launch():
+    window.title("User Menu")
+    show_frame(user_menu)
+    return user_after_login_menu()
+
+# Opens the vet login menu on click (vets)
+def vet_log_in_clicked():
+    window.title("Vet Log In")
+    show_frame(vet_log_in)
+    return vet_login()
+
+# Opens the vet menu after login (vets)
+def vet_menu_launch():
+    window.title("Vet Menu")
+    show_frame(vet_menu)
+    return vet_after_login_menu()
+
+# Returns to the base account page on click
+def return_to_main():
+    window.title("home")
+    show_frame(account_page)
+
+# Closes the menu
+def close_clicked():
+    window.destroy()
+
+# Program window configuration
 window = Tk()
 window.state('zoomed')
 window.title("Home")
@@ -22,267 +85,81 @@ vet_menu = Frame(window)
 vet_update_info = Frame(window)
 vet_update_schedule = Frame(window)
 
-def show_frame(frame):
-    frame.tkraise()
-
-def vet_update_schedule_clicked():
-    window.title("Update Schedule")
-    show_frame(vet_update_schedule)
-    return vet_update_schedule_menu()
-
-def vet_update_button_clicked():
-    window.title("Update Account")
-    show_frame(vet_update_info)
-    return vet_update_account_menu()
-
-def user_update_button_clicked():
-    window.title("Update Account")
-    show_frame(user_update_info)
-    return user_update_account_menu()
-    
-def account_creation_clicked():
-    window.title("Create Account")
-    show_frame(account_create)
-    return user_register()  
-
-def user_log_in_clicked():
-    window.title("User Log In")
-    show_frame(user_log_in)
-    return user_login()
-
-def user_menu_launch():
-    window.title("User Menu")
-    show_frame(user_menu)
-    return user_after_login_menu()
-
-def vet_log_in_clicked():
-    window.title("Vet Log In")
-    show_frame(vet_log_in)
-    return vet_login()
-
-def vet_menu_launch():
-    window.title("Vet Menu")
-    show_frame(vet_menu)
-    return vet_after_login_menu()
-
-def return_to_main():
-    window.title("Home")
-    show_frame(account_page)
-    
-def close_clicked():
-    window.destroy()
-
 for frame in (account_page, account_create, user_log_in, user_menu, user_update_info, vet_log_in, vet_menu, vet_update_info, vet_update_schedule):
     frame.grid(row=0, column=0, sticky='nsew')
 
-# DONT FUCKING TOUCH
-account_page_header = Label(account_page, text='Vet Appointment System', font=("times 50"), anchor=N, bg="SpringGreen4", pady=50)
+# **Don't touch**
+# Main window on program start
+account_page_header = Label(account_page, text='Vet Appointment System', font='times 50', anchor=N, pady=50)
 account_page_header.pack(fill='both')
 
-create_button = Button(account_page, text='Create Account', font='times 30', command=lambda:account_creation_clicked())
+create_button = Button(account_page, text='Create Account', font='times 15', command=lambda:account_creation_clicked())
 create_button.pack(pady=15, side=TOP)
 
-user_log_button = Button(account_page, text='User Log In', font='times 30', command=lambda:user_log_in_clicked())
+user_log_button = Button(account_page, text='User Log In', font='times 15', command=lambda:user_log_in_clicked())
 user_log_button.pack(pady=15, side=TOP)
 
-vet_log_button = Button(account_page, text='Vet Log In', font='times 30', command=lambda:vet_log_in_clicked())
+vet_log_button = Button(account_page, text='Vet Log In', font='times 15', command=lambda:vet_log_in_clicked())
 vet_log_button.pack(pady=15, side=TOP)
 
-close_button = Button(account_page, text='Close System', font='times 30', command=lambda:close_clicked())
+close_button = Button(account_page, text='Close System', font='times 15', command=lambda:close_clicked())
 close_button.pack(pady=15, side=TOP)
 
-# ACCOUNT CREATION
+# User registration menu
 def user_register():
-
-    global user_name_var
-    user_name_var = StringVar()
-    global user_name_entry
-    global first_name_var
-    first_name_var = StringVar()
-    global first_name_entry
-    global last_name_var
-    last_name_var = StringVar()
-    global last_name_entry
-    global email_var
-    email_var = StringVar()
-    global email_entry
-    global phone_number_var
-    phone_number_var = StringVar()
-    global phone_number_entry
-    global street_address_var
-    street_address_var = StringVar()
-    global street_address_entry
-    global city_var
-    city_var = StringVar()
-    global city_entry
-    global state_var
-    state_var = StringVar()
-    global state_entry
-    global zip_var 
-    zip_var = StringVar()
-    global zip_entry
-    global password1_var
-    password1_var = StringVar()
-    global password1_entry
-    global password2_var
-    password2_var = StringVar()
-    global password2_entry
-    # global username
-    # global password
-    # global username_entry
-    # global password_entry 
-    # username = StringVar()
-    # password = StringVar()
+    global username
+    global password
+    global username_entry
+    global password_entry 
+    username = StringVar()
+    password = StringVar()
  
-    # Label(account_create, text="Please enter details below", bg="blue").pack()
-    # Label(account_create, text="").pack()
-    # username_lable = Label(account_create, text="Username * ")
-    # username_lable.pack()
-    # username_entry = Entry(account_create, textvariable=username)
-    # username_entry.pack()
-    # password_lable = Label(account_create, text="Password * ")
-    # password_lable.pack()
-    # password_entry = Entry(account_create, textvariable=password, show='*')
-    # password_entry.pack()
-    # Label(account_create, text="").pack()
-    # Button(account_create, text="Register", width=10, height=1, bg="blue", command = register_user).pack()
+    Label(account_create, text="Please enter details below", bg="blue").pack()
+    Label(account_create, text="").pack()
+    username_lable = Label(account_create, text="Username * ")
+    username_lable.pack()
+    username_entry = Entry(account_create, textvariable=username)
+    username_entry.pack()
+    password_lable = Label(account_create, text="Password * ")
+    password_lable.pack()
+    password_entry = Entry(account_create, textvariable=password, show='*')
+    password_entry.pack()
+    Label(account_create, text="").pack()
+    Button(account_create, text="Register", width=10, height=1, bg="blue", command = register_user).pack()
 
-    header = Label(account_create, text="Create Your Account", font=('Arial', 25))
-    header.pack(padx=0, pady=20)
-
-    first_name_label = Label(account_create, text='First Name', font=('calibre', 12, 'bold'))
-    first_name_entry = Entry(account_create, textvariable=first_name_var, font=('calibre', 10, 'normal'))
-    first_name_label.pack(padx=5, pady=5, side=tk.TOP, anchor=N)
-    first_name_entry.pack(padx=5, pady=5, side=tk.TOP, anchor=N, ipadx=30)
-
-    last_name_label = Label(account_create, text='Last Name', font=('calibre', 12, 'bold'))
-    last_name_entry = Entry(account_create, textvariable=last_name_var, font=('calibre', 10, 'normal'))
-    last_name_label.pack(padx=5, pady=5, side=tk.TOP, anchor=N)
-    last_name_entry.pack(padx=5, pady=5, side=tk.TOP, anchor=N, ipadx=30)
-
-    user_name_label = Label(account_create, text='Username', font=('calibre', 12, 'bold'))
-    user_name_entry = Entry(account_create, textvariable=user_name_var, font=('calibre', 10, 'normal'))
-    user_name_label.pack(padx=5, pady=5, side=tk.TOP, anchor=N)
-    user_name_entry.pack(padx=5, pady=5, side=tk.TOP, anchor=N, ipadx=30)
-
-    email_label = Label(account_create, text='Email', font=('calibre', 12, 'bold'))
-    email_entry = Entry(account_create, textvariable=email_var, font=('calibre', 10, 'normal'))
-    email_label.pack(padx=5, pady=5, side=tk.TOP, anchor=N)
-    email_entry.pack(padx=5, pady=5, side=tk.TOP, anchor=N, ipadx=30)
-
-    phone_number_label = Label(account_create, text='Phone Number', font=('calibre', 12, 'bold'))
-    phone_number_entry = Entry(account_create, textvariable=phone_number_var, font=('calibre', 10, 'normal'))
-    phone_number_label.pack(padx=5, pady=5, side=tk.TOP, anchor=N)
-    phone_number_entry.pack(padx=5, pady=5, side=tk.TOP, anchor=N, ipadx=30)
-
-    street_address_label = Label(account_create, text='Street Address', font=('calibre', 12, 'bold'))
-    street_address_entry = Entry(account_create, textvariable=street_address_var, font=('calibre', 10, 'normal'))
-    street_address_label.pack(padx=5, pady=5, side=tk.TOP, anchor=N)
-    street_address_entry.pack(padx=5, pady=5, side=tk.TOP, anchor=N, ipadx=30)
-
-    city_label = Label(account_create, text='City', font=('calibre', 12, 'bold'))
-    city_entry = Entry(account_create, textvariable=city_var, font=('calibre', 10, 'normal'))
-    city_label.pack(padx=5, pady=5, side=tk.TOP, anchor=N)
-    city_entry.pack(padx=5, pady=5, side=tk.TOP, anchor=N, ipadx=30)
-
-    state_label = Label(account_create, text='State', font=('calibre', 12, 'bold'))
-    state_entry = Entry(account_create, textvariable=state_var, font=('calibre', 10, 'normal'))
-    state_label.pack(padx=5, pady=5, side=tk.TOP, anchor=N)
-    state_entry.pack(padx=5, pady=5, side=tk.TOP, anchor=N, ipadx=30)
-
-    zip_label = Label(account_create, text='Zip Code', font=('calibre', 12, 'bold'))
-    zip_entry = Entry(account_create, textvariable=zip_var, font=('calibre', 10, 'normal'))
-    zip_label.pack(padx=5, pady=5, side=tk.TOP, anchor=N)
-    zip_entry.pack(padx=5, pady=5, side=tk.TOP, anchor=N, ipadx=30)
-
-    password1_label = Label(account_create, text='Password', font=('calibre', 12, 'bold'))
-    password1_entry = Entry(account_create, textvariable=password1_var, font=('calibre', 10, 'normal'), show='*')
-    password1_label.pack(padx=5, pady=5, side=tk.TOP, anchor=N)
-    password1_entry.pack(padx=5, pady=5, side=tk.TOP, anchor=N, ipadx=30)
-
-    password2_label = Label(account_create, text='Confirm Password', font=('calibre', 12, 'bold'))
-    password2_entry = Entry(account_create, textvariable=password2_var, font=('calibre', 10, 'normal'), show='*')
-    password2_label.pack(padx=5, pady=5, side=tk.TOP, anchor=N)
-    password2_entry.pack(padx=5, pady=5, side=tk.TOP, anchor=N, ipadx=30)
-
-    btn = Button(account_create, text="Sign Up", bd=7, command=register_user, font='Helevetica')
-    btn.pack(pady=40)
-
+# Registered user login menu
 def register_user():
-
-    global user_login_id
-    user_login_id = None
-
-    first_name_info = first_name_entry.get()
-    last_name_info = last_name_entry.get()
-    user_name_info = user_name_entry.get()
-    email_info = email_entry.get()
-    phone_number_info = phone_number_entry.get()
-    street_address_info = street_address_entry.get()
-    city_info = city_entry.get()
-    state_info = state_entry.get()
-    zip_info = zip_entry.get()
-    password1_info = password1_entry.get()
-    password2_info = password2_entry.get()
-
-    # This checks if any fields are missing values
-    if (not first_name_info or not last_name_info or not user_name_info or not email_info 
-    or not phone_number_info or not street_address_info or not city_info or not state_info 
-    or not zip_info or not password1_info or not password2_info):
-        invalid_field_message = Message(account_create, text="Please fill in all required fields", fg='#ff1944', font="times 20")
-        invalid_field_message.pack()
+ 
+    global user_login_ID 
+    username_info = username.get()
+    password_info = password.get()
     
-    elif password1_info != password2_info:
-        invalid_password_message = Message(account_create, text="Passwords don't match", fg='#ff1944', font="times 20", anchor=E)
-        invalid_password_message.pack()
-        
+    user_login_ID = None
+    if(username_info == "" or password_info == ""):
+        username_entry.delete(0, END)
+        password_entry.delete(0, END)
+        empty_login_info()
     else:
-        cursor.execute("select UserLoginID from UserLoginInfo where UserUserName = ? and ")
-        cursor.execute("insert into UserAccountInfo values (?, ?, ?, ?, ?, ?, ?, ?)", 
-        first_name_info, last_name_info, phone_number_info, email_info, street_address_info, 
-        city_info, state_info, zip_info)
-        cursor.commit()
-        registered_message = Message(account_create, text="Registered Successfully", fg="#32CD32", font="times 20", anchor=S)
-        registered_message.pack()
+        cursor.execute("SELECT UserLoginID FROM UserLoginInfo WHERE UserUserName = ? AND UserPassword = ?", username_info, password_info)
+        user_login_ID = cursor.fetchone()
+        if(user_login_ID == None):
+            cursor.execute("INSERT INTO UserLoginInfo VALUES(?,?)", username_info, password_info)
+            cursor.execute("SELECT UserLoginID FROM UserLoginInfo WHERE UserUserName = ? AND UserPassword = ?", username_info, password_info)
+            user_login_ID = cursor.fetchone() 
+            cursor.execute("INSERT INTO UserAccountInfo(UserLoginID) VALUES(?)", user_login_ID)
+            cursor.commit()
     
-    # return account_creation_clicked()
-    
-    # else:
-        # cursor.execute("insert into UserAccountInfo values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
-        # first_name_info, last_name_info, user_name_info, email_info, phone_number_info, street_address_info, 
-        # city_info, state_info, zip_info, password2_info)
-
-# def register_user():
+            username_entry.delete(0, END)
+            password_entry.delete(0, END)
  
-    # global user_login_ID 
-    # username_info = user_name_var.get()
-    # password_info = password.get()
-    
-#     user_login_ID = None
-#     if(username_info == "" or password_info == ""):
-#         username_entry.delete(0, END)
-#         password_entry.delete(0, END)
-#         empty_login_info()
-#     else:
-#         cursor.execute("SELECT UserLoginID FROM UserLoginInfo WHERE UserUserName = ? AND UserPassword = ?", username_info, password_info)
-#         user_login_ID = cursor.fetchone()
-#         if(user_login_ID == None):
-#             cursor.execute("INSERT INTO UserLoginInfo VALUES(?,?)", username_info, password_info)
-#             cursor.execute("SELECT UserLoginID FROM UserLoginInfo WHERE UserUserName = ? AND UserPassword = ?", username_info, password_info)
-#             user_login_ID = cursor.fetchone() 
-#             cursor.execute("INSERT INTO UserAccountInfo(UserLoginID) VALUES(?)", user_login_ID)
-#             cursor.commit()
-    
-#             username_entry.delete(0, END)
-#             password_entry.delete(0, END)
- 
-#             Label(account_create, text="Registration Success", fg="green", font=("calibri", 11)).pack()
-#             Button(account_create, text="Return to Main Menu", command=return_to_main).pack()   
-#         else:
-#             username_entry.delete(0, END)
-#             password_entry.delete(0, END)
-#             username_taken()
+            Label(account_create, text="Registration Success", fg="green", font=("calibri", 11)).pack()
+            Button(account_create, text="Return to Main Menu", command=return_to_main).pack()   
+        else:
+            username_entry.delete(0, END)
+            password_entry.delete(0, END)
+            username_taken()
 
+# Tells the user that the username they're trying to register with was taken
 def username_taken():
     global username_taken_screen
     username_taken_screen = Toplevel(window)
@@ -291,9 +168,11 @@ def username_taken():
     Label(username_taken_screen, text="Username is already taken").pack()
     Button(username_taken_screen, text="OK", command=delete_username_taken).pack()
 
+# Closes the username_taken() pop-up
 def delete_username_taken():
     username_taken_screen.destroy()
-    
+
+# Tells the user that a required field was empty
 def empty_login_info():
     global empty_login_info_screen
     empty_login_info_screen = Toplevel(window)
@@ -302,11 +181,12 @@ def empty_login_info():
     Label(empty_login_info_screen, text="A field was empty, please try again.").pack()
     Button(empty_login_info_screen, text="OK", command=delete_empty_login_info).pack()    
 
+# Closes the empty_login_info() pop-up on click
 def delete_empty_login_info():
     empty_login_info_screen.destroy()
 ###########################################################################################################################
 
-#USER LOG IN
+# Registered user login (prompts the user to enter their login info, passes info to user_login_verify for verification)
 def user_login():
     Label(user_log_in, text="Please enter details below to login").pack()
     Label(user_log_in, text="").pack()
@@ -330,6 +210,7 @@ def user_login():
     Label(user_log_in, text="").pack()
     Button(user_log_in, text="Login", width=10, height=1, command = user_login_verify).pack()
 
+# User login verification (checks that the entered user information matches a record in the UserLoginInfo table)
 def user_login_verify():
     global username1
     global password1
@@ -359,7 +240,8 @@ def user_login_verify():
 
 # def delete_user_login_success():
 #     login_success_screen.destroy()
- 
+
+# Tells the user that their login was invalid (whatever they entered didn't match anything in the UserLoginInfo table)
 def user_invalid_login():
     global invalid_login_screen
     invalid_login_screen = Toplevel(window)
@@ -368,11 +250,12 @@ def user_invalid_login():
     Label(invalid_login_screen, text="Invalid Login ").pack()
     Button(invalid_login_screen, text="OK", command=delete_user_invalid_login).pack()
 
+# Removes the user_invalid_login() pop-up on click
 def delete_user_invalid_login():
     invalid_login_screen.destroy()
 ###################################################################################################################################################
 
-#VET LOGIN
+# Veterinarian login (prompts user to enter their login info, passes info to vet_login_verify for verification)
 def vet_login():
     Label(vet_log_in, text="Please enter details below to login").pack()
     Label(vet_log_in, text="").pack()
@@ -396,6 +279,7 @@ def vet_login():
     Label(vet_log_in, text="").pack()
     Button(vet_log_in, text="Login", width=10, height=1, command = vet_login_verify).pack()
 
+# Vet login verification (checks that the entered vet information matches a record in VetLoginInfo table)
 def vet_login_verify():
     global username2
     global password2
@@ -425,7 +309,8 @@ def vet_login_verify():
 
 # def delete_vet_login_success():
 #     login_success_screen.destroy()
- 
+
+# Tells the vet that their login was invalid (whatever they entered didn't match anything in the VetLoginInfo table)
 def vet_invalid_login():
     global invalid_login_screen
     invalid_login_screen = Toplevel(window)
@@ -434,11 +319,13 @@ def vet_invalid_login():
     Label(invalid_login_screen, text="Invalid Login ").pack()
     Button(invalid_login_screen, text="OK", command=delete_vet_invalid_login).pack()
 
+# Removes the vet_invalid_login() pop-up on click
 def delete_vet_invalid_login():
     invalid_login_screen.destroy()
 ######################################################################################################################################
 
-#USER SUB MENU
+# Menu that appears after successful user login
+# Provides the options to update account info or log out
 def user_after_login_menu():
     Label(user_menu, text="Select Your Choice", bg="blue", width="300", height="2", font=("Calibri", 13)).pack()
     Label(user_menu, text="").pack()
@@ -447,8 +334,8 @@ def user_after_login_menu():
     Button(user_menu, text="Log Out", height="2", width="30", command = return_to_main).pack()
 ######################################################################################################################################
 
-#VET SUB MENU
-
+# Menu that appears after successful vet login
+# Provides the options to update vet account info, update schedule info, or log out
 def vet_after_login_menu():
     Label(vet_menu, text="Select Your Choice", bg="blue", width="300", height="2", font=("Calibri", 13)).pack()
     Label(vet_menu,text="").pack()
@@ -459,7 +346,8 @@ def vet_after_login_menu():
     Button(vet_menu,text="Log Out", height="2", width="30", command = return_to_main).pack()
 ######################################################################################################################################
 
-#USER UPDATE ACCOUNT
+# Menu that appears when the registered user clicks the update account info button
+# Takes in user's inputs and sends it to the user_update_account() function for processing
 def user_update_account_menu():
     
     global user_id
@@ -529,7 +417,9 @@ def user_update_account_menu():
     zip_entry.pack()
     
     Button(user_update_info, text='Submit', font='50', command = user_update_account).pack()
-    
+
+# Takes inputs from user_update_account_menu() and finds user's LoginID from the UserLoginInfo table
+# to update the correct records in the UserAccountInfo table
 def user_update_account():
     first_name_var = first_name_entry.get()
     last_name_var = last_name_entry.get()
@@ -558,7 +448,8 @@ def user_update_account():
 
 ##################################################################################################################################################
 
-#VET UPDATE MENU
+# Menu that appears when the vet clicks the update account info button
+# Takes in vet's inputs and sends it to the vet_update_account() function for processing
 def vet_update_account_menu():
     
     global vet_id
@@ -629,7 +520,9 @@ def vet_update_account_menu():
     vet_zip_entry.pack()
     
     Button(vet_update_info, text='Submit', font='50', command = vet_update_account).pack()
-    
+
+# Takes inputs from vet_update_account_menu() and finds vet's LoginID from the VetLoginInfo table
+# to update the correct records in the VetAccountInfo table
 def vet_update_account():
     vet_first_name_var = vet_first_name_entry.get()
     vet_last_name_var = vet_last_name_entry.get()
@@ -657,8 +550,8 @@ def vet_update_account():
     Button(vet_update_info, text="Return to User Menu", width=25, height=1, command = vet_menu_launch).pack()
 ##################################################################################################################################################
 
-#VET UPDATE SCHEDULE
-
+# Menu that appears when the vet clicks the update schedule button
+# Takes in vet's inputs for processing in vet_update_schedule_info()
 def vet_update_schedule_menu():
    global monday 
    monday= StringVar()
@@ -720,6 +613,8 @@ def vet_update_schedule_menu():
 
    Button(vet_update_schedule, text='Submit', font='50', command = vet_update_schedule_info).pack()
 
+# Takes inputs from vet_update_schedule_menu() and finds vet's LoginID from the VetLoginInfo table
+# to update the correct records in the VetScheduleInfo table
 def vet_update_schedule_info():
     monday = monday_entry.get()
     tuesday = tuesday_entry.get()
@@ -746,7 +641,7 @@ def vet_update_schedule_info():
 
 ###########################################################################################################################################################################
 
-
+# Main window on program start (loops until closed)
 show_frame(account_page)
 window.mainloop()
 
