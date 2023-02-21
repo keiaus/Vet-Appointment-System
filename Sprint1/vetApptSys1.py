@@ -60,7 +60,7 @@ def vet_menu_launch():
 
 # Returns to the base account page on click
 def return_to_main():
-    window.title("home")
+    window.title("Home")
     show_frame(account_page)
 
 # Closes the menu
@@ -93,16 +93,18 @@ for frame in (account_page, account_create, user_log_in, user_menu, user_update_
 account_page_header = Label(account_page, text='Vet Appointment System', font='times 50 bold', bg='SpringGreen4', anchor=N, pady=50)
 account_page_header.pack(fill='both')
 
-create_button = Button(account_page, text='Create Account', font='times 30', command=lambda:account_creation_clicked())
+Label(account_page, text="", pady=60).pack()
+
+create_button = Button(account_page, text='Create Account', bd=20, width=20, font='times 30', command=lambda:account_creation_clicked())
 create_button.pack(pady=15, side=TOP)
 
-user_log_button = Button(account_page, text='User Log In', font='times 30', command=lambda:user_log_in_clicked())
+user_log_button = Button(account_page, text='User Log In', bd=20, width=20, font='times 30', command=lambda:user_log_in_clicked())
 user_log_button.pack(pady=15, side=TOP)
 
-vet_log_button = Button(account_page, text='Vet Log In', font='times 30', command=lambda:vet_log_in_clicked())
+vet_log_button = Button(account_page, text='Vet Log In', bd=20, width=20, font='times 30', command=lambda:vet_log_in_clicked())
 vet_log_button.pack(pady=15, side=TOP)
 
-close_button = Button(account_page, text='Close System', font='times 30', command=lambda:close_clicked())
+close_button = Button(account_page, text='Close System', bd=20, width=20, font='times 30', command=lambda:close_clicked())
 close_button.pack(pady=15, side=TOP)
 
 # User registration menu
@@ -124,13 +126,11 @@ def user_register():
     password_lable.pack()
     password_entry = Entry(account_create, font='times 30', textvariable=password, show='*')
     password_entry.pack()
-    Label(account_create, text="").pack()
+    Label(account_create, text="", pady=60).pack()
     Button(account_create, text="Register", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = register_user).pack()
+    Label(account_create, text="").pack()
     Button(account_create, text="Return to Main Menu", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = return_to_main).pack()
 
-    counter = 0
-
-    if counter == 0:
         
 # Registered user login menu
 def register_user():
