@@ -2,12 +2,14 @@ from tkinter import * #gui import
 import tkinter as tk # gui import
 import pyodbc # necessary for aws rds sql server connection
 
+
 #Connection to AWS RDS SQL Server (required to run properly)
 connection = pyodbc.connect('DRIVER={SQL Server};PORT=1433;SERVER=database-1.ci7iawyx7c5x.us-east-1.rds.amazonaws.com;DATABASE=VetAppointmentSystem;UID=Arthur;PWD=123;')
 cursor = connection.cursor()
 
 # Used to show each frame as the menu is interacted with
 def vetapp():
+    create_vetapp()
     vet_update_schedule_menu()
     vet_update_account_menu()
     user_update_account_menu()
@@ -50,7 +52,12 @@ def user_log_in_clicked():
 # Opens the user menu after successful login (users)
 def user_menu_launch():
     window.title("User Menu")
-    show_frame(user_menu)
+    if(isinstance(label,Label)):
+        label.destroy()
+        show_frame(user_menu)
+    else:
+        show_frame(user_menu)
+  
 
 # Opens the vet login menu on click (vets)
 def vet_log_in_clicked():
@@ -60,12 +67,20 @@ def vet_log_in_clicked():
 # Opens the vet menu after login (vets)
 def vet_menu_launch():
     window.title("Vet Menu")
-    show_frame(vet_menu)
+    if(isinstance(label,Label)):
+        label.destroy()
+        show_frame(vet_menu)
+    else:
+        show_frame(vet_menu)
 
 # Returns to the base account page on click
 def return_to_main():
     window.title("Home")
-    show_frame(account_page)
+    if(isinstance(label,Label)):
+        label.destroy()
+        show_frame(account_page)
+    else:
+        show_frame(account_page)
     
 # Closes the menu
 def close_clicked():
@@ -92,28 +107,30 @@ vet_update_schedule = Frame(window)
 for frame in (account_page, account_create, user_log_in, user_menu, user_update_info, vet_log_in, vet_menu, vet_update_info, vet_update_schedule):
     frame.grid(row=0, column=0, sticky='nsew')
 
+global label
+label = None
 # **Don't touch**
 # Main window on program start
-account_page_header = Label(account_page, text='Vet Appointment System', font='times 50 bold', bg='SpringGreen4', anchor=N, pady=50)
-account_page_header.pack(fill='both')
+def create_vetapp():
+    account_page_header = Label(account_page, text='Vet Appointment System', font='times 50 bold', bg='SpringGreen4', anchor=N, pady=50)
+    account_page_header.pack(fill='both')
 
-Label(account_page, text="", pady=60).pack()
+    Label(account_page, text="", pady=60).pack()
 
-create_button = Button(account_page, text='Create Account', bd=20, bg="SpringGreen4", width=20, font='times 30', command=lambda:account_creation_clicked())
-create_button.pack(pady=15, side=TOP)
+    create_button = Button(account_page, text='Create Account', bd=20, bg="SpringGreen4", width=20, font='times 30', command=lambda:account_creation_clicked())
+    create_button.pack(pady=15, side=TOP)
 
-user_log_button = Button(account_page, text='User Log In', bd=20, bg="SpringGreen4", width=20, font='times 30', command=lambda:user_log_in_clicked())
-user_log_button.pack(pady=15, side=TOP)
+    user_log_button = Button(account_page, text='User Log In', bd=20, bg="SpringGreen4", width=20, font='times 30', command=lambda:user_log_in_clicked())
+    user_log_button.pack(pady=15, side=TOP)
 
-vet_log_button = Button(account_page, text='Vet Log In', bd=20, bg="SpringGreen4", width=20, font='times 30', command=lambda:vet_log_in_clicked())
-vet_log_button.pack(pady=15, side=TOP)
+    vet_log_button = Button(account_page, text='Vet Log In', bd=20, bg="SpringGreen4", width=20, font='times 30', command=lambda:vet_log_in_clicked())
+    vet_log_button.pack(pady=15, side=TOP)
 
-close_button = Button(account_page, text='Close System', bd=20, bg="SpringGreen4", width=20, font='times 30', command=lambda:close_clicked())
-close_button.pack(pady=15, side=TOP)
+    close_button = Button(account_page, text='Close System', bd=20, bg="SpringGreen4", width=20, font='times 30', command=lambda:close_clicked())
+    close_button.pack(pady=15, side=TOP)
 
 # User registration menu
 def user_register():
-
     global username
     global password
     global username_entry
@@ -138,7 +155,7 @@ def user_register():
 
 # Registered user login menu
 def register_user():
- 
+    global label
     global user_login_ID 
     username_info = username.get()
     password_info = password.get()
@@ -161,8 +178,8 @@ def register_user():
             username_entry.delete(0, END)
             password_entry.delete(0, END)
  
-            Label(account_create, text="Registration Success", fg="green", font=("calibri", 11)).pack()
-            Button(account_create, text="Return to Main Menu", command=return_to_main).pack()   
+            label = Label(account_create, text="Registration Successful", fg="green", font="times 20")
+            label.pack() 
         else:
             username_entry.delete(0, END)
             password_entry.delete(0, END)
@@ -223,6 +240,7 @@ def user_login():
 
 # User login verification (checks that the entered user information matches a record in the UserLoginInfo table)
 def user_login_verify():
+    global label
     global username1
     global password1
     username1 = username_verify.get()
@@ -237,7 +255,6 @@ def user_login_verify():
         user_login_ID = cursor.fetchone()
         if(user_login_ID != None):
             user_menu_launch()
-            #USER SUB MENU REPLACES THE SUCCESS MESSAGE
         else:
             user_invalid_login()
 
@@ -294,6 +311,7 @@ def vet_login():
 
 # Vet login verification (checks that the entered vet information matches a record in VetLoginInfo table)
 def vet_login_verify():
+    global label
     global username2
     global password2
     username2 = vet_username_verify.get()
@@ -362,7 +380,6 @@ def vet_after_login_menu():
 # Menu that appears when the registered user clicks the update account info button
 # Takes in user's inputs and sends it to the user_update_account() function for processing
 def user_update_account_menu():
-    
     global user_id
     global first_name_var 
     first_name_var= StringVar()
@@ -434,10 +451,12 @@ def user_update_account_menu():
     Label(user_update_info, text="", pady=30).pack()
     
     Button(user_update_info, text='Submit', width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = user_update_account).pack()
+    Button(user_update_info, text="Return to User Menu", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = user_menu_launch).pack()
 
 # Takes inputs from user_update_account_menu() and finds user's LoginID from the UserLoginInfo table
 # to update the correct records in the UserAccountInfo table
 def user_update_account():
+    global label
     first_name_var = first_name_entry.get()
     last_name_var = last_name_entry.get()
     email_var = email_entry.get()
@@ -460,8 +479,9 @@ def user_update_account():
     city_entry.delete(0,END)
     state_entry.delete(0,END)
     zip_entry.delete(0,END)
-    Label(user_update_info, text="Update Successful", fg="green", font=("calibri", 11)).pack()
-    Button(user_update_info, text="Return to User Menu", width=25, height=1, command = user_menu_launch).pack()
+    label = Label(user_update_info, text="Update Successful", fg="green", font="times 20")
+    label.pack()
+
 
 ##################################################################################################################################################
 
@@ -495,52 +515,56 @@ def vet_update_account_menu():
     global vet_state_entry
     global vet_zip_entry
     
-    vet_first_name_label = Label(vet_update_info, text='First Name', font=('calibre', 12, 'bold'))
-    vet_first_name_entry = Entry(vet_update_info, textvariable=vet_first_name_var, font=('calibre', 10, 'normal'))
+    vet_first_name_label = Label(vet_update_info, text='First Name', font="times 15")
+    vet_first_name_entry = Entry(vet_update_info, textvariable=vet_first_name_var, font="times 20")
     vet_first_name_label.pack()
     vet_first_name_entry.pack()
 
-    vet_last_name_label = Label(vet_update_info, text='Last Name', font=('calibre', 12, 'bold'))
-    vet_last_name_entry = Entry(vet_update_info, textvariable=vet_last_name_var, font=('calibre', 10, 'normal'))
+    vet_last_name_label = Label(vet_update_info, text='Last Name', font="times 15")
+    vet_last_name_entry = Entry(vet_update_info, textvariable=vet_last_name_var, font="times 20")
     vet_last_name_label.pack()
     vet_last_name_entry.pack()
 
-    vet_email_label = Label(vet_update_info, text='Email', font=('calibre', 12, 'bold'))
-    vet_email_entry = Entry(vet_update_info, textvariable=vet_email_var, font=('calibre', 10, 'normal'))
+    vet_email_label = Label(vet_update_info, text='Email', font="times 15")
+    vet_email_entry = Entry(vet_update_info, textvariable=vet_email_var, font="times 20")
     vet_email_label.pack()
     vet_email_entry.pack()
 
-    vet_phone_number_label = Label(vet_update_info, text='Phone Number', font=('calibre', 12, 'bold'))
-    vet_phone_number_entry = Entry(vet_update_info, textvariable=vet_phone_number_var, font=('calibre', 10, 'normal'))
+    vet_phone_number_label = Label(vet_update_info, text='Phone Number', font="times 15")
+    vet_phone_number_entry = Entry(vet_update_info, textvariable=vet_phone_number_var, font="times 20")
     vet_phone_number_label.pack()
     vet_phone_number_entry.pack()
 
-    vet_street_address_label = Label(vet_update_info, text='Street Address', font=('calibre', 12, 'bold'))
-    vet_street_address_entry = Entry(vet_update_info, textvariable=vet_street_address_var, font=('calibre', 10, 'normal'))
+    vet_street_address_label = Label(vet_update_info, text='Street Address', font="times 15")
+    vet_street_address_entry = Entry(vet_update_info, textvariable=vet_street_address_var, font="times 20")
     vet_street_address_label.pack()
     vet_street_address_entry.pack()
   
 
-    vet_city_label = Label(vet_update_info, text='City', font=('calibre', 12, 'bold'))
-    vet_city_entry = Entry(vet_update_info, textvariable=vet_city_var, font=('calibre', 10, 'normal'))
+    vet_city_label = Label(vet_update_info, text='City', font="times 15")
+    vet_city_entry = Entry(vet_update_info, textvariable=vet_city_var, font="times 20")
     vet_city_label.pack()
     vet_city_entry.pack()
 
-    vet_state_label = Label(vet_update_info, text='State', font=('calibre', 12, 'bold'))
-    vet_state_entry = Entry(vet_update_info, textvariable=vet_state_var, font=('calibre', 10, 'normal'))
+    vet_state_label = Label(vet_update_info, text='State', font="times 15")
+    vet_state_entry = Entry(vet_update_info, textvariable=vet_state_var, font="times 20")
     vet_state_label.pack(side =TOP)
     vet_state_entry.pack()
 
-    vet_zip_label = Label(vet_update_info, text='Zip Code', font=('calibre', 12, 'bold'))
-    vet_zip_entry = Entry(vet_update_info, textvariable=vet_zip_var, font=('calibre', 10, 'normal'))
+    vet_zip_label = Label(vet_update_info, text='Zip Code', font="times 15")
+    vet_zip_entry = Entry(vet_update_info, textvariable=vet_zip_var, font="times 20")
     vet_zip_label.pack()
     vet_zip_entry.pack()
     
-    Button(vet_update_info, text='Submit', font='50', command = vet_update_account).pack()
+    Label(vet_update_info, text="").pack()
+    
+    Button(vet_update_info, text='Submit', width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = vet_update_account).pack()
+    Button(vet_update_info, text="Return to Vet Menu", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = vet_menu_launch).pack()
 
 # Takes inputs from vet_update_account_menu() and finds vet's LoginID from the VetLoginInfo table
 # to update the correct records in the VetAccountInfo table
 def vet_update_account():
+    global label
     vet_first_name_var = vet_first_name_entry.get()
     vet_last_name_var = vet_last_name_entry.get()
     vet_email_var = vet_email_entry.get()
@@ -563,8 +587,9 @@ def vet_update_account():
     vet_city_entry.delete(0,END)
     vet_state_entry.delete(0,END)
     vet_zip_entry.delete(0,END)
-    Label(vet_update_info, text="Update Successful", fg="green", font=("calibri", 11)).pack()
-    Button(vet_update_info, text="Return to User Menu", width=25, height=1, command = vet_menu_launch).pack()
+    label = Label(vet_update_info, text="Update Successful", fg="green", font="times 20")
+    label.pack()
+
 ##################################################################################################################################################
 
 # Menu that appears when the vet clicks the update schedule button
@@ -593,46 +618,50 @@ def vet_update_schedule_menu():
    global sunday_entry
 
 
-   monday_label = Label(vet_update_schedule, text='Monday', font=('calibre', 12, 'bold'))
-   monday_entry = Entry(vet_update_schedule, textvariable=monday, font=('calibre', 10, 'normal'))
+   monday_label = Label(vet_update_schedule, text='Monday', font="times 15")
+   monday_entry = Entry(vet_update_schedule, textvariable=monday, font="times 20")
    monday_label.pack()
    monday_entry.pack()
 
-   tuesday_label = Label(vet_update_schedule, text='Tuesday', font=('calibre', 12, 'bold'))
-   tuesday_entry = Entry(vet_update_schedule, textvariable=tuesday, font=('calibre', 10, 'normal'))
+   tuesday_label = Label(vet_update_schedule, text='Tuesday', font="times 15")
+   tuesday_entry = Entry(vet_update_schedule, textvariable=tuesday, font="times 20")
    tuesday_label.pack()
    tuesday_entry.pack()
 
-   wednesday_label = Label(vet_update_schedule, text='Wednesday', font=('calibre', 12, 'bold'))
-   wednesday_entry = Entry(vet_update_schedule, textvariable=wednesday, font=('calibre', 10, 'normal'))
+   wednesday_label = Label(vet_update_schedule, text='Wednesday', font="times 15")
+   wednesday_entry = Entry(vet_update_schedule, textvariable=wednesday, font="times 20")
    wednesday_label.pack()
    wednesday_entry.pack()
 
-   thursday_label = Label(vet_update_schedule, text='Thursday', font=('calibre', 12, 'bold'))
-   thursday_entry = Entry(vet_update_schedule, textvariable=thursday, font=('calibre', 10, 'normal'))
+   thursday_label = Label(vet_update_schedule, text='Thursday', font="times 15")
+   thursday_entry = Entry(vet_update_schedule, textvariable=thursday, font="times 20")
    thursday_label.pack()
    thursday_entry.pack()
 
-   friday_label = Label(vet_update_schedule, text='Friday', font=('calibre', 12, 'bold'))
-   friday_entry = Entry(vet_update_schedule, textvariable=friday, font=('calibre', 10, 'normal'))
+   friday_label = Label(vet_update_schedule, text='Friday', font="times 15")
+   friday_entry = Entry(vet_update_schedule, textvariable=friday, font="times 20")
    friday_label.pack()
    friday_entry.pack()
 
-   saturday_label = Label(vet_update_schedule, text='Saturday', font=('calibre', 12, 'bold'))
-   saturday_entry = Entry(vet_update_schedule, textvariable=saturday, font=('calibre', 10, 'normal'))
+   saturday_label = Label(vet_update_schedule, text='Saturday', font="times 15")
+   saturday_entry = Entry(vet_update_schedule, textvariable=saturday, font="times 20")
    saturday_label.pack()
    saturday_entry.pack()
 
-   sunday_label = Label(vet_update_schedule, text='Sunday', font=('calibre', 12, 'bold'))
-   sunday_entry = Entry(vet_update_schedule, textvariable=sunday, font=('calibre', 10, 'normal'))
+   sunday_label = Label(vet_update_schedule, text='Sunday', font="times 15")
+   sunday_entry = Entry(vet_update_schedule, textvariable=sunday, font="times 20")
    sunday_label.pack()
    sunday_entry.pack()    
+   
+   Label(vet_update_schedule, text="").pack()
 
-   Button(vet_update_schedule, text='Submit', font='50', command = vet_update_schedule_info).pack()
+   Button(vet_update_schedule, text='Submit', width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = vet_update_schedule_info).pack()
+   Button(vet_update_schedule, text="Return to Vet Menu", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = vet_menu_launch).pack()
 
 # Takes inputs from vet_update_schedule_menu() and finds vet's LoginID from the VetLoginInfo table
 # to update the correct records in the VetScheduleInfo table
 def vet_update_schedule_info():
+    global label
     monday = monday_entry.get()
     tuesday = tuesday_entry.get()
     wednesday = wednesday_entry.get()
@@ -653,9 +682,8 @@ def vet_update_schedule_info():
     friday_entry.delete(0,END)
     saturday_entry.delete(0,END)
     sunday_entry.delete(0,END)
-    Label(vet_update_schedule, text="Update Successful", fg="green", font=("calibri", 11)).pack()
-    Button(vet_update_schedule, text="Return to User Menu", width=25, height=1, command = vet_menu_launch).pack()
-
+    label = Label(vet_update_schedule, text="Update Successful", fg="green", font="times 20")
+    label.pack()
 ###########################################################################################################################################################################
 
 # Main window on program start (loops until closed)
