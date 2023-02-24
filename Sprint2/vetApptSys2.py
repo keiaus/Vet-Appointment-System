@@ -39,6 +39,11 @@ def user_update_button_clicked():
     window.title("Update Account")
     show_frame(user_update_info)
 
+# Opens the update pet menu on click (for users)
+def user_update_pet_button_clicked():
+    window.title("Update Pet Information")
+    show_frame(user_update_pet_info)
+
 # Opens the account creation menu on click (on base menu frame)
 def account_creation_clicked():
     window.title("Create Your Account")
@@ -57,7 +62,16 @@ def user_menu_launch():
         show_frame(user_menu)
     else:
         show_frame(user_menu)
-  
+
+# Opens the user pet menu after successful login (users)
+def user_pet_menu_launch():
+    window.title("User Pet Menu")
+    if(isinstance(label,Label)):
+        label.destroy()
+        show_frame(user_pet_menu)
+    else:
+        show_frame(user_pet_menu)
+   
 
 # Opens the vet login menu on click (vets)
 def vet_log_in_clicked():
@@ -98,13 +112,16 @@ account_page = Frame(window)
 account_create = Frame(window)
 user_log_in = Frame(window)
 user_menu = Frame(window)
+user_pet_menu = Frame(window)
 user_update_info = Frame(window)
+user_update_pet_info = Frame(window)
 vet_log_in = Frame(window)
 vet_menu = Frame(window)
 vet_update_info = Frame(window)
 vet_update_schedule = Frame(window)
 
-for frame in (account_page, account_create, user_log_in, user_menu, user_update_info, vet_log_in, vet_menu, vet_update_info, vet_update_schedule):
+for frame in (account_page, account_create, user_log_in, user_menu, user_pet_menu, user_update_info, 
+user_update_pet_info, vet_log_in, vet_menu, vet_update_info, vet_update_schedule):
     frame.grid(row=0, column=0, sticky='nsew')
 
 global label
@@ -153,6 +170,51 @@ def user_register():
     Label(account_create, text="").pack()
     Button(account_create, text="Return to Main Menu", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = return_to_main).pack()
 
+# Pet registration menu
+def pet_register():
+    global user_id
+    global pet_name_var
+    pet_name_var= StringVar()
+    global pet_type_var
+    pet_type_var = StringVar()
+    global pet_breed_var
+    pet_breed_var = StringVar()
+    global pet_color_var
+    pet_color_var = StringVar()
+    
+    global pet_name_entry
+    global pet_type_entry
+    global pet_breed_entry
+    global pet_color_entry
+
+    Label(user_update_pet_info, text="", pady=60).pack()
+    
+    pet_name_label = Label(user_update_pet_info, text='Pet Name', font="times 15")
+    pet_name_entry = Entry(user_update_pet_info, font="times 20", width=20, textvariable=pet_name_var)
+    pet_name_label.pack()
+    pet_name_entry.pack()
+
+    pet_type_label = Label(user_update_pet_info, text='Pet Type', font="times 15")
+    pet_type_entry = Entry(user_update_pet_info, textvariable=pet_type_var, font="times 20", width=20)
+    pet_type_label.pack()
+    pet_type_entry.pack()
+
+    pet_breed_label = Label(user_update_pet_info, text='Pet Breed', font="times 15")
+    pet_breed_entry = Entry(user_update_pet_info, textvariable=pet_breed_var, font="times 20")
+    pet_breed_label.pack()
+    pet_breed_entry.pack()
+
+    pet_color_label = Label(user_update_pet_info, text='Pet Color', font="times 15")
+    pet_color_entry = Entry(user_update_pet_info, textvariable=pet_color_var, font="times 20")
+    pet_color_label.pack()
+    pet_color_entry.pack()
+
+    Label(user_update_info, text="", pady=30).pack()
+    
+    Button(user_update_info, text='Submit', width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = user_update_pet).pack()
+    Label(user_update_info, text="").pack()
+    Button(user_update_info, text="Return to Pet Menu", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = user_menu_launch).pack()
+
 # Registered user login menu
 def register_user():
     global label
@@ -164,7 +226,7 @@ def register_user():
     if(username_info == "" or password_info == ""):
         username_entry.delete(0, END)
         password_entry.delete(0, END)
-        empty_login_info()
+        empty_info()
     else:
         cursor.execute("SELECT UserLoginID FROM UserLoginInfo WHERE UserUserName = ? AND UserPassword = ?", username_info, password_info)
         user_login_ID = cursor.fetchone()
@@ -185,11 +247,42 @@ def register_user():
             password_entry.delete(0, END)
             username_taken()
 
+# Registered pet menu
+def register_pet():
+    global label
+    global pet_id 
+    pet_name_info = pet_name_var.get()
+    pet_type_info = pet_type_var.get()
+    pet_breed_info = pet_breed_var.get()
+    pet_color_info = pet_color_var.get()
+    
+    pet_id = None
+    if(pet_name_info == "" or pet_type_info == "" or pet_breed_info == "" or pet_color_info == ""):
+        pet_name_entry.delete(0, END)
+        pet_type_entry.delete(0, END)
+        pet_breed_entry.delete(0, END)
+        pet_color_entry.delete(0, END)
+        empty_info()
+    else:
+        cursor.execute("INSERT INTO PetRecords VALUES(?,?,?,?)", pet_name_info, pet_type_info, pet_breed_info, pet_color_info)
+        cursor.execute("SELECT PetID FROM PetRecords WHERE PetName = ? AND PetType = ? AND PetBreed = ? AND PetColor = ?", pet_name_info, pet_type_info, pet_breed_info, pet_color_info)
+        pet_id = cursor.fetchone() 
+        cursor.execute("INSERT INTO UserAccountInfo(UserLoginID) VALUES(?)", user_login_ID)
+        cursor.commit()
+
+        pet_name_entry.delete(0, END)
+        pet_type_entry.delete(0, END)
+        pet_breed_entry.delete(0, END)
+        pet_color_entry.delete(0, END)
+
+        label = Label(account_create, text="Registration Successful", fg="green", font="times 20")
+        label.pack() 
+
 # Tells the user that the username they're trying to register with was taken
 def username_taken():
     global username_taken_screen
     username_taken_screen = Toplevel(window)
-    username_taken_screen.title("Alerts")
+    username_taken_screen.title("Alert")
     username_taken_screen.geometry("300x150")
     Label(username_taken_screen, text="Username is already taken").pack()
     Button(username_taken_screen, text="OK", command=delete_username_taken).pack()
@@ -199,17 +292,17 @@ def delete_username_taken():
     username_taken_screen.destroy()
 
 # Tells the user that a required field was empty
-def empty_login_info():
-    global empty_login_info_screen
-    empty_login_info_screen = Toplevel(window)
-    empty_login_info_screen.title("Alert")
-    empty_login_info_screen.geometry("300x150")
-    Label(empty_login_info_screen, text="A field was empty, please try again.").pack()
-    Button(empty_login_info_screen, text="OK", command=delete_empty_login_info).pack()    
+def empty_info():
+    global empty_info_screen
+    empty_info_screen = Toplevel(window)
+    empty_info_screen.title("Alert")
+    empty_info_screen.geometry("300x150")
+    Label(empty_info_screen, text="A field was empty, please try again.").pack()
+    Button(empty_info_screen, text="OK", command=delete_empty_info).pack()    
 
-# Closes the empty_login_info() pop-up on click
-def delete_empty_login_info():
-    empty_login_info_screen.destroy()
+# Closes the empty_info() pop-up on click
+def delete_empty_info():
+    empty_info_screen.destroy()
 ###########################################################################################################################
 
 # Registered user login (prompts the user to enter their login info, passes info to user_login_verify for verification)
@@ -362,6 +455,10 @@ def user_after_login_menu():
     Label(user_menu, text="", pady=60).pack()
     Button(user_menu, text="Update Account Info", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command =lambda:user_update_button_clicked()).pack()
     Label(user_menu, text="").pack()
+    Button(user_menu, text="Update Pet Info", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command =lambda:user_update_pet_button_clicked()).pack()
+    Label(user_menu, text="").pack()
+    Button(user_menu, text="Add New Pet", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command =lambda:user_update_button_clicked()).pack()
+    Label(user_menu, text="").pack()
     Button(user_menu, text="Log Out", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = return_to_main).pack()
 ######################################################################################################################################
 
@@ -451,7 +548,19 @@ def user_update_account_menu():
     Label(user_update_info, text="", pady=30).pack()
     
     Button(user_update_info, text='Submit', width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = user_update_account).pack()
+    Label(user_update_info, text="").pack()
     Button(user_update_info, text="Return to User Menu", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = user_menu_launch).pack()
+
+# Menu that appears when the registered user clicks the update pet info button
+# Allows the user to view pet(s) on file 
+# Takes in user's inputs and sends it to the user_update_pet() function for processing
+def user_update_pet_menu():
+    Label(user_pet_menu, text="View Your Pet(s) Info", font="times 50 bold", bg="SpringGreen4", anchor=N, pady=50).pack(fill=BOTH)
+    Label(user_pet_menu, text="", pady=60).pack()
+
+    cursor.execute("select PetID from PetInfo where PetName = ?", )
+    pet_id = cursor.fetchone()
+    Button(user_pet_menu, text='cursor.execute("select PetName from PetInfo where PetInfo.PetID = ?", ' + pet_id + ')')
 
 # Takes inputs from user_update_account_menu() and finds user's LoginID from the UserLoginInfo table
 # to update the correct records in the UserAccountInfo table
@@ -479,6 +588,29 @@ def user_update_account():
     city_entry.delete(0,END)
     state_entry.delete(0,END)
     zip_entry.delete(0,END)
+    label = Label(user_update_info, text="Update Successful", fg="green", font="times 20")
+    label.pack()
+
+# Takes inputs from user_update_pet_menu() and finds user's LoginID from the UserLoginInfo table
+# to update the correct records in the UserAccountInfo table
+def user_update_pet():
+    global label
+    pet_name_var = pet_name_entry.get()
+    pet_type_var = pet_type_entry.get()
+    pet_breed_var = pet_breed_entry.get()
+    pet_color_var = pet_color_entry.get()
+    
+    cursor.execute("SELECT UserLoginID FROM UserLoginInfo WHERE UserUserName = ? AND UserPassword = ?", username1, password1)
+    user_login_ID = cursor.fetchone()
+    cursor.execute("SELECT PetID FROM PetInfo INNER JOIN UserLoginInfo ON PetInfo.UserLoginID = UserLoginInfo.UserLoginID WHERE PetInfo.UserLoginID = ?", user_login_ID)
+    user_id = cursor.fetchone()
+    cursor.execute("UPDATE PetInfo SET PetName = ?, PetType = ?, PetBreed = ?, PetColor = ? WHERE PetID = ?", pet_name_var, pet_type_var, pet_breed_var, pet_color_var, user_id[0])
+    cursor.commit()
+    pet_name_entry.delete(0,END)
+    pet_type_entry.delete(0,END)
+    pet_breed_entry.delete(0,END)
+    pet_color_entry.delete(0,END)
+    
     label = Label(user_update_info, text="Update Successful", fg="green", font="times 20")
     label.pack()
 
@@ -514,6 +646,8 @@ def vet_update_account_menu():
     global vet_city_entry
     global vet_state_entry
     global vet_zip_entry
+
+    Label(vet_update_info, text="", pady=60).pack()
     
     vet_first_name_label = Label(vet_update_info, text='First Name', font="times 15")
     vet_first_name_entry = Entry(vet_update_info, textvariable=vet_first_name_var, font="times 20")
@@ -556,9 +690,10 @@ def vet_update_account_menu():
     vet_zip_label.pack()
     vet_zip_entry.pack()
     
-    Label(vet_update_info, text="").pack()
+    Label(vet_update_info, text="", pady=30).pack()
     
     Button(vet_update_info, text='Submit', width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = vet_update_account).pack()
+    Label(vet_update_info, text="").pack()
     Button(vet_update_info, text="Return to Vet Menu", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = vet_menu_launch).pack()
 
 # Takes inputs from vet_update_account_menu() and finds vet's LoginID from the VetLoginInfo table
@@ -617,6 +752,7 @@ def vet_update_schedule_menu():
    global saturday_entry
    global sunday_entry
 
+   Label(vet_update_schedule, text="", pady=60).pack()
 
    monday_label = Label(vet_update_schedule, text='Monday', font="times 15")
    monday_entry = Entry(vet_update_schedule, textvariable=monday, font="times 20")
@@ -653,9 +789,10 @@ def vet_update_schedule_menu():
    sunday_label.pack()
    sunday_entry.pack()    
    
-   Label(vet_update_schedule, text="").pack()
+   Label(vet_update_schedule, text="", pady=30).pack()
 
    Button(vet_update_schedule, text='Submit', width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = vet_update_schedule_info).pack()
+   Label(vet_update_schedule, text="").pack()
    Button(vet_update_schedule, text="Return to Vet Menu", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = vet_menu_launch).pack()
 
 # Takes inputs from vet_update_schedule_menu() and finds vet's LoginID from the VetLoginInfo table
