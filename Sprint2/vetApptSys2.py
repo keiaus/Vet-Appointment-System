@@ -13,7 +13,9 @@ def vetapp():
     vet_update_schedule_menu()
     vet_update_account_menu()
     user_update_account_menu()
+    user_update_pet_menu()
     user_register()
+    pet_register()
     user_login()
     user_after_login_menu()
     vet_login()
@@ -71,8 +73,16 @@ def user_pet_menu_launch():
         show_frame(user_pet_menu)
     else:
         show_frame(user_pet_menu)
-   
 
+# Opens the add pet screen on click
+def user_pet_add_clicked():
+    window.title("Add a Pet(s)")
+    if (isinstance(label, Label)):
+        label.destroy()
+        show_frame(user_pet_add)
+    else:
+        show_frame(user_pet_add)
+   
 # Opens the vet login menu on click (vets)
 def vet_log_in_clicked():
     window.title("Vet Log In")
@@ -113,6 +123,7 @@ account_create = Frame(window)
 user_log_in = Frame(window)
 user_menu = Frame(window)
 user_pet_menu = Frame(window)
+user_pet_add = Frame(window)
 user_update_info = Frame(window)
 user_update_pet_info = Frame(window)
 vet_log_in = Frame(window)
@@ -120,7 +131,7 @@ vet_menu = Frame(window)
 vet_update_info = Frame(window)
 vet_update_schedule = Frame(window)
 
-for frame in (account_page, account_create, user_log_in, user_menu, user_pet_menu, user_update_info, 
+for frame in (account_page, account_create, user_log_in, user_menu, user_pet_menu, user_pet_add, user_update_info, 
 user_update_pet_info, vet_log_in, vet_menu, vet_update_info, vet_update_schedule):
     frame.grid(row=0, column=0, sticky='nsew')
 
@@ -172,7 +183,6 @@ def user_register():
 
 # Pet registration menu
 def pet_register():
-    global user_id
     global pet_name_var
     pet_name_var= StringVar()
     global pet_type_var
@@ -187,33 +197,34 @@ def pet_register():
     global pet_breed_entry
     global pet_color_entry
 
-    Label(user_update_pet_info, text="", pady=60).pack()
+    Label(user_pet_add, text="Add a Pet(s)", font='times 50 bold', bg="SpringGreen4", anchor=N, pady=50).pack(fill=BOTH)
+    Label(user_pet_add, text="", pady=60).pack()
     
-    pet_name_label = Label(user_update_pet_info, text='Pet Name', font="times 15")
-    pet_name_entry = Entry(user_update_pet_info, font="times 20", width=20, textvariable=pet_name_var)
+    pet_name_label = Label(user_pet_add, text='Pet Name', font="times 15")
+    pet_name_entry = Entry(user_pet_add, font="times 20", width=20, textvariable=pet_name_var)
     pet_name_label.pack()
     pet_name_entry.pack()
 
-    pet_type_label = Label(user_update_pet_info, text='Pet Type', font="times 15")
-    pet_type_entry = Entry(user_update_pet_info, textvariable=pet_type_var, font="times 20", width=20)
+    pet_type_label = Label(user_pet_add, text='Pet Type', font="times 15")
+    pet_type_entry = Entry(user_pet_add, textvariable=pet_type_var, font="times 20", width=20)
     pet_type_label.pack()
     pet_type_entry.pack()
 
-    pet_breed_label = Label(user_update_pet_info, text='Pet Breed', font="times 15")
-    pet_breed_entry = Entry(user_update_pet_info, textvariable=pet_breed_var, font="times 20")
+    pet_breed_label = Label(user_pet_add, text='Pet Breed', font="times 15")
+    pet_breed_entry = Entry(user_pet_add, textvariable=pet_breed_var, font="times 20")
     pet_breed_label.pack()
     pet_breed_entry.pack()
 
-    pet_color_label = Label(user_update_pet_info, text='Pet Color', font="times 15")
-    pet_color_entry = Entry(user_update_pet_info, textvariable=pet_color_var, font="times 20")
+    pet_color_label = Label(user_pet_add, text='Pet Color', font="times 15")
+    pet_color_entry = Entry(user_pet_add, textvariable=pet_color_var, font="times 20")
     pet_color_label.pack()
     pet_color_entry.pack()
 
-    Label(user_update_info, text="", pady=30).pack()
+    Label(user_pet_add, text="", pady=30).pack()
     
-    Button(user_update_info, text='Submit', width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = user_update_pet).pack()
-    Label(user_update_info, text="").pack()
-    Button(user_update_info, text="Return to Pet Menu", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = user_menu_launch).pack()
+    Button(user_pet_add, text='Register Pet', width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = register_pet).pack()
+    Label(user_pet_add, text="").pack()
+    Button(user_pet_add, text="Return to User Menu", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = user_menu_launch).pack()
 
 # Registered user login menu
 def register_user():
@@ -239,6 +250,8 @@ def register_user():
     
             username_entry.delete(0, END)
             password_entry.delete(0, END)
+
+            Label(user_pet_add, text="").pack()
  
             label = Label(account_create, text="Registration Successful", fg="green", font="times 20")
             label.pack() 
@@ -256,6 +269,7 @@ def register_pet():
     pet_breed_info = pet_breed_var.get()
     pet_color_info = pet_color_var.get()
     
+    user_login_ID = None
     pet_id = None
     if(pet_name_info == "" or pet_type_info == "" or pet_breed_info == "" or pet_color_info == ""):
         pet_name_entry.delete(0, END)
@@ -264,10 +278,13 @@ def register_pet():
         pet_color_entry.delete(0, END)
         empty_info()
     else:
-        cursor.execute("INSERT INTO PetRecords VALUES(?,?,?,?)", pet_name_info, pet_type_info, pet_breed_info, pet_color_info)
-        cursor.execute("SELECT PetID FROM PetRecords WHERE PetName = ? AND PetType = ? AND PetBreed = ? AND PetColor = ?", pet_name_info, pet_type_info, pet_breed_info, pet_color_info)
+        cursor.execute("SELECT UserLoginID FROM UserLoginInfo WHERE UserUserName = ? AND UserPassword = ?", username1, password1)
+        user_login_ID = cursor.fetchone()
+        cursor.execute("SELECT UserID FROM UserAccountInfo INNER JOIN UserLoginInfo ON UserAccountInfo.UserLoginID = UserLoginInfo.UserLoginID WHERE UserAccountInfo.UserLoginID = ?", user_login_ID)
+        user_id = cursor.fetchone()
+        cursor.execute("INSERT INTO PetInfo VALUES(?,?,?,?,?)", pet_name_info, pet_type_info, pet_breed_info, pet_color_info, user_id[0])
+        cursor.execute("SELECT PetID FROM PetInfo WHERE PetName = ? AND PetType = ? AND PetBreed = ? AND PetColor = ?", pet_name_info, pet_type_info, pet_breed_info, pet_color_info)
         pet_id = cursor.fetchone() 
-        cursor.execute("INSERT INTO UserAccountInfo(UserLoginID) VALUES(?)", user_login_ID)
         cursor.commit()
 
         pet_name_entry.delete(0, END)
@@ -275,7 +292,9 @@ def register_pet():
         pet_breed_entry.delete(0, END)
         pet_color_entry.delete(0, END)
 
-        label = Label(account_create, text="Registration Successful", fg="green", font="times 20")
+        Label(user_pet_add, text="").pack()
+
+        label = Label(user_pet_add, text="Registration Successful", fg="green", font="times 20")
         label.pack() 
 
 # Tells the user that the username they're trying to register with was taken
@@ -457,7 +476,7 @@ def user_after_login_menu():
     Label(user_menu, text="").pack()
     Button(user_menu, text="Update Pet Info", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command =lambda:user_update_pet_button_clicked()).pack()
     Label(user_menu, text="").pack()
-    Button(user_menu, text="Add New Pet", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command =lambda:user_update_button_clicked()).pack()
+    Button(user_menu, text="Add New Pet", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command =lambda:user_pet_add_clicked()).pack()
     Label(user_menu, text="").pack()
     Button(user_menu, text="Log Out", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = return_to_main).pack()
 ######################################################################################################################################
@@ -555,12 +574,35 @@ def user_update_account_menu():
 # Allows the user to view pet(s) on file 
 # Takes in user's inputs and sends it to the user_update_pet() function for processing
 def user_update_pet_menu():
-    Label(user_pet_menu, text="View Your Pet(s) Info", font="times 50 bold", bg="SpringGreen4", anchor=N, pady=50).pack(fill=BOTH)
+    # global user_id
+    # global pet_id
+    global update_pet_name 
+    update_pet_name = StringVar()
+    global update_pet_type 
+    update_pet_type = StringVar()
+    global update_pet_breed
+    update_pet_breed = StringVar()
+    global update_pet_color
+    update_pet_color = StringVar()
+
+    # pet_id = None
+    # user_login_ID = None
+    Label(user_pet_menu, text="Select a Pet", font="times 50 bold", bg="SpringGreen4", anchor=N, pady=50).pack(fill=BOTH)
     Label(user_pet_menu, text="", pady=60).pack()
 
-    cursor.execute("select PetID from PetInfo where PetName = ?", )
-    pet_id = cursor.fetchone()
-    Button(user_pet_menu, text='cursor.execute("select PetName from PetInfo where PetInfo.PetID = ?", ' + pet_id + ')')
+    # cursor.execute("SELECT UserLoginID FROM UserLoginInfo WHERE UserUserName = ? AND UserPassword = ?", username1, password1)
+    # user_login_ID = cursor.fetchone()
+    # cursor.execute("SELECT UserID FROM UserAccountInfo INNER JOIN UserLoginInfo ON UserAccountInfo.UserLoginID = UserLoginInfo.UserLoginID WHERE UserAccountInfo.UserLoginID = ?", user_login_ID)
+    # user_id = cursor.fetchone()
+    # cursor.execute("SELECT UserID FROM PetInfo INNER JOIN UserAccountInfo ON PetInfo.UserID = UserAccountInfo.UserID WHERE PetInfo.UserID = ?", pet_id)
+    # pet_id = cursor.fetchone()
+    # pet_names = cursor.fetchall()
+    # cursor.commit()
+
+    # for row in pet_names:
+    #     Button(user_pet_menu, text=str(row[pet_names]))
+    #     Label(user_pet_menu, text="").pack()
+
 
 # Takes inputs from user_update_account_menu() and finds user's LoginID from the UserLoginInfo table
 # to update the correct records in the UserAccountInfo table
