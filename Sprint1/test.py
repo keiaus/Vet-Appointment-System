@@ -75,7 +75,6 @@ def close_clicked():
 for frame in (account_page, account_create, user_log_in, user_menu, user_update_info, vet_log_in, vet_menu, vet_update_info, vet_update_schedule):
     frame.grid(row=0, column=0, sticky='nsew')
 
-# DONT FUCKING TOUCH
 account_page_header = Label(account_page, text='Vet Appointment System', font=("times 50"), anchor=N, bg="SpringGreen4", pady=50)
 account_page_header.pack(fill='both')
 
