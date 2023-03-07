@@ -172,6 +172,7 @@ for frame in (account_page, account_create, user_log_in, user_pet_menu, user_pet
 
 global label
 label = None
+
 # **Don't touch**
 # Main window on program start
 def create_vetapp():
@@ -452,7 +453,7 @@ def user_update_pet_menu():
     global pet_info_display
 
     #list of pets and their info from the query
-    pet_info_query = "select * from PetInfo"
+    pet_info_query = "select * from PetInfo where UserID = ? ", user_id
     pet_info_query_data = list(cursor.execute(pet_info_query))
     pet_info_dictionary = {}
     pet_info_list = []
@@ -1206,22 +1207,6 @@ def admin_vet_dropdown_menu():
     Button(admin_vet_dropdown, text="Return to Main Menu", width = 20, height = 1, font = 'times 20', bd = 20, bg = 'SpringGreen4', command = admin_menu_launch).pack()
 
 ####################################################################################################################################################################
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # Main window on program start (loops until closed)
 vetapp()
