@@ -14,13 +14,11 @@ def vetapp():
     user_login()
     user_after_login_menu()
     user_update_account_menu()
-    user_update_pet_menu() 
     pet_register()
     vet_login()
     vet_after_login_menu()
     vet_update_schedule_menu()
     vet_update_account_menu()
-    vet_update_pet_info()
     admin_register()
     admin_login()
     admin_after_login_menu()
@@ -65,6 +63,7 @@ def account_creation_clicked():
 def user_log_in_clicked():
     window.title("User Log In")
     show_frame(user_log_in)
+
 
 # Opens the user menu after successful login (users)
 def user_menu_launch():
@@ -136,9 +135,19 @@ def return_to_main():
     window.title("Home")
     if(isinstance(label,Label)):
         label.destroy()
+        clear_frame()
         show_frame(account_page)
     else:
+        clear_frame()
         show_frame(account_page)
+    
+def clear_frame():
+    for widgets in user_update_pet_info.winfo_children():
+        widgets.destroy()
+    for widgets in vet_update_pet.winfo_children():
+        widgets.destroy()   
+    user_update_pet_info.pack_forget()
+    vet_update_pet.pack_forget()
     
 # Closes the menu
 def close_clicked():
@@ -314,23 +323,21 @@ def user_login():
 
 #user_id1 = NONE
 # User login verification (checks that the entered user information matches a record in the UserLoginInfo table)
+counter = 0
 def user_login_verify():
     global label
     global username1
     global password1
-    global user_id1
     username1 = username_verify.get()
     password1 = password_verify.get() 
     user_login_ID = NONE
     if(username1 == "" or password1 == ""): 
         user_invalid_login()
     else: 
-        IDList = getUserLoginID()
-        user_login_ID = IDList[0] 
-        user_login_verify.userid1 = IDList[1] 
+        user_login_ID = getUserLoginID()
         if(user_login_ID != None): 
-            user_update_pet_menu()
             user_menu_launch() 
+            user_update_pet_menu()
         else:
             user_invalid_login()
 
@@ -353,30 +360,11 @@ def getUserLoginID():
 
     cursor.execute("SELECT UserLoginID FROM UserLoginInfo WHERE UserUserName = ? AND UserPassword = ?", username1, password1)
     user_login_ID = cursor.fetchone()
-    
-    cursor.execute("SELECT UserID FROM UserAccountInfo WHERE UserLoginID = ?", user_login_ID)
-    user_id1 = cursor.fetchone()
-    global IDList
-    IDList = []
-    IDList.append(user_login_ID) 
-    IDList.append(user_id1) 
-    
-    username_login_entry.delete(0, END)
-    password_login_entry.delete(0, END)
 
-    return IDList
+    #username_login_entry.delete(0, END)
+    #password_login_entry.delete(0, END)
 
-
-# def user_login_sucess():
-#     global login_success_screen
-#     login_success_screen = Toplevel(window)
-#     login_success_screen.title("Account")
-#     login_success_screen.geometry("150x100")
-#     Label(login_success_screen, text="Login Successful").pack()
-#     Button(login_success_screen, text="OK", command=delete_user_login_success).pack()
-
-# def delete_user_login_success():
-#     login_success_screen.destroy()
+    return user_login_ID
 
 # Tells the user that their login was invalid (whatever they entered didn't match anything in the UserLoginInfo table)
 def user_invalid_login():
@@ -496,14 +484,13 @@ def user_update_pet_menu():
     
     #list of pets and their info from the query
     #user_id1 = getUserID()
-    IDList = getUserLoginID()
-    user_id1 = IDList[1]
-    pet_info_query = "select * from PetInfo where UserID =?", user_id1 
-    pet_info_query_data = list(cursor.execute("select * from PetInfo where UserID =?", user_login_verify.user_id1))
+    
+    user_id1 = getUserID()
+    pet_info_query_data = list(cursor.execute("select * from PetInfo where UserID =?", user_id1))
     pet_info_dictionary = {}
     pet_info_list = []
     
-    Label(user_update_pet_info, text=str(user_id1)).pack()
+    #Label(user_update_pet_info, text=str(user_id1)).pack()
     #creates a dictionary list of the pets selected from the table and appends their id and name data
     for tablerow in pet_info_query_data:
         pet_info_dictionary[[tablerow][0][0]] = tablerow
@@ -516,10 +503,6 @@ def user_update_pet_menu():
         for i, j in pet_info_dictionary.items():
             if j[1] == pet_info_selection.get():
                 pet_info_display.config(text = str(j[0]) + ", " + j[1] + ", " + j[2] + ", " + j[3] + "," + j[4])
-                # pet_id_conversion = str(j[0])
-                # pet_name_conversion = j[1]
-                # pet_type_conversion = j[2]
-                # pet_color_conversion = j[3]
                 global user_pet_id 
                 global user_id 
                 user_pet_id =  j[0] # stores the users selecion for update
@@ -796,7 +779,7 @@ def vet_login_verify():
         vet_login_ID = cursor.fetchone()
         if(vet_login_ID != None):
             vet_menu_launch()
-            #VET SUB MENU REPLACES THE SUCCESS MESSAGE
+            vet_update_pet_info()
         else:
             vet_invalid_login()
 
@@ -1041,120 +1024,88 @@ def vet_update_schedule_info():
 
 #Allows vets to select a user and update specific pet information
 def vet_update_pet_info():
-    global vet_pet_name
-    vet_pet_name= StringVar()
-    global vet_pet_type
-    vet_pet_type = StringVar()
-    global vet_pet_breed
-    vet_pet_breed = StringVar()
-    global vet_pet_color
-    vet_pet_color = StringVar()
-    
-    global vet_pet_name_entry1
-    global vet_pet_type_entry1
-    global vet_pet_breed_entry1
-    global vet_pet_color_entry1
-    global vet_pet_info_query
-    global vet_pet_info_query_data
-    global vet_pet_info_dictionary
-    global vet_pet_info_list
-    global vet_pet_info_selection
-    global vet_pet_info_combobox
-    global vet_pet_info_display
 
-    #list of pets and their info from the query
-    vet_pet_info_query = "select * from PetInfo"
-    vet_pet_info_query_data = list(cursor.execute(vet_pet_info_query))
-    vet_pet_info_dictionary = {}
-    vet_pet_info_list = []
-    
-    #creates a dictionary list of the pets selected from the table and appends their id and name data
-    for tablerow in vet_pet_info_query_data:
-        vet_pet_info_dictionary[[tablerow][0][0]] = tablerow
-        vet_pet_info_list.append(tablerow[1]) #appends index 1 to the list
-    
-    #creates a display for pet info based on selection
-    def vet_pet_selection_display(*args):
-        vet_pet_info_display.config(text = "")
+    Label(vet_update_pet, text = "").pack()
+    vet_update_pet_menu_label = Label(vet_update_pet, text = "Veterinarian Update Pet Menu", font = "times 15")
+    vet_update_pet_menu_label.pack()
 
-        for i, j in vet_pet_info_dictionary.items():
-            if j[1] == vet_pet_info_selection.get():
-                vet_pet_info_display.config(text = str(j[0]) + ", " + j[1] + ", " + j[2] + ", " + j[3] + "," + j[4])
-                # pet_id_conversion = str(j[0])
-                # pet_name_conversion = j[1]
-                # pet_type_conversion = j[2]
-                # pet_color_conversion = j[3]
-                global vet_user_pet_id 
-                global vet_user_id 
-                vet_user_pet_id =  j[0] # stores the users selecion for update
-                vet_user_id = j[5] # stores the user selection for update
-
+    query= "SELECT Concat(UserID, ', ', UserFirstName, ', ', UserLastName) FROM USERACCOUNTINFO"
+                
+    my_data = cursor.execute(query) # SQLAlchem engine result
+    my_list = [r for r, in my_data] # create a  list 
+    my_list2=[] 
+    def my_upd(*args):
+        cb2.set('') # remove the previous selected option
+        selection = sel.get().split(", ")
+        query = "SELECT Concat(PetID, ', ', PetName) FROM PetInfo WHERE UserID = '"+selection[0]+"'"
+        my_data = cursor.execute(query) # SQLAlchem engine result
+        my_list2 = [r for r, in my_data] # create a  list
+        cb2['values']=my_list2    
+          
+    def vetUpdatePet(*args):        
+        selection2 = cb2.get().split(", ")
+        global label
+        pet_name_var = pet_name_entry2.get()
+        pet_type_var = pet_type_entry2.get()
+        pet_breed_var = pet_breed_entry2.get()
+        pet_color_var = pet_color_entry2.get()
+        cursor.execute("UPDATE PetInfo SET PetName = ?, PetType = ?, PetBreed = ?, PetColor = ? WHERE PetID = ?", pet_name_var, pet_type_var, pet_breed_var, pet_color_var, selection2[0])
+        cursor.commit()
+        pet_name_entry.delete(0,END)
+        pet_type_entry.delete(0,END)
+        pet_breed_entry.delete(0,END)
+        pet_color_entry.delete(0,END)
+        vet_pet_confirmation_des()
+        label = Label(vet_update_pet, text="Update Successful", fg="green", font="times 20")
+        label.pack()
+        
     def vet_pet_confirmation_popup():
         global vet_pet_confirmation
         vet_pet_confirmation = Toplevel(window)
         vet_pet_confirmation.title("Alert")
         vet_pet_confirmation.geometry("300x150")
-        Label(vet_pet_confirmation, text=f'You selected {vet_pet_info_selection.get()}.').pack()
-        Button(vet_pet_confirmation, text="Update", command=vet_pet_confirmation_update).pack()
-        Button(vet_pet_confirmation, text="No", command=vet_pet_confirmation_des).pack()
-
-    def vet_pet_confirmation_update():
-        vet_pet_name = vet_pet_name_entry1.get() 
-        vet_pet_type = vet_pet_type_entry1.get()
-        vet_pet_breed = vet_pet_breed_entry1.get()
-        vet_pet_color = vet_pet_color_entry1.get()
-
-        cursor.execute("UPDATE PetInfo SET PetName = ?, PetType = ?, PetBreed = ?, PetColor = ? WHERE PetID = ?", 
-                       vet_pet_name, vet_pet_type, vet_pet_breed, vet_pet_color, vet_user_pet_id)
-        cursor.commit()
-        vet_pet_name_entry1.delete(0, END)
-        vet_pet_type_entry1.delete(0, END)
-        vet_pet_breed_entry1.delete(0, END)
-        vet_pet_color_entry1.delete(0, END)
-        label = Label(vet_update_pet, text ="Update Successful")
-        label.pack()
-        vet_pet_confirmation_des()
-    
+        Label(vet_pet_confirmation, text=f'You selected {cb2.get()}.').pack()
+        Button(vet_pet_confirmation, text="Update", command=vetUpdatePet).pack()
+        Button(vet_pet_confirmation, text="No", command=vet_pet_confirmation_des).pack()    
+     
     def vet_pet_confirmation_des():
-        pet_confirmation.destroy()
+        vet_pet_confirmation.destroy()
+        
+    sel=tk.StringVar()
+
+    cb1 = ttk.Combobox(vet_update_pet, values=my_list,width=15,textvariable = sel)
+    cb1.pack(padx=30,pady=30)
+
+    sel.trace('w', my_upd)
+
+    cb2 = ttk.Combobox(vet_update_pet, values=my_list2, width=15,)
+    cb2.pack()
     
-    Label(vet_update_pet, text="Update Pet(s)", font='times 50 bold', bg="SpringGreen4", anchor=N).pack(fill=BOTH)
-    Label(vet_update_pet, text="").pack()
+    pet_name_label = Label(vet_update_pet, text='Pet Name', font="times 15")
+    pet_name_entry2 = Entry(vet_update_pet, font="times 20", width=20, textvariable=pet_name_var)
+    pet_name_label.pack()
+    pet_name_entry2.pack()
 
-    #combobox2 creation and configuration (Pet selection)
-    vet_pet_info_selection = tk.StringVar()
-    Label(vet_update_pet, text="Select a Pet", font="times 20 bold").pack()
-    vet_pet_info_combobox = ttk.Combobox(vet_update_pet, textvariable = vet_pet_info_selection, values = vet_pet_info_list)
-    vet_pet_info_combobox.pack(pady = 20)
-    vet_pet_info_display = Label(vet_update_pet, text = "Pet Info:", bg = "SpringGreen4")
-    vet_pet_info_display.pack()
-    vet_pet_info_selection.trace("w", vet_pet_selection_display)
-    
-    vet_pet_name_label = Label(vet_update_pet, text='Pet Name', font="times 15")
-    vet_pet_name_entry1 = Entry(vet_update_pet, font="times 20", width=20, textvariable=vet_pet_name)
-    vet_pet_name_label.pack()
-    vet_pet_name_entry1.pack()
+    pet_type_label = Label(vet_update_pet, text='Pet Type', font="times 15")
+    pet_type_entry2 = Entry(vet_update_pet, textvariable=pet_type_var, font="times 20", width=20)
+    pet_type_label.pack()
+    pet_type_entry2.pack()
 
-    vet_pet_type_label = Label(vet_update_pet, text='Pet Type', font="times 15")
-    vet_pet_type_entry1 = Entry(vet_update_pet, textvariable=vet_pet_type, font="times 20", width=20)
-    vet_pet_type_label.pack()
-    vet_pet_type_entry1.pack()
+    pet_breed_label = Label(vet_update_pet, text='Pet Breed', font="times 15")
+    pet_breed_entry2 = Entry(vet_update_pet, textvariable=pet_breed_var, font="times 20")
+    pet_breed_label.pack()
+    pet_breed_entry2.pack()
 
-    vet_pet_breed_label = Label(vet_update_pet, text='Pet Breed', font="times 15")
-    vet_pet_breed_entry1 = Entry(vet_update_pet, textvariable=vet_pet_breed, font="times 20")
-    vet_pet_breed_label.pack()
-    vet_pet_breed_entry1.pack()
-
-    vet_pet_color_label = Label(vet_update_pet, text='Pet Color', font="times 15")
-    vet_pet_color_entry1 = Entry(vet_update_pet, textvariable=vet_pet_color, font="times 20")
-    vet_pet_color_label.pack()
-    vet_pet_color_entry1.pack()
+    pet_color_label = Label(vet_update_pet, text='Pet Color', font="times 15")
+    pet_color_entry2 = Entry(vet_update_pet, textvariable=pet_color_var, font="times 20")
+    pet_color_label.pack()
+    pet_color_entry2.pack()
 
     Label(vet_update_pet, text="").pack()
     
     Button(vet_update_pet, text='Update Pet', width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = vet_pet_confirmation_popup).pack()
     Label(vet_update_pet, text="").pack()
-    Button(vet_update_pet, text="Return to User Menu", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = vet_menu_launch).pack()
+    Button(vet_update_pet, text="Return to Vet Menu", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = vet_menu_launch).pack()
 ###########################################################################################################################################################################
 
 #Admin Log In
