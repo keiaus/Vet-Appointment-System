@@ -223,18 +223,18 @@ def user_register():
  
     Label(account_create, text="Please enter details below", font='times 50 bold', bg="SpringGreen4", anchor=N, pady=50).pack(fill=BOTH)
     Label(account_create, text="").pack()
-    username_lable = Label(account_create, font='times 30', text="Username")
+    username_lable = Label(account_create, font='times 20', text="Username")
     username_lable.pack()
-    username_entry = Entry(account_create, font='times 30', textvariable=username)
+    username_entry = Entry(account_create, font='times 20', textvariable=username)
     username_entry.pack()
-    password_lable = Label(account_create, font='times 30', text="Password")
+    password_lable = Label(account_create, font='times 20', text="Password")
     password_lable.pack()
-    password_entry = Entry(account_create, font='times 30', textvariable=password, show='*')
+    password_entry = Entry(account_create, font='times 20', textvariable=password, show='*')
     password_entry.pack()
     Label(account_create, text="").pack()
-    Button(account_create, text="Register", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = register_user).pack()
+    Button(account_create, text="Register", bd=20, bg="SpringGreen4", width=20, font='times 15', command = register_user).pack()
     Label(account_create, text="").pack()
-    Button(account_create, text="Return to Main Menu", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = return_to_main).pack()
+    Button(account_create, text="Return to Main Menu", bd=20, bg="SpringGreen4", width=20, font='times 15', command = return_to_main).pack()
 
 # Registered user login menu
 def register_user():
@@ -309,21 +309,21 @@ def user_login():
     global username_login_entry
     global password_login_entry
  
-    Label(user_log_in, font="times 30", text="Username").pack()
-    username_login_entry = Entry(user_log_in, font="times 30", textvariable=username_verify)
+    Label(user_log_in, font="times 20", text="Username").pack()
+    username_login_entry = Entry(user_log_in, font="times 20", textvariable=username_verify)
     username_login_entry.pack()
     Label(user_log_in, text="").pack()
-    Label(user_log_in, font="times 30", text="Password").pack()
-    password_login_entry = Entry(user_log_in, font="times 30", textvariable=password_verify, show= '*')
+    Label(user_log_in, font="times 20", text="Password").pack()
+    password_login_entry = Entry(user_log_in, font="times 20", textvariable=password_verify, show= '*')
     password_login_entry.pack()
     Label(user_log_in, text="").pack()
-    Button(user_log_in, text="Login", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = user_login_verify).pack()
+    Button(user_log_in, text="Login", bd=20, bg="SpringGreen4", width=20, font='times 15', command = user_login_verify).pack()
     Label(user_log_in, text="").pack()
-    Button(user_log_in, text="Return to Main Menu", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = return_to_main).pack()
+    Button(user_log_in, text="Return to Main Menu", bd=20, bg="SpringGreen4", width=20, font='times 15', command = return_to_main).pack()
 
 #user_id1 = NONE
 # User login verification (checks that the entered user information matches a record in the UserLoginInfo table)
-counter = 0
+
 def user_login_verify():
     global label
     global username1
@@ -409,6 +409,7 @@ def user_update_account_menu():
     global state_entry
     global zip_entry
 
+    Label(user_update_info, text="User Update Account", font="times 50 bold", bg="SpringGreen4", anchor=N, pady=50).pack(fill=BOTH)
     Label(user_update_info, text="").pack()
     
     first_name_label = Label(user_update_info, text='First Name', font="times 15")
@@ -453,8 +454,9 @@ def user_update_account_menu():
 
     Label(user_update_info, text="", pady=30).pack()
     
-    Button(user_update_info, text='Submit', width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = user_update_account).pack()
-    Button(user_update_info, text="Return to User Menu", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = user_menu_launch).pack()
+    Button(user_update_info, text='Submit', bd=20, bg="SpringGreen4", width=20, font='times 15', command = user_update_account).pack()
+    Label(user_update_info, text="").pack()
+    Button(user_update_info, text="Return to User Menu", bd=20, bg="SpringGreen4", width=20, font='times 15', command = user_menu_launch).pack()
 ####################################################################################################################################################################
 
 # Menu that appears when the registered user clicks the update pet info button
@@ -570,9 +572,9 @@ def user_update_pet_menu():
 
     Label(user_update_pet_info, text="").pack()
     
-    Button(user_update_pet_info, text='Update Pet', width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = pet_confirmation_popup).pack()
+    Button(user_update_pet_info, text='Update Pet', bd=20, bg="SpringGreen4", width=20, font='times 15', command = pet_confirmation_popup).pack()
     Label(user_update_pet_info, text="").pack()
-    Button(user_update_pet_info, text="Return to User Menu", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = user_menu_launch).pack()
+    Button(user_update_pet_info, text="Return to User Menu", bd=20, bg="SpringGreen4", width=20, font='times 15', command = user_menu_launch).pack()
 
 ####################################################################################################################################################################
 
@@ -638,13 +640,13 @@ def user_update_pet():
 def user_after_login_menu():
     Label(user_menu, text="Select Your Choice", font='times 50 bold', bg='SpringGreen4', anchor=N, pady=50).pack(fill=BOTH)
     Label(user_menu, text="").pack()
-    Button(user_menu, text="Update Account Info", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command =lambda:user_update_button_clicked()).pack()
+    Button(user_menu, text="Update Account Info", bd=20, bg="SpringGreen4", width=20, font='times 15', command =lambda:user_update_button_clicked()).pack()
     Label(user_menu, text="").pack()
-    Button(user_menu, text="Update Pet Info", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command =lambda:user_update_pet_button_clicked()).pack()
+    Button(user_menu, text="Update Pet Info", bd=20, bg="SpringGreen4", width=20, font='times 15', command =lambda:user_update_pet_button_clicked()).pack()
     Label(user_menu, text="").pack()
-    Button(user_menu, text="Add New Pet", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command =lambda:user_pet_add_clicked()).pack()
+    Button(user_menu, text="Add New Pet", bd=20, bg="SpringGreen4", width=20, font='times 15', command =lambda:user_pet_add_clicked()).pack()
     Label(user_menu, text="").pack()
-    Button(user_menu, text="Log Out", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = return_to_main).pack()
+    Button(user_menu, text="Log Out", bd=20, bg="SpringGreen4", width=20, font='times 15', command = return_to_main).pack()
     
 ######################################################################################################################################
 
@@ -690,9 +692,9 @@ def pet_register():
 
     Label(user_pet_add, text="", pady=30).pack()
     
-    Button(user_pet_add, text='Register Pet', width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = register_pet).pack()
+    Button(user_pet_add, text='Register Pet', bd=20, bg="SpringGreen4", width=20, font='times 15', command = register_pet).pack()
     Label(user_pet_add, text="").pack()
-    Button(user_pet_add, text="Return to User Menu", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = user_menu_launch).pack()
+    Button(user_pet_add, text="Return to User Menu", bd=20, bg="SpringGreen4", width=20, font='times 15', command = user_menu_launch).pack()
 
 ######################################################################################################################################
 
@@ -750,17 +752,17 @@ def vet_login():
     global vet_username_login_entry
     global vet_password_login_entry
  
-    Label(vet_log_in, font="times 30", text="Username").pack()
-    vet_username_login_entry = Entry(vet_log_in, font="times 30", textvariable=vet_username_verify)
+    Label(vet_log_in, font="times 20", text="Username").pack()
+    vet_username_login_entry = Entry(vet_log_in, font="times 20", textvariable=vet_username_verify)
     vet_username_login_entry.pack()
     Label(vet_log_in, text="").pack()
-    Label(vet_log_in, font="times 30", text="Password").pack()
-    vet_password_login_entry = Entry(vet_log_in, font="times 30", textvariable=vet_password_verify, show= '*')
+    Label(vet_log_in, font="times 20", text="Password").pack()
+    vet_password_login_entry = Entry(vet_log_in, font="times 20", textvariable=vet_password_verify, show= '*')
     vet_password_login_entry.pack()
     Label(vet_log_in, text="").pack()
-    Button(vet_log_in, text="Login", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = vet_login_verify).pack()
+    Button(vet_log_in, text="Login", bd=20, bg="SpringGreen4", width=20, font='times 15', command = vet_login_verify).pack()
     Label(vet_log_in, text="").pack()
-    Button(vet_log_in, text="Return to Main Menu", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = return_to_main).pack()
+    Button(vet_log_in, text="Return to Main Menu", bd=20, bg="SpringGreen4", width=20, font='times 15', command = return_to_main).pack()
 
 # Vet login verification (checks that the entered vet information matches a record in VetLoginInfo table)
 def vet_login_verify():
@@ -813,13 +815,13 @@ def delete_vet_invalid_login():
 def vet_after_login_menu():
     Label(vet_menu, text="Select Your Choice", font='times 50 bold', bg='SpringGreen4', anchor=N, pady=50).pack(fill=BOTH)
     Label(vet_menu,text="").pack()
-    Button(vet_menu,text="Update Account Info", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command =lambda:vet_update_button_clicked()).pack()
+    Button(vet_menu,text="Update Account Info", bd=20, bg="SpringGreen4", width=20, font='times 15', command =lambda:vet_update_button_clicked()).pack()
     Label(vet_menu,text="").pack()
-    Button(vet_menu,text="Update Schedule Info", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = lambda:vet_update_schedule_clicked()).pack()
+    Button(vet_menu,text="Update Schedule Info", bd=20, bg="SpringGreen4", width=20, font='times 15', command = lambda:vet_update_schedule_clicked()).pack()
     Label(vet_menu,text="").pack()
-    Button(vet_menu, text="Update Pet Info", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = lambda:vet_update_pet_clicked()).pack()
+    Button(vet_menu, text="Update Pet Info", bd=20, bg="SpringGreen4", width=20, font='times 15', command = lambda:vet_update_pet_clicked()).pack()
     Label(vet_menu,text="").pack()
-    Button(vet_menu,text="Log Out", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = return_to_main).pack()
+    Button(vet_menu,text="Log Out", bd=20, bg="SpringGreen4", width=20, font='times 15', command = return_to_main).pack()
 ######################################################################################################################################
 
 # Menu that appears when the vet clicks the update account info button
@@ -851,6 +853,11 @@ def vet_update_account_menu():
     global vet_city_entry
     global vet_state_entry
     global vet_zip_entry
+
+    vet_page_header = Label(vet_update_info, text='Update Vet Account', font='times 50 bold', bg='SpringGreen4', anchor=N, pady=50)
+    vet_page_header.pack(fill='both')
+
+    Label(vet_update_info, text="").pack()
     
     vet_first_name_label = Label(vet_update_info, text='First Name', font="times 15")
     vet_first_name_entry = Entry(vet_update_info, textvariable=vet_first_name_var, font="times 20")
@@ -895,8 +902,9 @@ def vet_update_account_menu():
     
     Label(vet_update_info, text="").pack()
     
-    Button(vet_update_info, text='Submit', width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = vet_update_account).pack()
-    Button(vet_update_info, text="Return to Vet Menu", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = vet_menu_launch).pack()
+    Button(vet_update_info, text='Submit', bd=20, bg="SpringGreen4", width=20, font='times 15', command = vet_update_account).pack()
+    Label(vet_update_info, text="").pack()
+    Button(vet_update_info, text="Return to Vet Menu", bd=20, bg="SpringGreen4", width=20, font='times 15', command = vet_menu_launch).pack()
 
 # Takes inputs from vet_update_account_menu() and finds vet's LoginID from the VetLoginInfo table
 # to update the correct records in the VetAccountInfo table
@@ -954,6 +962,10 @@ def vet_update_schedule_menu():
    global saturday_entry
    global sunday_entry
 
+   vet_schedule_page_header = Label(vet_update_schedule, text='Update Vet Schedule', font='times 50 bold', bg='SpringGreen4', anchor=N, pady=50)
+   vet_schedule_page_header.pack(fill='both')
+
+   Label(vet_update_schedule, text="").pack()
 
    monday_label = Label(vet_update_schedule, text='Monday', font="times 15")
    monday_entry = Entry(vet_update_schedule, textvariable=monday, font="times 20")
@@ -992,8 +1004,9 @@ def vet_update_schedule_menu():
    
    Label(vet_update_schedule, text="").pack()
 
-   Button(vet_update_schedule, text='Submit', width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = vet_update_schedule_info).pack()
-   Button(vet_update_schedule, text="Return to Vet Menu", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = vet_menu_launch).pack()
+   Button(vet_update_schedule, text='Submit', bd=20, bg="SpringGreen4", width=20, font='times 15', command = vet_update_schedule_info).pack()
+   Label(vet_update_schedule, text="").pack()
+   Button(vet_update_schedule, text="Return to Vet Menu", bd=20, bg="SpringGreen4", width=20, font='times 15', command = vet_menu_launch).pack()
 
 # Takes inputs from vet_update_schedule_menu() and finds vet's LoginID from the VetLoginInfo table
 # to update the correct records in the VetScheduleInfo table
@@ -1026,7 +1039,7 @@ def vet_update_schedule_info():
 def vet_update_pet_info():
 
     Label(vet_update_pet, text = "").pack()
-    vet_update_pet_menu_label = Label(vet_update_pet, text = "Veterinarian Update Pet Menu", font = "times 15")
+    vet_update_pet_menu_label = Label(vet_update_pet, text = "Vet Update Pet Menu", font = "times 15")
     vet_update_pet_menu_label.pack()
 
     query= "SELECT Concat(UserID, ', ', UserFirstName, ', ', UserLastName) FROM USERACCOUNTINFO"
@@ -1103,9 +1116,9 @@ def vet_update_pet_info():
 
     Label(vet_update_pet, text="").pack()
     
-    Button(vet_update_pet, text='Update Pet', width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = vet_pet_confirmation_popup).pack()
+    Button(vet_update_pet, text='Update Pet', bd=20, bg="SpringGreen4", width=20, font='times 15', command = vet_pet_confirmation_popup).pack()
     Label(vet_update_pet, text="").pack()
-    Button(vet_update_pet, text="Return to Vet Menu", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = vet_menu_launch).pack()
+    Button(vet_update_pet, text="Return to Vet Menu", bd=20, bg="SpringGreen4", width=20, font='times 15', command = vet_menu_launch).pack()
 ###########################################################################################################################################################################
 
 #Admin Log In
@@ -1122,17 +1135,17 @@ def admin_login():
     global admin_username_login_entry
     global admin_password_login_entry
  
-    Label(admin_log_in, font="times 30", text="Username").pack()
-    admin_username_login_entry = Entry(admin_log_in, font="times 30", textvariable=admin_username_verify)
+    Label(admin_log_in, font="times 20", text="Username").pack()
+    admin_username_login_entry = Entry(admin_log_in, font="times 20", textvariable=admin_username_verify)
     admin_username_login_entry.pack()
     Label(admin_log_in, text="").pack()
-    Label(admin_log_in, font="times 30", text="Password").pack()
-    admin_password_login_entry = Entry(admin_log_in, font="times 30", textvariable=admin_password_verify, show= '*')
+    Label(admin_log_in, font="times 20", text="Password").pack()
+    admin_password_login_entry = Entry(admin_log_in, font="times 20", textvariable=admin_password_verify, show= '*')
     admin_password_login_entry.pack()
     Label(admin_log_in, text="").pack()
-    Button(admin_log_in, text="Login", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = admin_login_verify).pack()
+    Button(admin_log_in, text="Login", bd=20, bg="SpringGreen4", width=20, font='times 15', command = admin_login_verify).pack()
     Label(admin_log_in, text="").pack()
-    Button(admin_log_in, text="Return to Main Menu", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = return_to_main).pack()
+    Button(admin_log_in, text="Return to Main Menu", bd=20, bg="SpringGreen4", width=20, font='times 15', command = return_to_main).pack()
 
 ###################################################################################################################################################################################
 # Admin Log In Verification
@@ -1178,11 +1191,11 @@ def delete_admin_invalid_login():
 def admin_after_login_menu():
     Label(admin_menu, text="Select Your Choice", font='times 50 bold', bg='SpringGreen4', anchor=N, pady=50).pack(fill=BOTH)
     Label(admin_menu,text="").pack()
-    Button(admin_menu,text="Create a Vet Login", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command =lambda:admin_vet_create_clicked()).pack()
+    Button(admin_menu,text="Create a Vet Login", bd=20, bg="SpringGreen4", width=20, font='times 15', command =lambda:admin_vet_create_clicked()).pack()
     Label(admin_menu,text="").pack()
-    Button(admin_menu,text="Delete a Vet", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = lambda:admin_dropdown_clicked()).pack()
+    Button(admin_menu,text="Delete a Vet", bd=20, bg="SpringGreen4", width=20, font='times 15', command = lambda:admin_dropdown_clicked()).pack()
     Label(admin_menu,text="").pack()
-    Button(admin_menu,text="Log Out", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = return_to_main).pack()
+    Button(admin_menu,text="Log Out", bd=20, bg="SpringGreen4", width=20, font='times 15', command = return_to_main).pack()
     
 ################################################################################################################################################
 
@@ -1196,18 +1209,18 @@ def admin_register():
  
     Label(admin_create_vet, text="Please enter details below", font='times 50 bold', bg="SpringGreen4", anchor=N, pady=50).pack(fill=BOTH)
     Label(admin_create_vet, text="").pack()
-    username_label = Label(admin_create_vet, font='times 30', text="Username")
+    username_label = Label(admin_create_vet, font='times 20', text="Username")
     username_label.pack()
-    username_entry1 = Entry(admin_create_vet, font='times 30', textvariable=username4)
+    username_entry1 = Entry(admin_create_vet, font='times 20', textvariable=username4)
     username_entry1.pack()
-    password_label = Label(admin_create_vet, font='times 30', text="Password")
+    password_label = Label(admin_create_vet, font='times 20', text="Password")
     password_label.pack()
-    password_entry1 = Entry(admin_create_vet, font='times 30', textvariable=password4, show='*')
+    password_entry1 = Entry(admin_create_vet, font='times 20', textvariable=password4, show='*')
     password_entry1.pack()
     Label(admin_create_vet, text="").pack()
-    Button(admin_create_vet, text="Register", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = add_vet_creation).pack()
+    Button(admin_create_vet, text="Register", bd=20, bg="SpringGreen4", width=20, font='times 15', command = add_vet_creation).pack()
     Label(admin_create_vet, text="").pack()
-    Button(admin_create_vet, text="Return to Admin Menu", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = admin_menu_launch).pack()
+    Button(admin_create_vet, text="Return to Admin Menu", bd=20, bg="SpringGreen4", width=20, font='times 15', command = admin_menu_launch).pack()
 
 # Admin Vet Account Creation
 def add_vet_creation():
@@ -1323,9 +1336,9 @@ def admin_vet_dropdown_menu():
     
     #buttons
     Label(admin_vet_dropdown, text = "").pack()
-    Button(admin_vet_dropdown, text="Delete Vet", width = 20, height = 1, font = 'times 20', bd = 20, bg = 'SpringGreen4', command = admin_confirmation_popup).pack()
+    Button(admin_vet_dropdown, text="Delete Vet", bd=20, bg="SpringGreen4", width=20, font='times 15', command = admin_confirmation_popup).pack()
     Label(admin_vet_dropdown, text = "").pack()
-    Button(admin_vet_dropdown, text="Return to Main Menu", width = 20, height = 1, font = 'times 20', bd = 20, bg = 'SpringGreen4', command = admin_menu_launch).pack()
+    Button(admin_vet_dropdown, text="Return to Main Menu", bd=20, bg="SpringGreen4", width=20, font='times 15', command = admin_menu_launch).pack()
 
 ####################################################################################################################################################################
 
