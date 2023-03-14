@@ -1,7 +1,9 @@
 from tkinter import * # gui import
 import tkinter as tk # gui import
+from tkcalendar import Calendar # gui import (must install tkcalendar "pip install tkcalendar")
 from tkinter import ttk # necessary for comboboxes
 import pyodbc # necessary for aws rds sql server connection
+
 
 #Connection to AWS RDS SQL Server (required to run properly)
 connection = pyodbc.connect('DRIVER={SQL Server};PORT=1433;SERVER=database-1.ci7iawyx7c5x.us-east-1.rds.amazonaws.com;DATABASE=VetAppointmentSystem;UID=Arthur;PWD=123;')
@@ -10,6 +12,7 @@ cursor = connection.cursor()
 # Used to show each frame as the menu is interacted with
 def vetapp():
     create_vetapp()
+    calendar_display()
     user_register()
     user_login()
     user_after_login_menu()
@@ -57,6 +60,11 @@ def user_update_pet_button_clicked():
 def account_creation_clicked():
     window.title("Create Your Account")
     show_frame(account_create)
+
+# Opens the calendar menu on click (on base menu frame)
+def calendar_clicked():
+    window.title("Calendar")
+    show_frame(calendar)
 
 # Opens the login menu on click (on base menu frame)
 def user_log_in_clicked():
@@ -192,6 +200,7 @@ window.columnconfigure(0, weight=1)
 
 account_page = Frame(window)
 account_create = Frame(window)
+calendar = Frame(window)
 user_log_in = Frame(window)
 user_menu = Frame(window)
 user_pet_menu = Frame(window)
@@ -211,7 +220,7 @@ admin_create_vet = Frame(window)
 admin_delete_vet = Frame(window)
 admin_vet_dropdown = Frame(window)
 
-for frame in (account_page, account_create, user_log_in, user_pet_menu, user_pet_add,  user_menu, user_update_info, user_update_pet_info, 
+for frame in (account_page, account_create, calendar, user_log_in, user_pet_menu, user_pet_add,  user_menu, user_update_info, user_update_pet_info, 
               user_update_pet_dropdown, vet_log_in, vet_menu, vet_update_info, vet_update_schedule, vet_update_pet,
               admin_log_in, admin_menu, admin_update_info, admin_create_vet, admin_delete_vet, admin_vet_dropdown):
     frame.grid(row=0, column=0, sticky='nsew')
@@ -238,8 +247,24 @@ def create_vetapp():
     admin_log_button = Button(account_page, text='Admin Log In', bd=20, bg="SpringGreen4", width=20, font='times 15', command=lambda:admin_log_in_clicked())
     admin_log_button.pack(pady=15, side=TOP)
 
+    calendar_button = Button(account_page, text='Calendar', bd=20, bg="SpringGreen4", width=20, font='times 15', command=lambda:calendar_clicked())
+    calendar_button.pack(pady=15, side=TOP)
+
     close_button = Button(account_page, text='Close System', bd=20, bg="SpringGreen4", width=20, font='times 15', command=lambda:close_clicked())
     close_button.pack(pady=15, side=TOP)
+
+def calendar_display():
+    cal = Calendar(calendar, selectmode = 'day', year = 2023, month = 3, day = 14)
+    cal.pack(pady = 250)
+
+    def grad_date():
+        date.config(calendar, text = "Selected Date is: " + cal.get_date())
+    
+    # Add Button and Label
+    Button(calendar, text = "Get Date", command = grad_date).pack()
+    
+    date = Label(calendar, text = "")
+    date.pack(pady = 20)
 
 # User registration menu
 def user_register():
@@ -1113,7 +1138,6 @@ def vet_update_pet_info():
 
     cb2 = ttk.Combobox(vet_update_pet, values=my_list2, width=15,)
     cb2.pack()
-    
     
     pet_name_label = Label(vet_update_pet, text='Pet Name', font="times 15")
     pet_name_entry2 = Entry(vet_update_pet, font="times 20", width=20, textvariable=pet_name_var)
