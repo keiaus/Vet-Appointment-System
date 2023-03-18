@@ -1,2 +1,3 @@
 # Ignores all files named clientServer.py
 clientServer.py
+__pycache__
