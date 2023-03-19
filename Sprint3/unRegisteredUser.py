@@ -2,14 +2,14 @@ from tkinter import * # gui import
 import tkinter as tk # gui import
 from tkcalendar import Calendar # gui import (must install tkcalendar "pip install tkcalendar")
 from tkinter import ttk # necessary for comboboxes
-from main import account_create, username_taken, connection, cursor
 
 class UnRegisteredUser(Tk):
     
     # This function passes in one parameter and is used as our main method to call each function 
     # in our system
-    def __init__(self):
+    def __init__(self, window):
         super().__init__()
+        self.window = window
 
     # User registration menu
     def user_register():

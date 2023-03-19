@@ -68,7 +68,7 @@ class GUI(Tk):
                 user_update_pet_dropdown, vet_log_in, vet_menu, vet_update_info, vet_update_schedule, vet_update_pet,
                 admin_log_in, admin_menu, admin_update_info, admin_create_vet, admin_delete_vet, admin_vet_dropdown):
         frame.grid(row=0, column=0, sticky='nsew')
-        
+
     # Used to show each frame as the menu is interacted with
     def show_frame(frame):
         frame.tkraise()
@@ -266,7 +266,6 @@ class GUI(Tk):
     def close_clicked():
         GUI.window.destroy()
 
-
     global label
     label = None
     
@@ -298,6 +297,6 @@ class GUI(Tk):
 
     calendar_display(window, calendar)
     show_frame(account_page)
-
+    
 gui = GUI.window
 gui.mainloop()
