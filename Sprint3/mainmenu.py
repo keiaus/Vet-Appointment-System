@@ -48,34 +48,6 @@ def user_log_in_clicked():
     window.title("User Log In")
     show_frame(user_log_in)
 
-# def admin_log_in_clicked():
-#     window.title("Admin Log In")
-#     show_frame(admin_log_in)
-
-# def admin_menu_launch():
-#     window.title("Admin Menu")
-#     if(isinstance(label,Label)):
-#         label.destroy()
-#         clear_admin_frame()
-#         z.admin_vet_dropdown_menu()
-#         show_frame(admin_menu)
-#     else:
-#         clear_admin_frame()
-#         z.admin_vet_dropdown_menu()
-#         show_frame(admin_menu)
-
-# def admin_dropdown_clicked():
-#     window.title("Admin Vet Delete")
-#     if(isinstance(label,Label)):
-#         label.destroy()
-#         show_frame(admin_vet_dropdown)
-#     else:
-#         show_frame(admin_vet_dropdown)
-
-# def admin_vet_create_clicked():
-#     window.title("Create a Vet")
-#     show_frame(admin_create_vet)
-
 # Returns to the base account page on click
 def return_to_main():
     window.title("Home")
@@ -97,21 +69,6 @@ def clear_all_frame():
     user_update_pet_info.pack_forget()
     vet_update_pet.pack_forget()
     admin_vet_dropdown.pack_forget()
-
-# def clear_user_frame():
-#     for widgets in user_update_pet_info.winfo_children():
-#         widgets.destroy()
-#     user_update_pet_info.pack_forget()
-
-# def clear_vet_frame():
-#     for widgets in vet_update_pet.winfo_children():
-#         widgets.destroy()
-#     vet_update_pet.pack_forget()
-
-# def clear_admin_frame():
-#     for widgets in admin_vet_dropdown.winfo_children():
-#         widgets.destroy()
-#     admin_vet_dropdown.pack_forget()
     
 # Closes the menu
 def close_clicked():
@@ -165,6 +122,24 @@ def calendar_display():
     date = Label(calendar, text = "")
     date.pack(pady = 20)
 
+    global cal_view_vet_menu_label
+
+    Label(calendar, text = "").pack()
+    cal_view_vet_menu_label = Label(calendar, text = "View/Delete Veterinarians Menu", font = "times 15")
+    cal_view_vet_menu_label.pack()
+
+    query= "SELECT Concat(VetID, ', ', VetLoginID, ', ', VetFirstName, ', ', VetLastName) FROM VETACCOUNTINFO"
+
+    my_data = cursor.execute(query) # SQLAlchem engine result
+    my_list = [r for r, in my_data] # create a  list 
+
+    sel=tk.StringVar()
+
+    cb1 = ttk.Combobox(calendar, values=my_list,width=15,textvariable = sel)
+    cb1.pack(padx=30,pady=30)
+
+
+
 
 # **Don't touch**
 # Main window on program start
@@ -205,195 +180,6 @@ def username_taken():
 # Closes the username_taken() pop-up
 def delete_username_taken():
     username_taken_screen.destroy()
-
-# # ###########################################################################################################################################################################
-
-# #Admin Log In
-# def admin_login():
-#     Label(admin_log_in, text="Please enter details below to login", font="times 50 bold", bg="SpringGreen4", anchor=N, pady=50).pack(fill=BOTH)
-#     Label(admin_log_in, text="").pack()
- 
-#     global admin_username_verify
-#     global admin_password_verify
- 
-#     admin_username_verify = StringVar()
-#     admin_password_verify = StringVar()
- 
-#     global admin_username_login_entry
-#     global admin_password_login_entry
- 
-#     Label(admin_log_in, font="times 30", text="Username").pack()
-#     admin_username_login_entry = Entry(admin_log_in, font="times 30", textvariable=admin_username_verify)
-#     admin_username_login_entry.pack()
-#     Label(admin_log_in, text="").pack()
-#     Label(admin_log_in, font="times 30", text="Password").pack()
-#     admin_password_login_entry = Entry(admin_log_in, font="times 30", textvariable=admin_password_verify, show= '*')
-#     admin_password_login_entry.pack()
-#     Label(admin_log_in, text="").pack()
-#     Button(admin_log_in, text="Login", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = admin_login_verify).pack()
-#     Label(admin_log_in, text="").pack()
-#     Button(admin_log_in, text="Return to Main Menu", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = return_to_main).pack()
-
-# ###################################################################################################################################################################################
-# # Admin Log In Verification
-# def admin_login_verify():
-#     global admin_login_ID
-#     global label
-#     global username3
-#     global password3
-#     username3 = admin_username_verify.get()
-#     password3 = admin_password_verify.get()
-#     admin_username_login_entry.delete(0, END)
-#     admin_password_login_entry.delete(0, END)
-#     admin_login_ID = NONE
-#     if(username3 == "" or password3 == ""):
-#         admin_invalid_login()
-#     else:
-#         cursor.execute("SELECT AdminLoginID FROM AdminLoginInfo WHERE AdminUserName = ? AND AdminPassword = ?",username3, password3)
-#         admin_login_ID = cursor.fetchone()
-#         if(admin_login_ID != None):
-#             admin_menu_launch()
-#         else:
-#             admin_invalid_login()
-
-# ###################################################################################################################################################################################
-
-# # admin invalid login
-# def admin_invalid_login():
-#     global invalid_login_screen
-#     invalid_login_screen = Toplevel(window)
-#     invalid_login_screen.title("Alert")
-#     invalid_login_screen.geometry("300x150")
-#     Label(invalid_login_screen, text="Invalid Login ").pack()
-#     Button(invalid_login_screen, text="OK", command=delete_admin_invalid_login).pack()
-
-# # Removes the admin_invalid_login() pop-up on click
-# def delete_admin_invalid_login():
-#     invalid_login_screen.destroy()
-
-# ######################################################################################################################################
-
-# # Menu that appears after successful admin login
-# #NEEEDS BUTTON REPLACEMENT
-# def admin_after_login_menu():
-#     Label(admin_menu, text="Select Your Choice", font='times 50 bold', bg='SpringGreen4', anchor=N, pady=50).pack(fill=BOTH)
-#     Label(admin_menu,text="").pack()
-#     Button(admin_menu,text="Create a Vet Login", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command =lambda:admin_vet_create_clicked()).pack()
-#     Label(admin_menu,text="").pack()
-#     Button(admin_menu,text="Delete a Vet", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = lambda:admin_dropdown_clicked()).pack()
-#     Label(admin_menu,text="").pack()
-#     Button(admin_menu,text="Log Out", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = return_to_main).pack()
-    
-# ################################################################################################################################################
-
-# def admin_register():
-#     global username4
-#     global password4
-#     global username_entry1
-#     global password_entry1 
-#     username4 = StringVar()
-#     password4 = StringVar()
- 
-#     Label(admin_create_vet, text="Please enter details below", font='times 50 bold', bg="SpringGreen4", anchor=N, pady=50).pack(fill=BOTH)
-#     Label(admin_create_vet, text="").pack()
-#     username_label = Label(admin_create_vet, font='times 30', text="Username")
-#     username_label.pack()
-#     username_entry1 = Entry(admin_create_vet, font='times 30', textvariable=username4)
-#     username_entry1.pack()
-#     password_label = Label(admin_create_vet, font='times 30', text="Password")
-#     password_label.pack()
-#     password_entry1 = Entry(admin_create_vet, font='times 30', textvariable=password4, show='*')
-#     password_entry1.pack()
-#     Label(admin_create_vet, text="").pack()
-#     Button(admin_create_vet, text="Register", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = add_vet_creation).pack()
-#     Label(admin_create_vet, text="").pack()
-#     Button(admin_create_vet, text="Return to Admin Menu", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = admin_menu_launch).pack()
-
-# # Admin Vet Account Creation
-# def add_vet_creation():
-#     global label
-#     global vet_login_ID
-#     global vet_ID
-#     username_info = username4.get()
-#     password_info = password4.get()
-    
-#     vet_login_ID = None
-#     vet_ID = None
-#     if(username_info == "" or password_info == ""):
-#         username_entry1.delete(0, END)
-#         password_entry1.delete(0, END)
-#         empty_login_info()
-#     else:
-#         cursor.execute("SELECT VetLoginID FROM VetLoginInfo WHERE VetUserName = ? AND VetPassword = ?", username_info, password_info)
-#         vet_login_ID = cursor.fetchone()
-#         if(vet_login_ID == None):
-#             cursor.execute("INSERT INTO VetLoginInfo VALUES(?,?)", username_info, password_info)
-#             cursor.execute("SELECT VetLoginID FROM VetLoginInfo WHERE VetUserName = ? AND VetPassword = ?", username_info, password_info)
-#             vet_login_ID = cursor.fetchone() 
-#             cursor.execute("INSERT INTO VetAccountInfo(VetLoginID) VALUES(?)", vet_login_ID)
-#             cursor.execute("SELECT VetID FROM VetAccountInfo WHERE VetLoginID =?", vet_login_ID)
-#             vet_ID = cursor.fetchone()
-#             cursor.execute("INSERT INTO VetScheduleInfo(VetID) VALUES(?)", vet_ID)
-#             cursor.commit()
-#             username_entry1.delete(0, END)
-#             password_entry1.delete(0, END)
- 
-#             label = Label(admin_create_vet, text="Registration Successful", fg="green", font="times 20")
-#             label.pack() 
-#         else:
-#             username_entry1.delete(0, END)
-#             password_entry1.delete(0, END)
-#             username_taken()    
-
-# # Menu that appears after View Veterinarians is clicked by an admin
-# def admin_vet_dropdown_menu():
-#     global admin_view_vet_menu_label
-    
-#     Label(admin_vet_dropdown, text = "").pack()
-#     admin_view_vet_menu_label = Label(admin_vet_dropdown, text = "View/Delete Veterinarians Menu", font = "times 15")
-#     admin_view_vet_menu_label.pack()
-
-#     query= "SELECT Concat(VetID, ', ', VetLoginID, ', ', VetFirstName, ', ', VetLastName) FROM VETACCOUNTINFO"
-                
-#     my_data = cursor.execute(query) # SQLAlchem engine result
-#     my_list = [r for r, in my_data] # create a  list 
-   
-#     sel=tk.StringVar()
-
-#     cb1 = ttk.Combobox(admin_vet_dropdown, values=my_list,width=15,textvariable = sel)
-#     cb1.pack(padx=30,pady=30)
-
-#     def admin_confirmation_popup():
-#         global admin_confirmation
-#         admin_confirmation = Toplevel(window)
-#         admin_confirmation.title("Alert")
-#         admin_confirmation.geometry("300x150")
-#         Label(admin_confirmation, text=f'You selected {cb1.get()}.').pack()
-#         Button(admin_confirmation, text="Delete", command=admin_confirmation_del).pack()
-#         Button(admin_confirmation, text="No", command=admin_confirmation_des).pack()
-
-#     def admin_confirmation_del():
-#         global label
-#         sel = cb1.get().split(", ")
-#         cursor.execute("DELETE FROM VetScheduleInfo where VetID=?", sel[0])
-#         cursor.execute("DELETE FROM VetAccountInfo WHERE VetID=?", sel[0]) 
-#         cursor.execute("DELETE FROM VetLoginInfo WHERE VetLoginID=?", sel[1])
-#         cursor.commit()
-#         label = Label(admin_vet_dropdown, text ="Successfully deleted!")
-#         label.pack()
-#         cb1.set('')
-#         admin_confirmation_des()
-    
-#     def admin_confirmation_des():
-#         admin_confirmation.destroy()
-    
-#     #buttons
-#     Label(admin_vet_dropdown, text = "").pack()
-#     Button(admin_vet_dropdown, text="Delete Vet", width = 20, height = 1, font = 'times 20', bd = 20, bg = 'SpringGreen4', command = admin_confirmation_popup).pack()
-#     Label(admin_vet_dropdown, text = "").pack()
-#     Button(admin_vet_dropdown, text="Return to Admin Menu", width = 20, height = 1, font = 'times 20', bd = 20, bg = 'SpringGreen4', command = admin_menu_launch).pack()
-
-# ####################################################################################################################################################################
 
 # Main window on program start (loops until closed)
 vetapp()
