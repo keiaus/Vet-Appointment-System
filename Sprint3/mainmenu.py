@@ -116,33 +116,24 @@ z = admin(window, account_page, admin_log_in, admin_menu, admin_update_info, adm
 
 label = None
     ##on click
-def updateLabel(event):
-    seldate.config(text = "Selected Date: " + cal.get_date())
+
 
 def calendar_display():
-    cal = Calendar(calendar,mindate = datetime(2020, 1, 1),
-                          maxdate = datetime(2023, 12, 30),
-                          showweeknumbers = False,
-                          showothermonthdays = False,
-                          background = "green",
-                          foreground = "white",
-                          selectbackground = "red", 
-                          normalbackground = "lightgreen",
-                          weekendbackground = "darkgreen",
-                          weekendforeground = "white")
-    cal.pack()
- 
-    ##date = Label(calendar, text = "")
-    ##date.pack(pady = 20)
+    cal = Calendar(calendar, selectmode = 'day', year = 2023, month = 3, day = 14)
+    cal.pack(pady = 300)
+    
+    date = Label(calendar, text = "")
+    date.pack(pady = 20)
 
-   ## cal.pack()
- 
+    cal.pack()
+    def updateLabel(event):
+        label.config(text = "Selected Date: " + cal.get_date())
     cal.bind("<<CalendarSelected>>", updateLabel)
  
-    seldate = tk.Label(calendar, text = "Selected Date: ")
-    seldate.pack()
+    label = tk.Label(calendar, text = "Selected Date: ")
+    label.pack()
 
-
+    
 
 
     ##drop down for vets
