@@ -2,10 +2,17 @@ from tkinter import * # gui import
 import tkinter as tk # gui import
 from tkinter import ttk # necessary for comboboxes
 import pyodbc # necessary for aws rds sql server connection
+<<<<<<< HEAD
 from userfile import *
 from vetfile import *
 from adminfile import *
 from calendar import *
+=======
+from tkcalendar import Calendar # gui import (must install tkcalendar "pip install tkcalendar")
+from userfile import *
+from vetfile import *
+from adminfile import *
+>>>>>>> origin/workingCal.3.20.23.vetproj
 #Connection to AWS RDS SQL Server (required to run properly)
 connection = pyodbc.connect('DRIVER={SQL Server};PORT=1433;SERVER=database-1.ci7iawyx7c5x.us-east-1.rds.amazonaws.com;DATABASE=VetAppointmentSystem;UID=Arthur;PWD=123;')
 cursor = connection.cursor()
@@ -13,6 +20,10 @@ cursor = connection.cursor()
 # Used to show each frame as the menu is interacted with
 def vetapp():
     create_vetapp()
+<<<<<<< HEAD
+=======
+    calendar_display()
+>>>>>>> origin/workingCal.3.20.23.vetproj
     x.user_register()
     x.user_login()
     x.user_after_login_menu()
@@ -27,6 +38,15 @@ def vetapp():
     z.admin_after_login_menu()
     show_frame(account_page)
 
+<<<<<<< HEAD
+=======
+# Opens the calendar menu on click (on base menu frame)
+def calendar_clicked():
+    window.title("Calendar")
+    show_frame(calendar)
+
+
+>>>>>>> origin/workingCal.3.20.23.vetproj
 # Used to show each frame as the menu is interacted with
 def show_frame(frame):
     frame.tkraise()
@@ -41,6 +61,7 @@ def user_log_in_clicked():
     window.title("User Log In")
     show_frame(user_log_in)
 
+<<<<<<< HEAD
 # def admin_log_in_clicked():
 #     window.title("Admin Log In")
 #     show_frame(admin_log_in)
@@ -69,6 +90,8 @@ def user_log_in_clicked():
 #     window.title("Create a Vet")
 #     show_frame(admin_create_vet)
 
+=======
+>>>>>>> origin/workingCal.3.20.23.vetproj
 # Returns to the base account page on click
 def return_to_main():
     window.title("Home")
@@ -90,6 +113,7 @@ def clear_all_frame():
     user_update_pet_info.pack_forget()
     vet_update_pet.pack_forget()
     admin_vet_dropdown.pack_forget()
+<<<<<<< HEAD
 
 # def clear_user_frame():
 #     for widgets in user_update_pet_info.winfo_children():
@@ -105,6 +129,8 @@ def clear_all_frame():
 #     for widgets in admin_vet_dropdown.winfo_children():
 #         widgets.destroy()
 #     admin_vet_dropdown.pack_forget()
+=======
+>>>>>>> origin/workingCal.3.20.23.vetproj
     
 # Closes the menu
 def close_clicked():
@@ -120,6 +146,10 @@ window.columnconfigure(0, weight=1)
 
 account_page = Frame(window)
 account_create = Frame(window)
+<<<<<<< HEAD
+=======
+calendar = Frame(window)
+>>>>>>> origin/workingCal.3.20.23.vetproj
 user_log_in = Frame(window)
 user_menu = Frame(window)
 user_pet_menu = Frame(window)
@@ -138,7 +168,10 @@ admin_update_info = Frame(window)
 admin_create_vet = Frame(window)
 admin_delete_vet = Frame(window)
 admin_vet_dropdown = Frame(window)
+<<<<<<< HEAD
 calendar = Frame(window)
+=======
+>>>>>>> origin/workingCal.3.20.23.vetproj
 
 for frame in (account_page, account_create, user_log_in, user_pet_menu, user_pet_add,  user_menu, user_update_info, user_update_pet_info, 
               user_update_pet_dropdown, vet_log_in, vet_menu, vet_update_info, vet_update_schedule, vet_update_pet,
@@ -150,6 +183,7 @@ y = vet(window, account_page, vet_log_in, vet_menu, vet_update_info, vet_update_
 z = admin(window, account_page, admin_log_in, admin_menu, admin_update_info, admin_create_vet, admin_delete_vet, admin_vet_dropdown)
 
 label = None
+<<<<<<< HEAD
 # **Don't touch**
 # Main window on program start
 
@@ -159,6 +193,37 @@ def calendar_clicked():
     window.title("Calendar")
     show_frame(calendar)
 
+=======
+
+def calendar_display():
+    cal = Calendar(calendar, selectmode = 'day', year = 2023, month = 3, day = 14)
+    cal.pack(pady = 300)
+    
+    date = Label(calendar, text = "")
+    date.pack(pady = 20)
+
+    global cal_view_vet_menu_label
+
+    Label(calendar, text = "").pack()
+    cal_view_vet_menu_label = Label(calendar, text = "View/Delete Veterinarians Menu", font = "times 15")
+    cal_view_vet_menu_label.pack()
+
+    query= "SELECT Concat(VetID, ', ', VetLoginID, ', ', VetFirstName, ', ', VetLastName) FROM VETACCOUNTINFO"
+
+    my_data = cursor.execute(query) # SQLAlchem engine result
+    my_list = [r for r, in my_data] # create a  list 
+
+    sel=tk.StringVar()
+
+    cb1 = ttk.Combobox(calendar, values=my_list,width=15,textvariable = sel)
+    cb1.pack(padx=30,pady=30)
+
+
+
+
+# **Don't touch**
+# Main window on program start
+>>>>>>> origin/workingCal.3.20.23.vetproj
 def create_vetapp():
     account_page_header = Label(account_page, text='Vet Appointment System', font='times 50 bold', bg='SpringGreen4', anchor=N, pady=50)
     account_page_header.pack(fill='both')
@@ -184,8 +249,11 @@ def create_vetapp():
     close_button.pack(pady=15, side=TOP)
 
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> origin/workingCal.3.20.23.vetproj
 # Tells the user that the username they're trying to register with was taken
 def username_taken():
     global username_taken_screen
@@ -199,6 +267,7 @@ def username_taken():
 def delete_username_taken():
     username_taken_screen.destroy()
 
+<<<<<<< HEAD
 # # ###########################################################################################################################################################################
 
 # #Admin Log In
@@ -392,5 +461,8 @@ def delete_username_taken():
 
 
 
+=======
+# Main window on program start (loops until closed)
+>>>>>>> origin/workingCal.3.20.23.vetproj
 vetapp()
 window.mainloop()

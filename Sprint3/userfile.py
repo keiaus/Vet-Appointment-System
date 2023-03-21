@@ -9,7 +9,6 @@ cursor = connection.cursor()
 
 label = None
 class user():
-    
     def __init__(self, window, account_page, account_create, user_log_in, user_pet_menu, user_pet_add,  user_menu, user_update_info, user_update_pet_info, user_update_pet_dropdown):
         super().__init__()
         self.window = window
