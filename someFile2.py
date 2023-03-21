@@ -1,3 +1,0 @@
-from someFile import *
-
-AddTwoNumbers()
