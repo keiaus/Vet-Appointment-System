@@ -3,7 +3,8 @@ import tkinter as tk # gui import
 from tkinter import ttk # necessary for comboboxes
 import pyodbc # necessary for aws rds sql server connection
 from tkcalendar import Calendar # gui import (must install tkcalendar "pip install tkcalendar")
-from userfile import *
+from datetime import datetime
+from userfile import * 
 from vetfile import *
 from adminfile import *
 #Connection to AWS RDS SQL Server (required to run properly)
@@ -114,14 +115,37 @@ y = vet(window, account_page, vet_log_in, vet_menu, vet_update_info, vet_update_
 z = admin(window, account_page, admin_log_in, admin_menu, admin_update_info, admin_create_vet, admin_delete_vet, admin_vet_dropdown)
 
 label = None
+    ##on click
+def updateLabel(event):
+    seldate.config(text = "Selected Date: " + cal.get_date())
 
 def calendar_display():
-    cal = Calendar(calendar, selectmode = 'day', year = 2023, month = 3, day = 14)
-    cal.pack(pady = 300)
-    
-    date = Label(calendar, text = "")
-    date.pack(pady = 20)
+    cal = Calendar(calendar,mindate = datetime(2020, 1, 1),
+                          maxdate = datetime(2023, 12, 30),
+                          showweeknumbers = False,
+                          showothermonthdays = False,
+                          background = "green",
+                          foreground = "white",
+                          selectbackground = "red", 
+                          normalbackground = "lightgreen",
+                          weekendbackground = "darkgreen",
+                          weekendforeground = "white")
+    cal.pack()
+ 
+    ##date = Label(calendar, text = "")
+    ##date.pack(pady = 20)
 
+   ## cal.pack()
+ 
+    cal.bind("<<CalendarSelected>>", updateLabel)
+ 
+    seldate = tk.Label(calendar, text = "Selected Date: ")
+    seldate.pack()
+
+
+
+
+    ##drop down for vets
     global cal_view_vet_menu_label
 
     Label(calendar, text = "").pack()
@@ -137,6 +161,7 @@ def calendar_display():
 
     cb1 = ttk.Combobox(calendar, values=my_list,width=15,textvariable = sel)
     cb1.pack(padx=30,pady=30)
+
 
 
 
