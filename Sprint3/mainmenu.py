@@ -115,12 +115,21 @@ z = admin(window, account_page, admin_log_in, admin_menu, admin_update_info, adm
 
 label = None
 
+# This function displays the calendar
 def calendar_display():
-    cal = Calendar(calendar, selectmode = 'day', year = 2023, month = 3, day = 14)
+
+    def on_click():
+        day_clicked = cal._on_click
+        day_clicked.__getattribute__
+
+    cal = Calendar(calendar, selectmode = 'day', year = 2023, month = 3, day = 20)
     cal.pack(pady = 300)
     
     date = Label(calendar, text = "")
-    date.pack(pady = 20)
+    date.pack(pady = 5)
+
+    user_day_selected = Label(calendar, text=f"{cal._sel_date}")
+    user_day_selected.pack()
 
     global cal_view_vet_menu_label
 
@@ -137,9 +146,6 @@ def calendar_display():
 
     cb1 = ttk.Combobox(calendar, values=my_list,width=15,textvariable = sel)
     cb1.pack(padx=30,pady=30)
-
-
-
 
 # **Don't touch**
 # Main window on program start
