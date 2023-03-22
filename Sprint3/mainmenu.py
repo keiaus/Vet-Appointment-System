@@ -3,7 +3,8 @@ import tkinter as tk # gui import
 from tkinter import ttk # necessary for comboboxes
 import pyodbc # necessary for aws rds sql server connection
 from tkcalendar import Calendar # gui import (must install tkcalendar "pip install tkcalendar")
-from userfile import *
+from datetime import datetime
+from userfile import * 
 from vetfile import *
 from adminfile import *
 #Connection to AWS RDS SQL Server (required to run properly)
@@ -114,30 +115,47 @@ y = vet(window, account_page, vet_log_in, vet_menu, vet_update_info, vet_update_
 z = admin(window, account_page, admin_log_in, admin_menu, admin_update_info, admin_create_vet, admin_delete_vet, admin_vet_dropdown)
 
 label = None
+    ##on click
+
 
 # This function displays the calendar
 def calendar_display():
-
-    def on_click():
-        day_clicked = cal._on_click
-        day_clicked.__getattribute__
-
-    cal = Calendar(calendar, selectmode = 'day', year = 2023, month = 3, day = 20)
+    cal = Calendar(calendar, selectmode = 'day', year = 2023, month = 3, day = 14)
     cal.pack(pady = 300)
     
     date = Label(calendar, text = "")
-    date.pack(pady = 5)
+    date.pack(pady = 20)
 
-    user_day_selected = Label(calendar, text=f"{cal._sel_date}")
-    user_day_selected.pack()
+    cal.pack()
+    
+    query= "SELECT Concat(VetID, ', ', VetLoginID, ', ', VetFirstName, ', ', VetLastName) FROM VETACCOUNTINFO"
 
+    ##onclick date
+    def updateLabel(event):
+
+        def on_click(self, my_list):
+            self.my_list = my_list
+            selected_vet = f'{my_list[0]}'
+            return selected_vet
+
+        label.config(text = "Selected Date: " + cal.get_date())
+        t.config(text = "Selected Vet: " + on_click())
+    
+    cal.bind("<<CalendarSelected>>", updateLabel)
+ 
+    label = tk.Label(calendar, text = "Selected Date: ")
+
+    label.pack()
+    t = tk.Label(calendar, text = "Selected Date: ")
+    t.pack()
+
+
+    ##drop down for vets
     global cal_view_vet_menu_label
 
     Label(calendar, text = "").pack()
     cal_view_vet_menu_label = Label(calendar, text = "View/Delete Veterinarians Menu", font = "times 15")
     cal_view_vet_menu_label.pack()
-
-    query= "SELECT Concat(VetID, ', ', VetLoginID, ', ', VetFirstName, ', ', VetLastName) FROM VETACCOUNTINFO"
 
     my_data = cursor.execute(query) # SQLAlchem engine result
     my_list = [r for r, in my_data] # create a  list 
@@ -146,6 +164,7 @@ def calendar_display():
 
     cb1 = ttk.Combobox(calendar, values=my_list,width=15,textvariable = sel)
     cb1.pack(padx=30,pady=30)
+
 
 # **Don't touch**
 # Main window on program start
