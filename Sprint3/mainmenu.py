@@ -132,12 +132,6 @@ def calendar_display():
 
     ##onclick date
     def updateLabel(event):
-
-        def on_click(self, my_list):
-            self.my_list = my_list
-            selected_vet = f'{my_list[0]}'
-            return selected_vet
-
         label.config(text = "Selected Date: " + cal.get_date())
         t.config(text = "Selected Vet: " + on_click())
     
@@ -164,6 +158,10 @@ def calendar_display():
 
     cb1 = ttk.Combobox(calendar, values=my_list,width=15,textvariable = sel)
     cb1.pack(padx=30,pady=30)
+
+    def on_click():
+        selected_vet = f'{my_list}'
+        return selected_vet
 
 
 # **Don't touch**
