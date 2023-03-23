@@ -30,12 +30,15 @@ class CalendarUtils():
         calendar_display_frame.pack(side = "top", fill = "x")
 
         cal = Calendar(calendar_display_frame, selectmode = 'day', year = 2023, month = 3, day = 14)
-        spacer_label = tk.Label(calendar_display_frame, text = "") #Makes an empty label to the right of the calendar_frame and its contents to create space between the calendar and the date label
-        date_label_2 = tk.Label(calendar_display_frame, text = f'Selected Date: {cal.get_date()}')
+        date_label_2 = tk.Label(calendar_display_frame, text = f'Selected Date: {cal.get_date()}', font="Times 30 bold")
+        vet_label = tk.Label(calendar_display_frame, text = f'Selected Vet: {cal.get_date()}', font="Times 30 bold")
+        vet_label_2 = tk.Label(calendar_display_frame, text = "Test", font="Times 30 bold") # Displays the vet selected
+        # vet_label_2 = tk.Label(calendar_display_frame, text = f'{on_click()}', font="Times 30 bold") # Displays the vet selected
 
-        cal.grid(row=0, column = 2)
-        spacer_label.grid(row = 0, column = 3)
-        date_label_2.grid(row = 0, column = 3)
+        cal.grid(row=3, column = 2)
+        date_label_2.grid(row = 0, column = 5)
+        vet_label.grid(row=1, column=5)
+        vet_label_2.grid(row=2, column=5)
 
         calendar_display_frame.grid_columnconfigure(0, weight=1)
         calendar_display_frame.grid_columnconfigure(5, weight=1)
@@ -45,34 +48,37 @@ class CalendarUtils():
         # Onclick date
         def updateLabel(event):
             date_label_2.config(text = "Selected Date: " + cal.get_date())
-            t.config(text = "Selected Vet: " + on_click())
+            t.config(text = "Selected Vet: ")
+            # t.config(text = "Selected Vet: " + on_click())
         
         cal.bind("<<CalendarSelected>>", updateLabel)
     
         date_label = tk.Label(calendar_display_frame, text = "Selected Date: ")
-        date_label.grid(row=0, column=4)
+        date_label.grid(row=2, column=0)
 
         t = tk.Label(calendar_display_frame, text = "Selected Vet: ")
-        t.grid(row=0, column=5)
+        t.grid(row=3, column=0)
 
         ##drop down for vets
         global cal_view_vet_menu_label
 
         Label(calendar_display_frame, text = "").grid()
         cal_view_vet_menu_label = Label(calendar_display_frame, text = "View/Delete Veterinarians Menu", font = "times 15")
-        cal_view_vet_menu_label.pack()
+        cal_view_vet_menu_label.grid(row=4, column=0)
 
         my_data = cursor.execute(query) # SQLAlchem engine result
-        my_list = [r for r, in my_data] # create a  list 
+        my_list = [r for r, in my_data] # create a list 
 
         sel=tk.StringVar()
 
         cb1 = ttk.Combobox(calendar_display_frame, values=my_list,width=15,textvariable = sel)
-        cb1.pack(padx=30,pady=30)
+        cb1.grid(row=5, column=0)
 
-        def on_click():
-            selected_vet = f'{my_list}'
-            return selected_vet
+        # def on_click():
+        #     selected_vet = Label(calendar_display_frame, text=f'{cb1.get()}')
+        #     selected_vet.grid(row=3, column=5)
+            # selected_vet = f'{cb1.get()}'
+            
 
 
     # # This function displays the calendar
