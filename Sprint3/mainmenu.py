@@ -125,26 +125,23 @@ def calendar_display():
     
     date = Label(calendar, text = "")
     date.pack(pady = 20)
-
-    cal.pack()
     
-    query= "SELECT Concat(VetID, ', ', VetLoginID, ', ', VetFirstName, ', ', VetLastName) FROM VETACCOUNTINFO"
+    query = "SELECT Concat(VetID, ', ', VetFirstName, ', ', VetLastName) FROM VETACCOUNTINFO"
 
-    ##onclick date
+    # onclick date
     def updateLabel(event):
         label.config(text = "Selected Date: " + cal.get_date())
-        t.config(text = "Selected Vet: " + on_click())
+        t.config(text = "Selected Vet: " + cb_clicked())
     
     cal.bind("<<CalendarSelected>>", updateLabel)
  
     label = tk.Label(calendar, text = "Selected Date: ")
-
     label.pack()
-    t = tk.Label(calendar, text = "Selected Date: ")
+
+    t = tk.Label(calendar, text = "Selected Vet: ")
     t.pack()
 
-
-    ##drop down for vets
+    # drop down for vets
     global cal_view_vet_menu_label
 
     Label(calendar, text = "").pack()
@@ -152,16 +149,21 @@ def calendar_display():
     cal_view_vet_menu_label.pack()
 
     my_data = cursor.execute(query) # SQLAlchem engine result
-    my_list = [r for r, in my_data] # create a  list 
+    my_list = [r for r, in my_data] # create a list 
 
     sel=tk.StringVar()
 
     cb1 = ttk.Combobox(calendar, values=my_list,width=15,textvariable = sel)
     cb1.pack(padx=30,pady=30)
 
-    def on_click():
-        selected_vet = f'{my_list}'
-        return selected_vet
+    def cb_clicked():
+        selected_vet = cb1.get()
+        Label(calendar, text = f'Selected Vet: {selected_vet}', font="times 15 bold").pack(anchor=E)
+        #Label(self.vet_update_schedule, text=f'You selected {emcb1_selection}.').pack()
+
+    # def selected_vet_info():
+
+
 
 
 # **Don't touch**
