@@ -31,7 +31,7 @@ class CalendarUtils():
 
         cal = Calendar(calendar_display_frame, selectmode = 'day', year = 2023, month = 3, day = 14)
         date_label_2 = tk.Label(calendar_display_frame, text = f'Selected Date: {cal.get_date()}', font="Times 30 bold")
-        vet_label = tk.Label(calendar_display_frame, text = f'Selected Vet: {cb_clicked()}', font="Times 30 bold")
+        vet_label = tk.Label(calendar_display_frame, text = f'Selected Vet: {cal.get_date()}', font="Times 30 bold")
         vet_label_2 = tk.Label(calendar_display_frame, text = "Test", font="Times 30 bold") # Displays the vet selected
         # vet_label_2 = tk.Label(calendar_display_frame, text = f'{on_click()}', font="Times 30 bold") # Displays the vet selected
 
@@ -44,21 +44,7 @@ class CalendarUtils():
         calendar_display_frame.grid_columnconfigure(5, weight=1)
 
         query = "SELECT Concat(VetID, ', ', VetFirstName, ', ', VetLastName) FROM VETACCOUNTINFO"
-
-        # Onclick date
-        # def updateLabel(event):
-        #     date_label_2.config(text = "Selected Date: " + cal.get_date())
-        #     t.config(text = "Selected Vet: ")
-            # t.config(text = "Selected Vet: " + on_click())
         
-        # cal.bind("<<CalendarSelected>>", updateLabel)
-    
-        # date_label = tk.Label(calendar_display_frame, text = "Selected Date: ")
-        # date_label.grid(row=2, column=0)
-
-        # t = tk.Label(calendar_display_frame, text = "Selected Vet: ")
-        # t.grid(row=3, column=0)
-
         ##drop down for vets
         global cal_view_vet_menu_label
 
@@ -70,15 +56,26 @@ class CalendarUtils():
         my_list = [r for r, in my_data] # create a list 
 
         sel=tk.StringVar()
-
         cb1 = ttk.Combobox(calendar_display_frame, values=my_list,width=15,textvariable = sel)
         cb1.grid(row=5, column=0)
 
-        def cb_clicked():
-            selected_vet = Label(calendar_display_frame, text= f'{cb1.get()}')
-            selected_vet.grid(row=4, column=0)
-            
-            # Label(calendar_display_frame, text = f'{selected_vet}', font="times 15 bold").grid(row=1, column=5)
+        # Onclick date
+        def updateLabel(event):
+            date_label_2.config(text = "Selected Date: " + cal.get_date())
+            b.config(text = "###This needs to be vet ID###" + sel.get())
+
+            # t.config(text = "Selected Vet: " + on_click())
+        
+        cal.bind("<<CalendarSelected>>", updateLabel)
+    
+        ##date_label = tk.Label(calendar_display_frame, text = "Selected Date: ")
+        ##date_label.grid(row=2, column=0)
+
+        ##############################
+        ##this needs to display VET ID 
+        ##############################
+        b = tk.Label(calendar_display_frame, text = sel)
+        b.grid(row=1, column=2)
 
         # def on_click():
         #     selected_vet = Label(calendar_display_frame, text=f'{cb1.get()}')
