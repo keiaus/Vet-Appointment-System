@@ -276,6 +276,9 @@ def create_vetapp():
 # -- new appointment function -- added by Kashaf --
 pixelVirtual = tk.PhotoImage(width=1, height=1)
 def new_appointment():
+    ## Nav bar
+    ## 3 temporary buttons (all redirect to main menu for now)
+    ## 1 Appointment search dropdown (not linked to db)
     nav_bar_frame = LabelFrame(new_appointment_menu, bg="#FFFFFF", height=100, width=1440, pady=10, padx=350)
     nav_bar_frame.grid(row=0, column=0)
 
@@ -317,7 +320,7 @@ def new_appointment():
     appointment_dropdown.bind('KeyRelease', appointment_search)
     # ----------------------------------------------------------
 
-    # vet dashboard button
+    #  new_appointment_nav_button_2
     new_appointment_nav_button_2 = Button(nav_bar_frame, text="Button 2 Temp", image=pixelVirtual,
                                           width=200,
                                           height=25,
@@ -338,6 +341,7 @@ def new_appointment():
 
     new_appointment_nav_button_3.grid(row=0, column=3, padx=20, pady=0, sticky='ne')
 
+    ## Form Frame
     # Create new appointment frame
     new_appointment_frame = Frame(new_appointment_menu, bg="white", width=800, height=590, bd=2, relief='ridge')
     new_appointment_frame.grid(row=1, column=0, padx=400, pady=100, sticky='nw')
@@ -351,15 +355,24 @@ def new_appointment():
         background='white'
     )
     create_new_appointment_label.grid(row=0, column=0, padx=10, pady=10, sticky="nw")
+
     # # -- Patient Search --
+    ## Patient search label
     ttk.Label(new_appointment_frame,
               anchor="nw",
               text="Patient",
               font=("Alata Regular", 12 * -1, "bold"),
               background='white'
               ).grid(row=1, column=0, padx=5, pady=5, sticky="nw")
+
+    # stores pet information retrieved from db - to be displayed in dropdown combobox
     current_pets = []
     def pet_search():
+        '''
+        function to retrieve pet information from db
+        and update current_pets list
+        :return: current_pets
+        '''
         cursor.execute(
             "SELECT Pet.PetName, CONCAT_WS(' ',Client.UserFirstName, Client.UserLastName) as ClientFullName, Client.UserPhoneNumber, Client.UserEmailAddress \
             FROM PetInfo AS Pet \
@@ -374,12 +387,18 @@ def new_appointment():
                 current_pets.append(item)
         return current_pets
     pet_search()
+
     pet_var = tk.StringVar()
+    # pet search dropdown
+    ## Combobox with search functionality using AutoCompleteCombobox
+    ## Selects patient from db
+    ## functionality to add new patient needs to be added
     patient_dropdown = AutocompleteCombobox(new_appointment_frame,completevalues=current_pets,textvariable=pet_var)
     patient_dropdown.grid(row=2, column=0, padx=5, pady=5, ipadx=150, ipady=5, sticky="nw")
     # # -----------------------------------------------------------------
 
     # # -- Veterinarian search --
+    # Veterinarian label
     vet_search_label = ttk.Label(new_appointment_frame,
                                  anchor="nw",
                                  text="Veterinarian",
@@ -387,9 +406,16 @@ def new_appointment():
                                  background='white'
                                  )
     vet_search_label.grid(row=1, column=3, padx=5, pady=5, sticky="nw")
+
+    # stores veterinarian names retrieved from db
     veterinarian_names = ['No Preference']
 
     def get_vet_names():
+        '''
+        function to retrieve vet names from db
+        and update veterinarian_names list
+        :return: veterinarian_names
+        '''
         cursor.execute("SELECT CONCAT_WS(', ',VetLastName,VetFirstName) FROM VetAccountInfo WHERE NOT VetLastName = "
                        "'' AND NOT VetFirstName = '' ")
         current_vets = list(cursor.fetchall())
@@ -398,9 +424,11 @@ def new_appointment():
             if full_name not in veterinarian_names:
                 veterinarian_names.append(str(full_name))
         return veterinarian_names
-
     get_vet_names()
+
     vet_var = tk.StringVar()
+    ## Combobox
+    ## Selects vet from list retrieved from vet table in db
     veterinarian_dropdown = ttk.Combobox(new_appointment_frame, values=veterinarian_names, state='readonly',
                                          style="Custom.TCombobox")
 
@@ -411,6 +439,7 @@ def new_appointment():
     # # -----------------------------------------------------------------
 
     # # -- Appointment Type --
+    ## Dropdown to select the type of appointment
     appointment_type_label = ttk.Label(new_appointment_frame,
                                        anchor="nw",
                                        text="Appointment Type",
@@ -418,15 +447,20 @@ def new_appointment():
                                        background='white'
                                        )
     appointment_type_label.grid(row=3, column=0, padx=5, pady=5, sticky="nw")
+
     appointment_type_entry = tk.StringVar()
+    # list of various appointment types
     appointment_type_list = ['New Client Visit', 'Sick Visit', 'Follow-up Visit', 'Routine Wellness Exam',
                              'Vaccinations', 'Emergency/Urgent Care', 'Surgical Consultation', 'Euthanasia']
+
+    # dropdown displayed for selecting appointment type
     appointment_type_dropdown = ttk.Combobox(new_appointment_frame, values=appointment_type_list, state='readonly',
                                              style="Custom.TCombobox")
     appointment_type_dropdown.set("Select Apppointment Type")
     appointment_type_dropdown.grid(row=4, column=0, padx=5, pady=5, ipadx=40, ipady=5, sticky="nw")
 
     # # -- Reason for visit --
+    ## text entry to input appointment reason
     reason_for_visit_label = ttk.Label(new_appointment_frame,
                                        anchor="nw",
                                        text="Reason For Visit",
@@ -443,15 +477,18 @@ def new_appointment():
                                   )
     reason_for_visit_entry.grid(row=6, column=0, padx=5, pady=5, sticky="nw")
     # # -----------------------------------------------------------------
-    #
+
     # date, time, duration, end time grid frame
     datetime_input_frame = LabelFrame(new_appointment_frame, bg="white", width=800, height=200, bd=2, relief='ridge')
     datetime_input_frame.grid(row=7, column=0, padx=5, pady=5, sticky='nsew')
 
     # # ----------------------------------------------------------
     # # -- Date --
+    ## buggy if DateEntry isnt contained within function
+    ## causes frame to appear for a split second before the main menu appears upon running the program
     date_entry = StringVar()
     import datetime
+
     def date_input():
         datelabel = ttk.Label(
             datetime_input_frame,
@@ -474,6 +511,8 @@ def new_appointment():
                                   )
         date_dropdown.grid(row=2, column=0, pady=5, ipady=7, ipadx=5)
         date_dropdown.set_date(today)
+
+    # button to reveal date dropdown and select date
     select_date_button = ttk.Button(datetime_input_frame, text="Select Date", command=date_input)
     select_date_button.grid(row=2, column=0, pady=5)
     date_selected = date_entry.get()
@@ -482,6 +521,7 @@ def new_appointment():
     # ----------------------------------------------------------
 
     # # -- Time --
+    ## spinbox to select time
     timelabel = ttk.Label(
         datetime_input_frame,
         text="Time",
@@ -511,6 +551,7 @@ def new_appointment():
                                state='readonly', style="Custom.TSpinbox")
     time_listbox.grid(row=2, column=1, padx=5, pady=5, sticky="nw")
     time_listbox.set(time_list[0])
+    # label to display selected time
     text = f"Selected Time:  {str(time_listbox.get())}"
     label = ttk.Label(datetime_input_frame, text=text)
     label.grid(row=3, column=1, padx=5, pady=5, sticky="nw")
@@ -518,6 +559,7 @@ def new_appointment():
     # ------------------------------------------------------------
     #
     # # -- Duration --
+    ## dropdown to select duration of appointment
     durationlabel = ttk.Label(datetime_input_frame,
                               anchor="nw",
                               text="Duration",
@@ -541,6 +583,8 @@ def new_appointment():
     # # -----------------------------------------------------------------
     #
     # # # -- End Time --
+    ## Display ending time of appointment
+    ## isnt dynamic and need to click button to calculate the end time based on time and duration selection
     ttk.Label(datetime_input_frame,
               anchor="ne",
               text="End Time",
