@@ -8,7 +8,7 @@ connection = pyodbc.connect('DRIVER={SQL Server};PORT=1433;SERVER=database-1.ci7
 cursor = connection.cursor()
 
 label = None
-class admin():
+class AdminUtils():
 
     def __init__(self, window, account_page, admin_log_in, admin_menu, admin_update_info, admin_create_vet, admin_delete_vet, admin_vet_dropdown):
         super().__init__()

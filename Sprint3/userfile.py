@@ -8,7 +8,7 @@ connection = pyodbc.connect('DRIVER={SQL Server};PORT=1433;SERVER=database-1.ci7
 cursor = connection.cursor()
 
 label = None
-class user():
+class User():
     def __init__(self, window, account_page, account_create, user_log_in, user_pet_menu, user_pet_add,  user_menu, user_update_info, user_update_pet_info, user_update_pet_dropdown):
         super().__init__()
         self.window = window
@@ -177,9 +177,9 @@ class user():
         Label(self.user_log_in, text="").pack()
         Button(self.user_log_in, text="Return to Main Menu", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = self.return_to_main).pack()
 
-        #user_id1 = NONE
-        # User login verification (checks that the entered user information matches a record in the UserLoginInfo table)
-        counter = 0
+    # user_id1 = NONE
+    # User login verification (checks that the entered user information matches a record in the UserLoginInfo table)
+
     def user_login_verify(self):
         global label
         global username1
@@ -190,7 +190,7 @@ class user():
         if(username1 == "" or password1 == ""): 
             self.user_invalid_login()
         else: 
-            user_login_ID = user.getUserLoginID(self)
+            user_login_ID = User.getUserLoginID(self)
             if(user_login_ID != None): 
                 self.user_menu_launch() 
             else:
@@ -200,7 +200,7 @@ class user():
     def getUserID(self):
         #global user_id1
 
-        user_login_ID = user.getUserLoginID(self)
+        user_login_ID = User.getUserLoginID(self)
 
         cursor.execute("select UserID from UserAccountInfo where UserLoginID = ?", user_login_ID)
         user_id1 = cursor.fetchone()
@@ -429,6 +429,30 @@ class user():
         pet_confirmation.destroy()
 
     
+    def pet_del_confirmation_popup(self):
+        global pet_del_confirmation
+        pet_del_confirmation = Toplevel(self.window)
+        pet_del_confirmation.title("Alert")
+        pet_del_confirmation.geometry("300x150")
+        Label(pet_del_confirmation, text=f'You selected {pet_info_selection.get()}.').pack()
+        Button(pet_del_confirmation, text="Delete", command=self.pet_del_confirmation_update).pack()
+        Button(pet_del_confirmation, text="No", command=self.pet_del_confirmation_des).pack()
+
+    def pet_del_confirmation_update(self):
+
+        cursor.execute("DELETE FROM PetInfo WHERE PetID = ?", user_pet_id)
+        cursor.commit()
+        pet_name_entry1.delete(0, END)
+        pet_type_entry1.delete(0, END)
+        pet_breed_entry1.delete(0, END)
+        pet_color_entry1.delete(0, END)
+        label = Label(self.user_update_pet_info, text ="Deletion Successful")
+        label.pack()
+        self.pet_del_confirmation_des()
+
+    def pet_del_confirmation_des(self):
+        pet_del_confirmation.destroy()
+    
 
         ####################################################################################################################################################################
 
@@ -500,6 +524,7 @@ class user():
         Button(self.user_menu, text="Add New Pet", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command =lambda:self.user_pet_add_clicked()).pack()
         Label(self.user_menu, text="").pack()
         Button(self.user_menu, text="Update Pet Info", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command =lambda:self.user_update_pet_button_clicked()).pack()
+        Button(self.user_menu, text="Manage Pet Info", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command =lambda:self.user_update_pet_button_clicked()).pack()
         Label(self.user_menu, text="").pack()
         Button(self.user_menu, text="Log Out", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = self.return_to_main).pack()
 

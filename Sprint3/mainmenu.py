@@ -4,6 +4,7 @@ from tkinter import ttk # necessary for comboboxes
 import pyodbc # necessary for aws rds sql server connection
 from tkcalendar import Calendar # gui import (must install tkcalendar "pip install tkcalendar")
 from datetime import datetime
+from calendar_utils import *
 from userfile import * 
 from vetfile import *
 from adminfile import *
@@ -14,7 +15,7 @@ cursor = connection.cursor()
 # Used to show each frame as the menu is interacted with
 def vetapp():
     create_vetapp()
-    calendar_display()
+    c.calendar_display()
     x.user_register()
     x.user_login()
     x.user_after_login_menu()
@@ -32,8 +33,7 @@ def vetapp():
 # Opens the calendar menu on click (on base menu frame)
 def calendar_clicked():
     window.title("Calendar")
-    show_frame(calendar)
-
+    show_frame(calendar_frame)
 
 # Used to show each frame as the menu is interacted with
 def show_frame(frame):
@@ -85,7 +85,9 @@ window.columnconfigure(0, weight=1)
 
 account_page = Frame(window)
 account_create = Frame(window)
-calendar = Frame(window)
+calendar_frame = Frame(window)
+unreg_cal = Frame(window) # Unregistered user calendar view
+reg_cal = Frame(window) # Registered user calendar view
 user_log_in = Frame(window)
 user_menu = Frame(window)
 user_pet_menu = Frame(window)
@@ -107,64 +109,16 @@ admin_vet_dropdown = Frame(window)
 
 for frame in (account_page, account_create, user_log_in, user_pet_menu, user_pet_add,  user_menu, user_update_info, user_update_pet_info, 
               user_update_pet_dropdown, vet_log_in, vet_menu, vet_update_info, vet_update_schedule, vet_update_pet,
-              admin_log_in, admin_menu, admin_update_info, admin_create_vet, admin_delete_vet, admin_vet_dropdown, calendar):
+              admin_log_in, admin_menu, admin_update_info, admin_create_vet, admin_delete_vet, admin_vet_dropdown, calendar_frame):
     frame.grid(row=0, column=0, sticky='nsew')
     
-x = user(window, account_page, account_create, user_log_in, user_pet_menu, user_pet_add,  user_menu, user_update_info, user_update_pet_info, user_update_pet_dropdown)
-y = vet(window, account_page, vet_log_in, vet_menu, vet_update_info, vet_update_schedule, vet_update_pet)
-z = admin(window, account_page, admin_log_in, admin_menu, admin_update_info, admin_create_vet, admin_delete_vet, admin_vet_dropdown)
+x = User(window, account_page, account_create, user_log_in, user_pet_menu, user_pet_add,  user_menu, user_update_info, user_update_pet_info, user_update_pet_dropdown)
+y = Vet(window, account_page, vet_log_in, vet_menu, vet_update_info, vet_update_schedule, vet_update_pet)
+z = AdminUtils(window, account_page, admin_log_in, admin_menu, admin_update_info, admin_create_vet, admin_delete_vet, admin_vet_dropdown)
+c = CalendarUtils(window, calendar_frame)
 
 label = None
-    ##on click
-
-
-# This function displays the calendar
-def calendar_display():
-    cal = Calendar(calendar, selectmode = 'day', year = 2023, month = 3, day = 14)
-    cal.pack(pady = 300)
-    
-    date = Label(calendar, text = "")
-    date.pack(pady = 20)
-    
-    query = "SELECT Concat(VetID, ', ', VetFirstName, ', ', VetLastName) FROM VETACCOUNTINFO"
-
-    # onclick date
-    def updateLabel(event):
-        label.config(text = "Selected Date: " + cal.get_date())
-        t.config(text = "Selected Vet: " + cb_clicked())
-    
-    cal.bind("<<CalendarSelected>>", updateLabel)
- 
-    label = tk.Label(calendar, text = "Selected Date: ")
-    label.pack()
-
-    t = tk.Label(calendar, text = "Selected Vet: ")
-    t.pack()
-
-    # drop down for vets
-    global cal_view_vet_menu_label
-
-    Label(calendar, text = "").pack()
-    cal_view_vet_menu_label = Label(calendar, text = "View/Delete Veterinarians Menu", font = "times 15")
-    cal_view_vet_menu_label.pack()
-
-    my_data = cursor.execute(query) # SQLAlchem engine result
-    my_list = [r for r, in my_data] # create a list 
-
-    sel=tk.StringVar()
-
-    cb1 = ttk.Combobox(calendar, values=my_list,width=15,textvariable = sel)
-    cb1.pack(padx=30,pady=30)
-
-    def cb_clicked():
-        selected_vet = cb1.get()
-        Label(calendar, text = f'Selected Vet: {selected_vet}', font="times 15 bold").pack(anchor=E)
-        #Label(self.vet_update_schedule, text=f'You selected {emcb1_selection}.').pack()
-
-    # def selected_vet_info():
-
-
-
+##on click
 
 # **Don't touch**
 # Main window on program start
