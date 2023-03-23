@@ -1,2 +1,7 @@
 # Ignores all files named clientServer.py
 clientServer.py
+__pycache__
+admin_utils.py
+appointments.py
+.vs
+vetApptSys3.py
