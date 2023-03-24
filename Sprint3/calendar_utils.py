@@ -4,6 +4,7 @@ from tkinter import ttk # necessary for comboboxes
 import pyodbc # necessary for aws rds sql server connection
 from tkcalendar import Calendar # gui import (must install tkcalendar "pip install tkcalendar")
 from datetime import datetime
+from datetime import date
 
 #Connection to AWS RDS SQL Server (required to run properly)
 connection = pyodbc.connect('DRIVER={SQL Server};PORT=1433;SERVER=database-1.ci7iawyx7c5x.us-east-1.rds.amazonaws.com;DATABASE=VetAppointmentSystem;UID=Arthur;PWD=123;')
@@ -81,8 +82,26 @@ class CalendarUtils():
         # Onclick date
         def updateLabel(event):
             date_label_2.config(text = "Selected Date: " + cal.get_date())
-            b.config(text = "###This needs to be vet ID###" + vet_info.get())
-            vet_label.config(text = "Selected Vet: " + vet_info.get())
+            ######Finding position and parsing comma
+            parseOutVetID = sel.get()
+            parsedList=parseOutVetID.split(",")
+            parsedVetID = parsedList[0]
+            ###Finding day of the week
+            date_str  = cal.get_date()
+            dateObj = datetime.strptime(date_str,'%m/%d/%y')
+            dayOftheWeek = dateObj.weekday()
+            daysOfWeek = ("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday")
+            selectedDay = daysOfWeek[dayOftheWeek]
+
+            #date.replace()
+            #dayOfWeek=date.isoweekday()
+         #   dtdate = pickedDate.split("/")
+          # start_date = d(dtdate.index(2),dtdate.index(0),dtdate.index(1))
+           #weekday = start_date.weekday()
+            
+
+            displayVetID.config(text = "###This needs to be vet ID### " + parsedVetID)
+            DisplayDay.config(text = "###This the day of the week### " + selectedDay)
 
             # t.config(text = "Selected Vet: " + on_click())
         
@@ -90,7 +109,15 @@ class CalendarUtils():
     
         ##date_label = tk.Label(calendar_display_frame, text = "Selected Date: ")
         ##date_label.grid(row=2, column=0)
-        
+
+
+
+
+        ##############################
+        ##this needs to display VET ID 
+        ##############################
+        b = tk.Label(calendar_display_frame, text = sel)
+        b.grid(row=1, column=2)
 
         # def on_click():
         #     selected_vet = Label(calendar_display_frame, text=f'{cb1.get()}')
