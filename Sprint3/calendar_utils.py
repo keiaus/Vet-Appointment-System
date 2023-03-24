@@ -83,7 +83,7 @@ class CalendarUtils():
         def updateLabel(event):
             date_label_2.config(text = "Selected Date: " + cal.get_date())
             ######Finding position and parsing comma
-            parseOutVetID = sel.get()
+            parseOutVetID = vet_info.get()
             parsedList=parseOutVetID.split(",")
             parsedVetID = parsedList[0]
             ###Finding day of the week
