@@ -1,9 +1,13 @@
 from tkinter import * # gui import
 import tkinter as tk # gui import
-from tkcalendar import Calendar # gui import (must install tkcalendar "pip install tkcalendar")
+from tkcalendar import Calendar, DateEntry # gui import (must install tkcalendar "pip install tkcalendar")
 from tkinter import ttk # necessary for comboboxes
 import pyodbc # necessary for aws rds sql server connection
-
+import os # used in obtaining image directory path
+from ttkwidgets.autocomplete import AutocompleteCombobox # import ttkwidgets to import AutoCompleteBox widget
+import tkinter.messagebox
+# new appointment button images
+dir = os.path.abspath("create_new_appointment\widget_images")
 
 #Connection to AWS RDS SQL Server (required to run properly)
 connection = pyodbc.connect('DRIVER={SQL Server};PORT=1433;SERVER=database-1.ci7iawyx7c5x.us-east-1.rds.amazonaws.com;DATABASE=VetAppointmentSystem;UID=Arthur;PWD=123;')
@@ -26,6 +30,9 @@ def vetapp():
     admin_login()
     admin_after_login_menu()
     show_frame(account_page)
+    # added new appointment function
+    new_appointment()
+    # ---
 
 # Used to show each frame as the menu is interacted with
 def show_frame(frame):
@@ -66,6 +73,11 @@ def calendar_clicked():
     window.title("Calendar")
     show_frame(calendar)
 
+# -- added by Kashaf
+# Opens the new_appointment menu on click (on base menu frame)
+def new_appointment_clicked():
+    window.title("New Appointment")
+    show_frame(new_appointment_menu)
 # Opens the login menu on click (on base menu frame)
 def user_log_in_clicked():
     window.title("User Log In")
@@ -219,10 +231,12 @@ admin_update_info = Frame(window)
 admin_create_vet = Frame(window)
 admin_delete_vet = Frame(window)
 admin_vet_dropdown = Frame(window)
+# added new_appointment_menu frame
+new_appointment_menu = Frame(window)
 
 for frame in (account_page, account_create, calendar, user_log_in, user_pet_menu, user_pet_add,  user_menu, user_update_info, user_update_pet_info, 
               user_update_pet_dropdown, vet_log_in, vet_menu, vet_update_info, vet_update_schedule, vet_update_pet,
-              admin_log_in, admin_menu, admin_update_info, admin_create_vet, admin_delete_vet, admin_vet_dropdown):
+              admin_log_in, admin_menu, admin_update_info, admin_create_vet, admin_delete_vet, admin_vet_dropdown,new_appointment_menu):
     frame.grid(row=0, column=0, sticky='nsew')
 
 global label
@@ -250,9 +264,434 @@ def create_vetapp():
     calendar_button = Button(account_page, text='Calendar', bd=20, bg="SpringGreen4", width=20, font='times 15', command=lambda:calendar_clicked())
     calendar_button.pack(pady=15, side=TOP)
 
+    # new appointment button -- added by Kashaf
+    new_appointment_button = Button(account_page, text="New Appointment", bd=20, bg="SpringGreen4", width=20,
+                                    font='times 15', command=lambda: new_appointment_clicked())
+    new_appointment_button.pack(pady=15, side=TOP)
+    # ----------------------------
+
     close_button = Button(account_page, text='Close System', bd=20, bg="SpringGreen4", width=20, font='times 15', command=lambda:close_clicked())
     close_button.pack(pady=15, side=TOP)
 
+# -- new appointment function -- added by Kashaf --
+pixelVirtual = tk.PhotoImage(width=1, height=1)
+def new_appointment():
+    ## Nav bar
+    ## 3 temporary buttons (all redirect to main menu for now)
+    ## 1 Appointment search dropdown (not linked to db)
+    nav_bar_frame = LabelFrame(new_appointment_menu, bg="#FFFFFF", height=100, width=1440, pady=10, padx=350)
+    nav_bar_frame.grid(row=0, column=0)
+
+    # Main Menu Button
+    new_appointment_nav_button_1 = Button(nav_bar_frame, text="Button 1 (temp main menu)", image=pixelVirtual,
+                                          width=200,
+                                          height=25,
+                                          compound=tk.CENTER,
+                                          command=return_to_main,
+                                          bg='#008000')
+    new_appointment_nav_button_1.grid(row=0, column=0, padx=20, pady=0, sticky='nw')
+
+    # ----------------------------------------------------------
+
+    # Existing Appointment Search
+
+    def appointment_search(event):
+        search_appointment_value = event.widget.get()
+        if search_appointment_value == '':
+            appointment_dropdown['values'] = appointment_list
+        else:
+            data = []
+
+            for appointment in appointment_list:
+                if search_appointment_value.lower() in appointment.lower():
+                    data.append(appointment)
+            appointment_dropdown['values'] = data
+
+    style = ttk.Style()
+    style.theme_use('clam')
+    style.configure("Custom.TCombobox", background='white', arrowsize=20, bordercolor='black')
+    style.configure("Custom.TSpinbox", background='white', arrowsize=15, bordercolor='black')
+    style.configure("Custom.DateEntry", background='white', arrowsize=15, bordercolor='black')
+    style.configure("Custom.Button", background='white', arrowsize=15, bordercolor='black')
+    appointment_list = ['Search existing appointments', 'Appointment date and time - Pet Owner Name - Pet Name ..']
+    appointment_dropdown = ttk.Combobox(nav_bar_frame, values=appointment_list, style="Custom.TCombobox")
+    appointment_dropdown.current(0)
+    appointment_dropdown.grid(row=0, column=1, padx=20, pady=0, ipadx=125, ipady=6, sticky='ne')
+    appointment_dropdown.bind('KeyRelease', appointment_search)
+    # ----------------------------------------------------------
+
+    #  new_appointment_nav_button_2
+    new_appointment_nav_button_2 = Button(nav_bar_frame, text="Button 2 Temp", image=pixelVirtual,
+                                          width=200,
+                                          height=25,
+                                          compound=tk.CENTER,
+                                          command=return_to_main,
+                                          bg='#008000')
+
+    new_appointment_nav_button_2.grid(row=0, column=2, padx=20, pady=0, sticky='ne')
+    # ----------------------------------------------------------
+
+    # new_appointment_nav_button_3
+    new_appointment_nav_button_3 = Button(nav_bar_frame, text="Button 3 Temp", image=pixelVirtual,
+                                          width=200,
+                                          height=25,
+                                          compound=tk.CENTER,
+                                          command=return_to_main,
+                                          bg='#008000')
+
+    new_appointment_nav_button_3.grid(row=0, column=3, padx=20, pady=0, sticky='ne')
+
+    ## Form Frame
+    # Create new appointment frame
+    new_appointment_frame = Frame(new_appointment_menu, bg="white", width=800, height=590, bd=2, relief='ridge')
+    new_appointment_frame.grid(row=1, column=0, padx=400, pady=100, sticky='nw')
+    # ----------------------------------------------------------
+
+    # Create new appointment label
+    create_new_appointment_label = ttk.Label(
+        new_appointment_frame,
+        text="Create New Appointment",
+        font=("Alata Regular", 16),
+        background='white'
+    )
+    create_new_appointment_label.grid(row=0, column=0, padx=10, pady=10, sticky="nw")
+
+    # # -- Patient Search --
+    ## Patient search label
+    ttk.Label(new_appointment_frame,
+              anchor="nw",
+              text="Patient",
+              font=("Alata Regular", 12 * -1, "bold"),
+              background='white'
+              ).grid(row=1, column=0, padx=5, pady=5, sticky="nw")
+
+    # stores pet information retrieved from db - to be displayed in dropdown combobox
+    current_pets = []
+    def pet_search():
+        '''
+        function to retrieve pet information from db
+        and update current_pets list
+        :return: current_pets
+        '''
+        cursor.execute(
+            "SELECT Pet.PetName, CONCAT_WS(' ',Client.UserFirstName, Client.UserLastName) as ClientFullName, Client.UserPhoneNumber, Client.UserEmailAddress \
+            FROM PetInfo AS Pet \
+            INNER JOIN UserAccountInfo AS Client \
+            ON Pet.UserID = Client.UserID ")
+
+        data = cursor.fetchall()
+        # Creating list of patient names by concatenating first and last names
+        pet_info = [f"{row[0]}, {row[1]}, {row[2]}, {row[3]} " for row in data]
+        for item in pet_info:
+            if item not in current_pets:
+                current_pets.append(item)
+        return current_pets
+    pet_search()
+
+    pet_var = tk.StringVar()
+    # pet search dropdown
+    ## Combobox with search functionality using AutoCompleteCombobox
+    ## Selects patient from db
+    ## functionality to add new patient needs to be added
+    patient_dropdown = AutocompleteCombobox(new_appointment_frame,completevalues=current_pets,textvariable=pet_var)
+    patient_dropdown.grid(row=2, column=0, padx=5, pady=5, ipadx=150, ipady=5, sticky="nw")
+    # # -----------------------------------------------------------------
+
+    # # -- Veterinarian search --
+    # Veterinarian label
+    vet_search_label = ttk.Label(new_appointment_frame,
+                                 anchor="nw",
+                                 text="Veterinarian",
+                                 font=("Alata Regular", 12 * -1, "bold"),
+                                 background='white'
+                                 )
+    vet_search_label.grid(row=1, column=3, padx=5, pady=5, sticky="nw")
+
+    # stores veterinarian names retrieved from db
+    veterinarian_names = ['No Preference']
+
+    def get_vet_names():
+        '''
+        function to retrieve vet names from db
+        and update veterinarian_names list
+        :return: veterinarian_names
+        '''
+        cursor.execute("SELECT CONCAT_WS(', ',VetLastName,VetFirstName) FROM VetAccountInfo WHERE NOT VetLastName = "
+                       "'' AND NOT VetFirstName = '' ")
+        current_vets = list(cursor.fetchall())
+        for vet in current_vets:
+            full_name = f"{vet[0]}"
+            if full_name not in veterinarian_names:
+                veterinarian_names.append(str(full_name))
+        return veterinarian_names
+    get_vet_names()
+
+    vet_var = tk.StringVar()
+    ## Combobox
+    ## Selects vet from list retrieved from vet table in db
+    veterinarian_dropdown = ttk.Combobox(new_appointment_frame, values=veterinarian_names, state='readonly',
+                                         style="Custom.TCombobox")
+
+    veterinarian_dropdown.set('Select Veterinarian')
+    veterinarian_dropdown.grid(row=2, column=3, padx=5, pady=5, ipadx=40, ipady=5, sticky="nw")
+
+
+    # # -----------------------------------------------------------------
+
+    # # -- Appointment Type --
+    ## Dropdown to select the type of appointment
+    appointment_type_label = ttk.Label(new_appointment_frame,
+                                       anchor="nw",
+                                       text="Appointment Type",
+                                       font=("Alata Regular", 12 * -1, "bold"),
+                                       background='white'
+                                       )
+    appointment_type_label.grid(row=3, column=0, padx=5, pady=5, sticky="nw")
+
+    appointment_type_entry = tk.StringVar()
+    # list of various appointment types
+    appointment_type_list = ['New Client Visit', 'Sick Visit', 'Follow-up Visit', 'Routine Wellness Exam',
+                             'Vaccinations', 'Emergency/Urgent Care', 'Surgical Consultation', 'Euthanasia']
+
+    # dropdown displayed for selecting appointment type
+    appointment_type_dropdown = ttk.Combobox(new_appointment_frame, values=appointment_type_list, state='readonly',
+                                             style="Custom.TCombobox")
+    appointment_type_dropdown.set("Select Apppointment Type")
+    appointment_type_dropdown.grid(row=4, column=0, padx=5, pady=5, ipadx=40, ipady=5, sticky="nw")
+
+    # # -- Reason for visit --
+    ## text entry to input appointment reason
+    reason_for_visit_label = ttk.Label(new_appointment_frame,
+                                       anchor="nw",
+                                       text="Reason For Visit",
+                                       font=("Alata Regular", 12 * -1, "bold"),
+                                       background='white'
+                                       )
+    reason_for_visit_label.grid(row=5, column=0, padx=5, pady=5, sticky="nw")
+
+    reason_for_visit_entry = Text(new_appointment_frame,
+                                  bd=2,
+                                  bg="#FFFFFF",
+                                  fg='#000716',
+                                  highlightthickness=0
+                                  )
+    reason_for_visit_entry.grid(row=6, column=0, padx=5, pady=5, sticky="nw")
+    # # -----------------------------------------------------------------
+
+    # date, time, duration, end time grid frame
+    datetime_input_frame = LabelFrame(new_appointment_frame, bg="white", width=800, height=200, bd=2, relief='ridge')
+    datetime_input_frame.grid(row=7, column=0, padx=5, pady=5, sticky='nsew')
+
+    # # ----------------------------------------------------------
+    # # -- Date --
+    ## buggy if DateEntry isnt contained within function
+    ## causes frame to appear for a split second before the main menu appears upon running the program
+    date_entry = StringVar()
+    import datetime
+
+    def date_input():
+        datelabel = ttk.Label(
+            datetime_input_frame,
+            text="Date",
+            font=("Alata Regular", 12 * -1, "bold"),
+            background='white'
+        )
+        datelabel.grid(row=1, column=0, padx=5, pady=5, sticky="nw")
+        today = datetime.date.today()
+
+        date_dropdown = DateEntry(datetime_input_frame,
+                                  borderwidth=0,
+                                  highlightthickness=0,
+                                  relief="flat",
+                                  mindate=today,
+                                  selectmode='day',
+                                  textvariable=date_entry,
+                                  anchor="nw",
+                                  style='Custom.TCombobox'
+                                  )
+        date_dropdown.grid(row=2, column=0, pady=5, ipady=7, ipadx=5)
+        date_dropdown.set_date(today)
+
+    # button to reveal date dropdown and select date
+    select_date_button = ttk.Button(datetime_input_frame, text="Select Date", command=date_input)
+    select_date_button.grid(row=2, column=0, pady=5)
+    date_selected = date_entry.get()
+    date_entry.set(str(datetime.date.today()))
+
+    # ----------------------------------------------------------
+
+    # # -- Time --
+    ## spinbox to select time
+    timelabel = ttk.Label(
+        datetime_input_frame,
+        text="Time",
+        font=("Alata Regular", 12 * -1, "bold"),
+        background='white'
+    )
+    timelabel.grid(row=1, column=1, padx=5, pady=5, sticky="nw")
+    #
+    time_list = []
+    time_value = StringVar()
+
+    for hour in [8, 9, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7]:
+        for minute in range(0, 60, 5):
+            time_list.append(
+                f'{"0" + str(hour) if hour in (1, 2, 3, 4, 5, 6, 7, 8, 9) else str(hour)}:'
+                f'{"0" + str(minute) if minute < 10 else str(minute)}'
+                f' {"AM" if hour in (8, 9, 10, 11) else "PM"}')
+
+    def display_time():
+        selected_time = time_listbox.get()
+        display_selected_time = f"Selected Time:  {str(selected_time)}"
+        label.configure(text=display_selected_time)
+        return selected_time
+
+    #
+    time_listbox = ttk.Spinbox(datetime_input_frame, values=time_list, textvariable=time_value, command=display_time,
+                               state='readonly', style="Custom.TSpinbox")
+    time_listbox.grid(row=2, column=1, padx=5, pady=5, sticky="nw")
+    time_listbox.set(time_list[0])
+    # label to display selected time
+    text = f"Selected Time:  {str(time_listbox.get())}"
+    label = ttk.Label(datetime_input_frame, text=text)
+    label.grid(row=3, column=1, padx=5, pady=5, sticky="nw")
+    time_selected = time_listbox.get()
+    # ------------------------------------------------------------
+    #
+    # # -- Duration --
+    ## dropdown to select duration of appointment
+    durationlabel = ttk.Label(datetime_input_frame,
+                              anchor="nw",
+                              text="Duration",
+                              font=("Alata Regular", 12 * -1, "bold"),
+                              background='white'
+                              )
+    durationlabel.grid(row=1, column=3, padx=5, pady=5, sticky="w")
+    duration_list = []
+    for duration_time in range(5, 61, 5):
+        duration_list.append(f"{duration_time} Minutes")
+    #
+    duration_time_entry = tk.StringVar()
+    duration_dropdown = ttk.Combobox(datetime_input_frame,
+                                     values=duration_list,
+                                     state='readonly',
+                                     width=20,
+                                     height=4, style="Custom.TCombobox")
+    duration_dropdown.set(duration_list[0])
+    duration_dropdown.grid(row=2, column=3, padx=5, pady=5, ipady=6, sticky="nw")
+
+    # # -----------------------------------------------------------------
+    #
+    # # # -- End Time --
+    ## Display ending time of appointment
+    ## isnt dynamic and need to click button to calculate the end time based on time and duration selection
+    ttk.Label(datetime_input_frame,
+              anchor="ne",
+              text="End Time",
+              font=("Alata Regular", 12 * -1, "bold"),
+              background='white'
+              ).grid(row=1, column=4, padx=5, pady=5, sticky="ne")
+
+    global end_time_str
+    end_label = ttk.Label(datetime_input_frame)
+
+    def calc_end_time():
+        start_time = time_listbox.get()
+        start_hour = int(start_time[0:2])
+        start_minutes = int(start_time[3:5])
+        duration = int(duration_dropdown.get()[0:2])
+        overall_minutes = start_minutes + duration
+        end_time_str = ""
+        if overall_minutes >= 60:
+            end_minutes = overall_minutes - 60
+            start_hour += 1
+            end_time_str = f"{'0' + str(start_hour) if start_hour in (1, 2, 3, 4, 5, 6, 7, 8, 9) else str(start_hour)}:" \
+                           f"{'0' + str(end_minutes) if end_minutes < 10 else str(end_minutes)} " \
+                           f"{'AM' if start_hour in (8, 9, 10, 11) else 'PM'}"
+        elif overall_minutes < 60:
+            end_time_str = f"{'0' + str(start_hour) if start_hour in (1, 2, 3, 4, 5, 6, 7, 8, 9) else str(start_hour)}:" \
+                           f"{'0' + str(overall_minutes) if overall_minutes < 10 else str(overall_minutes)} " \
+                           f"{'AM' if start_hour in (8, 9, 10, 11) else 'PM'}"
+        if time_listbox.get() != 0 and date_selected != 0 and duration_dropdown.get() != 0:
+            end_time_calculation.grid(row=2, column=4, padx=5, pady=5, sticky="nw")
+        end_label.configure(text=end_time_str)
+        return end_time_str
+
+    # prints to console at the moment
+    end_time_calculation = Button(datetime_input_frame,
+                                  borderwidth=0,
+                                  highlightthickness=0,
+                                  relief="ridge",
+                                  overrelief="ridge",
+                                  command=calc_end_time,
+                                  background="green",
+                                  text="click"
+                                  )
+
+    end_time_calculation.grid(row=2, column=4, padx=5, pady=5, sticky="nw")
+    end_label.grid(row=3, column=4, padx=5, pady=5, sticky="nw")
+    # # -----------------------------------------------------------------
+
+    # # Save Button
+    # displayed in pop up message box after clicking save
+    def appointment_details():
+        appointment_scheduled = f"Patient Name: {patient_dropdown.get().split(', ')[0]}\n" \
+                                f"Client Name: {patient_dropdown.get().split(', ')[1]}\n" \
+                                f"Client Phone Number: {patient_dropdown.get().split(', ')[2]}\n" \
+                                f"Client Email Address: {patient_dropdown.get().split(', ')[2]}\n" \
+                                f"Veterinarian: {veterinarian_dropdown.get()}\n" \
+                                f"Appointment Type: {appointment_type_dropdown.get()}\n" \
+                                f"Reason: {reason_for_visit_entry.get('1.0', 'end-1c')}\n" \
+                                f"Date: {date_entry.get()}\n" \
+                                f"Start Time: {time_selected}\n" \
+                                f"End Time: {calc_end_time()}"
+        print(appointment_scheduled)
+        return appointment_scheduled
+    # resets form after confirming appointment details
+    def reset_new_appointment_form():
+        patient_dropdown.set("Select pet by searching pet name, or click dropdown to view all pets")
+        veterinarian_dropdown.set("Select Veterinarian")
+        appointment_type_dropdown.set("Select Appointment Type")
+        reason_for_visit_entry.delete("1.0", "end-1c")
+        date_entry.set(str(datetime.date.today()))
+        time_listbox.set(time_list[0])
+        duration_dropdown.set(duration_list[0])
+
+    # pop up window for save button
+    def save_button_clicked():
+        message_box = tkinter.messagebox.askyesnocancel("Confirm Appt",message=appointment_details())
+        if message_box:
+            reset_new_appointment_form()
+
+
+    save_button_image = PhotoImage(
+        file=dir + r"\save_btn.png")
+    save_button = Button(new_appointment_frame,
+                         image=save_button_image,
+                         borderwidth=0,
+                         highlightthickness=0,
+                         command=save_button_clicked,
+                         relief="flat"
+                         )
+    save_button.image = save_button_image
+    save_button.grid(row=10, column=3, padx=5, pady=20, sticky="nw")
+    # # ----------------------------------------------------------
+
+    # # Cancel Button
+
+    cancel_button_image = PhotoImage(
+        file=dir + r"\cancel_btn.png")
+    cancel_button = Button(new_appointment_frame,
+                           image=cancel_button_image,
+                           borderwidth=0,
+                           highlightthickness=0,
+                           command=lambda: print("cancel button clicked"),
+                           relief="raised",
+                           highlightcolor="black"
+                           )
+    cancel_button.image = cancel_button_image
+    cancel_button.grid(row=10, column=0, padx=5, pady=20, sticky="nw")
+    # end new_appointment function
 def calendar_display():
     cal = Calendar(calendar, selectmode = 'day', year = 2023, month = 3, day = 14)
     cal.pack(pady = 300)
