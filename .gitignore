@@ -1,7 +1,7 @@
-# Ignores all files named clientServer.py
 clientServer.py
 __pycache__
-admin_utils.py
 appointments.py
 .vs
+*.zip
 vetApptSys3.py
+create_new_appointment

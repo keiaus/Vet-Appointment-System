@@ -8,7 +8,6 @@ connection = pyodbc.connect('DRIVER={SQL Server};PORT=1433;SERVER=database-1.ci7
 cursor = connection.cursor()
 
 label = None
-
 class Vet():
 
     def __init__(self, window, account_page, vet_log_in, vet_menu, vet_update_info, vet_update_schedule, vet_update_pet):
