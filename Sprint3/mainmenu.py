@@ -2,14 +2,12 @@ from tkinter import * # gui import
 import tkinter as tk # gui import
 from tkinter import ttk # necessary for comboboxes
 import pyodbc # necessary for aws rds sql server connection
-from tkcalendar import Calendar # gui import (must install tkcalendar "pip install tkcalendar")
-from datetime import datetime
-from calendar_utils import *
-from userfile import * 
+from userfile import *
 from vetfile import *
 from adminfile import *
+from calendar_utils import *
 #Connection to AWS RDS SQL Server (required to run properly)
-connection = pyodbc.connect('DRIVER={SQL Server};PORT=1433;SERVER=database-1.ci7iawyx7c5x.us-east-1.rds.amazonaws.com;DATABASE=VetAppointmentSystem;UID=Arthur;PWD=123;')
+connection = pyodbc.connect('DRIVER={SQL Server};PORT=1433;SERVER=database-1.ci7iawyx7c5x.us-east-1.rds.amazonaws.com;DATABASE=VetAppointmentSystem;UID=Keith;PWD=123;')
 cursor = connection.cursor()
 
 # Used to show each frame as the menu is interacted with
@@ -30,11 +28,6 @@ def vetapp():
     z.admin_after_login_menu()
     show_frame(account_page)
 
-# Opens the calendar menu on click (on base menu frame)
-def calendar_clicked():
-    window.title("Calendar")
-    show_frame(calendar_frame)
-
 # Used to show each frame as the menu is interacted with
 def show_frame(frame):
     frame.tkraise()
@@ -43,6 +36,10 @@ def show_frame(frame):
 def account_creation_clicked():
     window.title("Create Your Account")
     show_frame(account_create)
+
+def calendar_clicked():
+    window.title("Calendar")
+    show_frame(calendar_frame)
 
 # Opens the login menu on click (on base menu frame)
 def user_log_in_clicked():
@@ -70,7 +67,7 @@ def clear_all_frame():
     user_update_pet_info.pack_forget()
     vet_update_pet.pack_forget()
     admin_vet_dropdown.pack_forget()
-    
+
 # Closes the menu
 def close_clicked():
     window.destroy()
@@ -85,9 +82,6 @@ window.columnconfigure(0, weight=1)
 
 account_page = Frame(window)
 account_create = Frame(window)
-calendar_frame = Frame(window)
-unreg_cal = Frame(window) # Unregistered user calendar view
-reg_cal = Frame(window) # Registered user calendar view
 user_log_in = Frame(window)
 user_menu = Frame(window)
 user_pet_menu = Frame(window)
@@ -106,20 +100,25 @@ admin_update_info = Frame(window)
 admin_create_vet = Frame(window)
 admin_delete_vet = Frame(window)
 admin_vet_dropdown = Frame(window)
+calendar_frame = Frame(window)
+user_calendar_frame = Frame(window)
+user_appointment = Frame(window)
+cancel_menu_frame = Frame(window)
 
 for frame in (account_page, account_create, user_log_in, user_pet_menu, user_pet_add,  user_menu, user_update_info, user_update_pet_info, 
               user_update_pet_dropdown, vet_log_in, vet_menu, vet_update_info, vet_update_schedule, vet_update_pet,
-              admin_log_in, admin_menu, admin_update_info, admin_create_vet, admin_delete_vet, admin_vet_dropdown, calendar_frame):
+              admin_log_in, admin_menu, admin_update_info, admin_create_vet, admin_delete_vet, admin_vet_dropdown,
+              calendar_frame, user_calendar_frame, user_appointment, cancel_menu_frame):
     frame.grid(row=0, column=0, sticky='nsew')
     
-x = User(window, account_page, account_create, user_log_in, user_pet_menu, user_pet_add,  user_menu, user_update_info, user_update_pet_info, user_update_pet_dropdown)
+
+    
+x = User(window, account_page, account_create, user_log_in, user_pet_menu, user_pet_add,  user_menu, user_update_info, user_update_pet_info, user_update_pet_dropdown, user_appointment, user_calendar_frame, cancel_menu_frame)
 y = Vet(window, account_page, vet_log_in, vet_menu, vet_update_info, vet_update_schedule, vet_update_pet)
 z = AdminUtils(window, account_page, admin_log_in, admin_menu, admin_update_info, admin_create_vet, admin_delete_vet, admin_vet_dropdown)
-c = CalendarUtils(window, calendar_frame)
+c = CalendarUtils(window, calendar_frame, account_page)
 
 label = None
-##on click
-
 # **Don't touch**
 # Main window on program start
 def create_vetapp():
@@ -159,6 +158,9 @@ def username_taken():
 # Closes the username_taken() pop-up
 def delete_username_taken():
     username_taken_screen.destroy()
+
+# # ###########################################################################################################################################################################
+
 
 # Main window on program start (loops until closed)
 vetapp()

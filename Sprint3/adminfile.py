@@ -94,17 +94,17 @@ class AdminUtils():
         global admin_username_login_entry
         global admin_password_login_entry
     
-        Label(self.admin_log_in, font="times 30", text="Username").pack()
-        admin_username_login_entry = Entry(self.admin_log_in, font="times 30", textvariable=admin_username_verify)
+        Label(self.admin_log_in, font="times 20", text="Username").pack()
+        admin_username_login_entry = Entry(self.admin_log_in, font="times 20", textvariable=admin_username_verify)
         admin_username_login_entry.pack()
         Label(self.admin_log_in, text="").pack()
-        Label(self.admin_log_in, font="times 30", text="Password").pack()
-        admin_password_login_entry = Entry(self.admin_log_in, font="times 30", textvariable=admin_password_verify, show= '*')
+        Label(self.admin_log_in, font="times 20", text="Password").pack()
+        admin_password_login_entry = Entry(self.admin_log_in, font="times 20", textvariable=admin_password_verify, show= '*')
         admin_password_login_entry.pack()
         Label(self.admin_log_in, text="").pack()
-        Button(self.admin_log_in, text="Login", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = self.admin_login_verify).pack()
+        Button(self.admin_log_in, text="Login", width=20, height=1, font="times 15", bd=20, bg="SpringGreen4", command = self.admin_login_verify).pack()
         Label(self.admin_log_in, text="").pack()
-        Button(self.admin_log_in, text="Return to Main Menu", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = self.return_to_main).pack()
+        Button(self.admin_log_in, text="Return to Main Menu", width=20, height=1, font='times 15', bd=20, bg='SpringGreen4', command = self.return_to_main).pack()
 
     ###################################################################################################################################################################################
     # Admin Log In Verification
@@ -150,11 +150,11 @@ class AdminUtils():
     def admin_after_login_menu(self):
         Label(self.admin_menu, text="Select Your Choice", font='times 50 bold', bg='SpringGreen4', anchor=N, pady=50).pack(fill=BOTH)
         Label(self.admin_menu,text="").pack()
-        Button(self.admin_menu,text="Create a Vet Login", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command =lambda:self.admin_vet_create_clicked()).pack()
+        Button(self.admin_menu,text="Create a Vet Login", width=20, height=1, font="times 15", bd=20, bg="SpringGreen4", command =lambda:self.admin_vet_create_clicked()).pack()
         Label(self.admin_menu,text="").pack()
-        Button(self.admin_menu,text="Delete a Vet", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = lambda:self.admin_dropdown_clicked()).pack()
+        Button(self.admin_menu,text="Delete a Vet", width=20, height=1, font="times 15", bd=20, bg="SpringGreen4", command = lambda:self.admin_dropdown_clicked()).pack()
         Label(self.admin_menu,text="").pack()
-        Button(self.admin_menu,text="Log Out", width=20, height=1, font="times 20", bd=20, bg="SpringGreen4", command = self.return_to_main).pack()
+        Button(self.admin_menu,text="Log Out", width=20, height=1, font="times 15", bd=20, bg="SpringGreen4", command = self.return_to_main).pack()
         
     ################################################################################################################################################
 
@@ -168,18 +168,18 @@ class AdminUtils():
     
         Label(self.admin_create_vet, text="Please enter details below", font='times 50 bold', bg="SpringGreen4", anchor=N, pady=50).pack(fill=BOTH)
         Label(self.admin_create_vet, text="").pack()
-        username_label = Label(self.admin_create_vet, font='times 30', text="Username")
+        username_label = Label(self.admin_create_vet, font='times 20', text="Username")
         username_label.pack()
-        username_entry1 = Entry(self.admin_create_vet, font='times 30', textvariable=username4)
+        username_entry1 = Entry(self.admin_create_vet, font='times 20', textvariable=username4)
         username_entry1.pack()
-        password_label = Label(self.admin_create_vet, font='times 30', text="Password")
+        password_label = Label(self.admin_create_vet, font='times 20', text="Password")
         password_label.pack()
-        password_entry1 = Entry(self.admin_create_vet, font='times 30', textvariable=password4, show='*')
+        password_entry1 = Entry(self.admin_create_vet, font='times 20', textvariable=password4, show='*')
         password_entry1.pack()
         Label(self.admin_create_vet, text="").pack()
-        Button(self.admin_create_vet, text="Register", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = self.add_vet_creation).pack()
+        Button(self.admin_create_vet, text="Register", width=20, height=1, font='times 15', bd=20, bg='SpringGreen4', command = self.add_vet_creation).pack()
         Label(self.admin_create_vet, text="").pack()
-        Button(self.admin_create_vet, text="Return to Admin Menu", width=20, height=1, font='times 20', bd=20, bg='SpringGreen4', command = self.admin_menu_launch).pack()
+        Button(self.admin_create_vet, text="Return to Admin Menu", width=20, height=1, font='times 15', bd=20, bg='SpringGreen4', command = self.admin_menu_launch).pack()
 
     # Admin Vet Account Creation
     def add_vet_creation(self):
@@ -210,7 +210,7 @@ class AdminUtils():
                 username_entry1.delete(0, END)
                 password_entry1.delete(0, END)
     
-                label = Label(self.admin_create_vet, text="Registration Successful", fg="green", font="times 20")
+                label = Label(self.admin_create_vet, text="Registration Successful", fg="green", font="times 15")
                 label.pack() 
             else:
                 username_entry1.delete(0, END)
@@ -261,8 +261,8 @@ class AdminUtils():
         
         #buttons
         Label(self.admin_vet_dropdown, text = "").pack()
-        Button(self.admin_vet_dropdown, text="Delete Vet", width = 20, height = 1, font = 'times 20', bd = 20, bg = 'SpringGreen4', command = admin_confirmation_popup).pack()
+        Button(self.admin_vet_dropdown, text="Delete Vet", width = 20, height = 1, font = 'times 15', bd = 20, bg = 'SpringGreen4', command = admin_confirmation_popup).pack()
         Label(self.admin_vet_dropdown, text = "").pack()
-        Button(self.admin_vet_dropdown, text="Return to Admin Menu", width = 20, height = 1, font = 'times 20', bd = 20, bg = 'SpringGreen4', command = self.admin_menu_launch).pack()
+        Button(self.admin_vet_dropdown, text="Return to Admin Menu", width = 20, height = 1, font = 'times 15', bd = 20, bg = 'SpringGreen4', command = self.admin_menu_launch).pack()
 
 ####################################################################################################################################################################
