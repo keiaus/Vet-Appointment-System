@@ -737,14 +737,15 @@ class Vet():
                 self.e.grid(row=i, column=j)
                 self.e.insert(END, listt[i][j])
 
-        pet_name = cursor.execute("select PetName from PetInfo where PetInfo.PetID = AppointmentInfo.PetID")
-        cursor.fetchone
+        cursor.execute("select PetName from PetInfo where PetInfo.PetID = AppointmentInfo.PetID")
+        pet_name = cursor.fetchone
 
-        pet_type = cursor.execute("select PetType from PetInfo where PetInfo.PetID = AppointmentInfo.PetID")
-        cursor.fetchone
+        cursor.execute("select PetType from PetInfo where PetInfo.PetID = AppointmentInfo.PetID")
+        pet_type = cursor.fetchone
 
-        get_date = cursor.execute("select Date from AppointmentInfo where Date.")
-
+        cursor.execute("select Date from AppointmentInfo where Date.")
+        get_date = cursor.fetchone
+        
     listt = 
 
 
