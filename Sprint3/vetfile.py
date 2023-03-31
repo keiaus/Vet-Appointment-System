@@ -10,7 +10,7 @@ cursor = connection.cursor()
 label = None
 class Vet():
 
-    def __init__(self, window, account_page, vet_log_in, vet_menu, vet_update_info, vet_update_schedule, vet_update_pet):
+    def __init__(self, window, account_page, vet_log_in, vet_menu, vet_update_info, vet_update_schedule, vet_update_pet, appointments_frame, vet_upcoming_appointments, vet_canceled_appointments):
         super().__init__()
         self.window = window
         self.account_page = account_page
@@ -19,6 +19,9 @@ class Vet():
         self.vet_update_info = vet_update_info
         self.vet_update_schedule = vet_update_schedule
         self.vet_update_pet = vet_update_pet
+        self.appointments_frame = appointments_frame
+        self.vet_upcoming_appointments = vet_upcoming_appointments
+        self.vet_canceled_appointments = vet_canceled_appointments
     
     def show_frame(self,frame):
         frame.tkraise()
@@ -50,7 +53,19 @@ class Vet():
         
     def vet_update_pet_clicked(self):
         self.window.title("Update Pet")
-        self.show_frame(self.vet_update_pet)    
+        self.show_frame(self.vet_update_pet)
+
+    def appointments_clicked(self):
+         self.window.title("Appointments")
+         self.show_frame(self.appointments_frame)
+
+    def upcoming_clicked(self):
+         self.window.title("Upcoming Appointments")
+         self.show_frame(self.vet_upcoming_appointments)    
+
+    def canceled_clicked(self):
+         self.window.title("Canceled Appointments")
+         self.show_frame(self.vet_canceled_appointments)    
             
     def vet_log_in_clicked(self):
         self.window.title("Vet Log In")
@@ -138,6 +153,8 @@ class Vet():
         Button(self.vet_menu,text="Update Schedule Info", width=20, height=1, font="times 15", bd=20, bg="SpringGreen4", command = lambda:self.vet_update_schedule_clicked()).pack()
         Label(self.vet_menu,text="").pack()
         Button(self.vet_menu, text="Update Pet Info", width=20, height=1, font="times 15", bd=20, bg="SpringGreen4", command = lambda:self.vet_update_pet_clicked()).pack()
+        Label(self.vet_menu,text="").pack()
+        Button(self.vet_menu, text="View Appointments", width=20, height=1, font="times 15", bd=20, bg="SpringGreen4", command = lambda:self.appointments_clicked()).pack()
         Label(self.vet_menu,text="").pack()
         Button(self.vet_menu,text="Log Out", width=20, height=1, font="times 15", bd=20, bg="SpringGreen4", command = self.return_to_main).pack()
     ######################################################################################################################################
@@ -699,7 +716,42 @@ class Vet():
         Button(self.vet_update_pet, text='Update Pet', width=20, height=1, font="times 15", bd=20, bg="SpringGreen4", command = self.vet_pet_confirmation_popup).pack()
         Label(self.vet_update_pet, text="").pack()
         Button(self.vet_update_pet, text="Return to Vet Menu", width=20, height=1, font='times 15', bd=20, bg='SpringGreen4', command = self.vet_menu_launch).pack()
+
+    # This function displays buttons to view upcoming and canceled appointments for the vets
+    def vet_appointments(self):
+        Label(self.appointments_frame, text="Appointments", font='times 50 bold', bg='SpringGreen4', anchor=N, pady=50).pack(fill=BOTH)
+        Label(self.appointments_frame,text="").pack()
+        upcoming_appointments = Button(self.appointments_frame, text="Upcoming Appointments", width=20, height=1, font="times 15", bd=20, bg="SpringGreen4", command = self.upcoming_clicked).pack()
+        Label(self.vet_update_pet, text="").pack()
+        canceled_appointments = Button(self.appointments_frame, text="Canceled Appointments", width=20, height=1, font="times 15", bd=20, bg="SpringGreen4", command = self.canceled_clicked).pack()
         
+    # This function displays the upcoming appointments for the vets in a table form
+    def upcoming(self):
+        Label(self.vet_upcoming_appointments, text="Upcoming Appointments", font='times 50 bold', bg='SpringGreen4', anchor=N, pady=50).pack(fill=BOTH)
+        Label(self.vet_upcoming_appointments,text="").pack()
+
+        # code for making the table
+        for i in range(total_rows):
+            for j in range(total_columns):
+                self.e = Entry(self.vet_upcoming_appointments, width=20, fg="SpringGreen4", font=('Arial', 'times 10', 'bold'))
+                self.e.grid(row=i, column=j)
+                self.e.insert(END, listt[i][j])
+
+        pet_name = cursor.execute("select PetName from PetInfo where PetInfo.PetID = AppointmentInfo.PetID")
+        cursor.fetchone
+
+        pet_type = cursor.execute("select PetType from PetInfo where PetInfo.PetID = AppointmentInfo.PetID")
+        cursor.fetchone
+
+        get_date = cursor.execute("select Date from AppointmentInfo where Date.")
+
+    listt = 
+
+
+
+
+    def canceled(self):
+
     def my_upd(*args):
         cb2.set('') # remove the previous selected option
         selection = sel.get().split(", ")

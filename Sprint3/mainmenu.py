@@ -94,6 +94,8 @@ user_update_pet_info = Frame(window)
 user_update_pet_dropdown = Frame(window)
 vet_update_schedule = Frame(window)
 vet_update_pet = Frame(window)
+vet_upcoming_appointments = Frame(window)
+vet_canceled_appointments = Frame(window)
 admin_log_in = Frame(window)
 admin_menu = Frame(window)
 admin_update_info = Frame(window)
@@ -107,19 +109,19 @@ cancel_menu_frame = Frame(window)
 
 for frame in (account_page, account_create, user_log_in, user_pet_menu, user_pet_add,  user_menu, user_update_info, user_update_pet_info, 
               user_update_pet_dropdown, vet_log_in, vet_menu, vet_update_info, vet_update_schedule, vet_update_pet,
-              admin_log_in, admin_menu, admin_update_info, admin_create_vet, admin_delete_vet, admin_vet_dropdown,
+              vet_upcoming_appointments, vet_canceled_appointments, admin_log_in, admin_menu, admin_update_info, admin_create_vet, admin_delete_vet, admin_vet_dropdown,
               calendar_frame, user_calendar_frame, user_appointment, cancel_menu_frame):
     frame.grid(row=0, column=0, sticky='nsew')
     
 
     
 x = User(window, account_page, account_create, user_log_in, user_pet_menu, user_pet_add,  user_menu, user_update_info, user_update_pet_info, user_update_pet_dropdown, user_appointment, user_calendar_frame, cancel_menu_frame)
-y = Vet(window, account_page, vet_log_in, vet_menu, vet_update_info, vet_update_schedule, vet_update_pet)
+y = Vet(window, account_page, vet_log_in, vet_menu, vet_update_info, vet_update_schedule, vet_update_pet, vet_upcoming_appointments, vet_canceled_appointments)
 z = AdminUtils(window, account_page, admin_log_in, admin_menu, admin_update_info, admin_create_vet, admin_delete_vet, admin_vet_dropdown)
 c = CalendarUtils(window, calendar_frame, account_page)
 
 label = None
-# **Don't touch**
+
 # Main window on program start
 def create_vetapp():
     account_page_header = Label(account_page, text='Vet Appointment System', font='times 50 bold', bg='SpringGreen4', anchor=N, pady=50)
