@@ -737,15 +737,22 @@ class Vet():
                 self.e.grid(row=i, column=j)
                 self.e.insert(END, listt[i][j])
 
-        cursor.execute("select PetName from PetInfo where PetInfo.PetID = AppointmentInfo.PetID")
-        pet_name = cursor.fetchone
+        my_list = list()
+
+        # cursor.execute("SELECT VetLoginID FROM VetLoginInfo WHERE VetUserName = ? AND VetPassword = ?", username2, password2)
+        # vet_login_ID = cursor.fetchone()
+        # cursor.execute("SELECT VetID FROM VetAccountInfo INNER JOIN VetLoginInfo ON VetAccountInfo.VetLoginID = VetLoginInfo.VetLoginID WHERE VetAccountInfo.VetLoginID = ?", vet_login_ID)
+        # vet_id = cursor.fetchone()
+
+        cursor.execute("select PetID from PetInfo inner join AppointmentInfo on PetInfo.PetID = AppointmentInfo.PetID where PetInfo.PetID = ?", )
+        pet_id = cursor.fetchone
 
         cursor.execute("select PetType from PetInfo where PetInfo.PetID = AppointmentInfo.PetID")
         pet_type = cursor.fetchone
 
         cursor.execute("select Date from AppointmentInfo where Date.")
         get_date = cursor.fetchone
-        
+
     listt = 
 
 
