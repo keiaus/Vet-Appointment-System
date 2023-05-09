@@ -5,3 +5,6 @@ appointments.py
 *.zip
 vetApptSys3.py
 create_new_appointment
+.vscode
+Sprint_5
+test12.py
