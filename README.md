@@ -1,15 +1,15 @@
 # Vet-Appointment-System
 This system is used as a booking service for your pet(s).<br><br>
-Before following the installation process please make sure to be connected to a MSSQL (Microsoft SQL Server) database that uses AWS (Amazon Web Services). Please refer to the following sources for assistance in doing so. <br><br> Installing MSSQL: `https://www.microsoft.com/en-us/sql-server/sql-server-downloads` Installing AWS RDS (Remote Desktop Services): `https://aws.amazon.com/rds/sqlserver/?nc=sn&loc=3&dn=6` Installing pyodbc drivers: `https://learn.microsoft.com/en-us/sql/connect/python/pyodbc/python-sql-driver-pyodbc?view=sql-server-ver16`
+Before following the installation process please make sure to be connected to a MSSQL (Microsoft SQL Server) database that uses AWS (Amazon Web Services). Please refer to the following sources for assistance in doing so. <br><br> Installing MSSQL: `https://www.microsoft.com/en-us/sql-server/sql-server-downloads` <br> Installing AWS RDS (Remote Desktop Services): `https://aws.amazon.com/rds/sqlserver/?nc=sn&loc=3&dn=6` <br> Installing pyodbc drivers: `https://learn.microsoft.com/en-us/sql/connect/python/pyodbc/python-sql-driver-pyodbc?view=sql-server-ver16`
 
 Installation
 ---
 ```
-git clone https://github.com/Keiaus/Vet-Appointment-System.git<br>
-cd Vet-Appointment-System<br>
-pip install tk<br>
-pip install tkcalendar<br>
-pip install pyodbc<br>
+git clone https://github.com/Keiaus/Vet-Appointment-System.git
+cd Vet-Appointment-System
+pip install tk
+pip install tkcalendar
+pip install pyodbc
 ```
 
 Connecting pyodbc to Your Server
