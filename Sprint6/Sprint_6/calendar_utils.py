@@ -233,7 +233,7 @@ class CalendarUtils():
             zip_label = Label(schedule_label, text=my_list15[0], font="times 10 bold")
             zip_label.grid(row=8, column=7)
             
-            cb1.bind("<<ComboboxSelected>>", schedule_retrieval)
+        cb1.bind("<<ComboboxSelected>>", schedule_retrieval)
         
         #Creates all of the time slots (not clickable for this menu, as it's for unregistered users who can't make appointments)
         def createScheduleButtons():
