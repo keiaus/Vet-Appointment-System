@@ -4,22 +4,22 @@ Before following the installation process please make sure to be connected to a 
 
 Installation
 ---
-<code>
+```
 git clone https://github.com/Keiaus/Vet-Appointment-System.git<br>
 cd Vet-Appointment-System<br>
 pip install tk<br>
 pip install tkcalendar<br>
 pip install pyodbc<br>
-</code>
+```
 
 Connecting pyodbc to Your Server
 ---
 Must be included in all files to work properly.
 
-<code>
-connection = pyodbc.connect('DRIVER={SQL Server};PORT=<'Your port number'>;SERVER=<'Your URL link'>;UID=<'Your User ID'>;PWD=<'Your password'>;')```
+```
+connection = pyodbc.connect('DRIVER={SQL Server};PORT=<'Your port number'>;SERVER=<'Your URL link'>;UID=<'Your User ID'>;PWD=<'Your password'>;')
 cursor = connection.cursor()
-</code>
+```
 
 How it Works
 --- 
