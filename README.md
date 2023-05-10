@@ -4,6 +4,8 @@ Before following the installation process please make sure that you're connected
 
 Installation
 ---
+Make sure to create all tables from the `db.sql` file into your SQL server environment.
+
 ```
 git clone https://github.com/Keiaus/Vet-Appointment-System.git
 cd Vet-Appointment-System
