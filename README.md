@@ -1,5 +1,9 @@
 # Vet-Appointment-System
-This system is used as an appointment scheduling service for your pet(s). Before following the installation process please make sure that you're connected to a MSSQL (Microsoft SQL Server) database that uses AWS (Amazon Web Services). Please refer to the following sources for assistance on how to get started.<br><br> - Installing Python: `https://www.python.org/downloads/` <br> - Installing MSSQL: `https://www.microsoft.com/en-us/sql-server/sql-server-downloads` <br> - Installing AWS RDS (Remote Desktop Services): `https://aws.amazon.com/rds/sqlserver/?nc=sn&loc=3&dn=6` <br> - Installing pyodbc drivers: `https://learn.microsoft.com/en-us/sql/connect/python/pyodbc/python-sql-driver-pyodbc?view=sql-server-ver16`
+This system is used as an appointment scheduling service for your pet(s). Before following the installation process please make sure that you're connected to a MSSQL (Microsoft SQL Server) database that uses AWS (Amazon Web Services). Please refer to the following sources for assistance on how to get started.<br><br> 
+- Installing Python: `https://www.python.org/downloads/` <br> 
+- Installing MSSQL: `https://www.microsoft.com/en-us/sql-server/sql-server-downloads` <br> 
+- Installing AWS RDS (Remote Desktop Services): `https://aws.amazon.com/rds/sqlserver/?nc=sn&loc=3&dn=6` <br> 
+- Installing pyodbc drivers: `https://learn.microsoft.com/en-us/sql/connect/python/pyodbc/python-sql-driver-pyodbc?view=sql-server-ver16`
 
 Installation
 ---
