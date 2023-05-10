@@ -24,7 +24,7 @@ cursor = connection.cursor()
 
 How it Works
 --- 
-After completing the installation process run the `mainmenu.py` file in your IDE.
+After completing the installation process run the `Sprint6/mainmenu.py` file in your IDE.
 
 About the System
 ---
