@@ -14,7 +14,7 @@ pip install tkcalendar
 pip install pyodbc
 ```
 
-Connecting pyodbc to Your Server
+Connecting pyodbc to the Server
 ---
 Must be included in all files to work properly.
 
