@@ -22,7 +22,7 @@ connection = pyodbc.connect('DRIVER={SQL Server};PORT=<'Your port number'>;SERVE
 cursor = connection.cursor()
 ```
 
-How it Works
+Running the System
 --- 
 After completing the installation process run the `Sprint6/mainmenu.py` file in your IDE.
 
