@@ -30,5 +30,5 @@ About the System
 ---
 - Unregistered users can create an account and view appointment times 
 - Registered users can log in, update personal account information, add pet information, update pet information, remove pet information, view the calendar for available vet appointments, book appointments, cancel appointments, and search for specific vets based on location
-- Vets can log in, upload availability, update pet information, view daily appoinments, canceled appointments, and upload pet records
+- Vets can log in, upload availability, update pet information, view daily appoinments, view canceled appointments, and upload pet records
 - Admin can log in and manage vets
